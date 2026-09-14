@@ -41,5 +41,44 @@ nvidia-ml-py = ">=13.610.43,<14"
 [feature.pets.tasks]
 pets = { cmd = "python -m src.main", description = "Run the Layla & Chico desktop pet" }
 
+# ---------------------------------------------------------------------------
+# `dev` feature: the test suite. Its own feature, never added to `pets`.
+# ---------------------------------------------------------------------------
+# The point of the runtime environment is that its dependency surface stays small and
+# auditable -- tests/test_packaging.py asserts that Pillow never reaches it -- so pytest lives
+# here instead.
+#
+# The runtime dependencies below are MIRRORED from `[feature.pets.dependencies]` rather than
+# composed by listing both features in the `dev` environment. A pixi feature carries its tasks
+# along with its dependencies, so an environment built from ["pets", "dev"] would also inherit
+# the `pets` task and plain `pixi run pets` would become ambiguous between two environments.
+# Duplicating five pins is the lesser evil; `test_packaging.py::test_dev_feature_mirrors_the_
+# runtime_dependencies` fails the moment the two lists drift.
+[feature.dev.dependencies]
+python = ">=3.14.7,<3.15"
+pyqt6 = ">=6.8.1,<7"
+psutil = ">=7.0.0"
+numpy = ">=2.5.3,<3"
+nvidia-ml-py = ">=13.610.43,<14"
+pytest = ">=9.1.1,<10"
+
+[feature.dev.tasks]
+# PYTHONDONTWRITEBYTECODE keeps __pycache__ out of the working tree; pytest.ini's
+# `-p no:cacheprovider` does the same for .pytest_cache. Hygiene, not correctness.
+test = { cmd = "pytest", description = "Run the test suite (-m \"not slow\" for the fast subset)", env = { PYTHONDONTWRITEBYTECODE = "1" } }
+
+# ---------------------------------------------------------------------------
+# Environments.
+# ---------------------------------------------------------------------------
+# `no-default-feature = true` on both is load-bearing, not tidiness. Pixi folds the default
+# feature -- the `[dependencies]` table at the top of this file, i.e. napari + JupyterLab +
+# Pillow -- into EVERY environment unless told otherwise. Without it, `pets` resolved to 277
+# packages and did contain Pillow, quietly contradicting contract 2.7 ("Pillow is not a runtime
+# dependency") and this file's own comment above. The art-QA stack stays in `default`, where
+# `pixi run check` and `pixi run qa` use it.
+#
+# Same solve-group, so `pets` and `dev` share one resolution and the suite tests the versions
+# the app actually ships.
 [environments]
-pets = { features = ["pets"], solve-group = "pets" }
+pets = { features = ["pets"], solve-group = "pets", no-default-feature = true }
+dev = { features = ["dev"], solve-group = "pets", no-default-feature = true }
