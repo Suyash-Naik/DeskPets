@@ -1,0 +1,2939 @@
+{
+  "schema_version": 1,
+  "name": "Layla and Chico",
+  "target": "LC-pet-stat",
+  "image": "layla-and-chico-pet-spritesheet.png",
+  "image_sha256": "24936b44522144c2476ec2c53b2695a7d3673f5611b5cdb204566c1b085485d3",
+  "width": 1920,
+  "height": 2080,
+  "frame_width": 192,
+  "frame_height": 208,
+  "columns": 10,
+  "row_count": 10,
+  "frame_count": 82,
+  "default_animation": "idle-attentive",
+  "rows": [
+    {
+      "name": "idle-attentive",
+      "row": 0,
+      "frames": 8,
+      "sequence": "Chico-alert",
+      "loop": true,
+      "timing_ms": [
+        150,
+        110,
+        120,
+        110,
+        180,
+        120,
+        110,
+        220
+      ],
+      "duration_ms": 1120,
+      "source_spec": "gen-image/Chico-alert/04-integration-notes/sequence-spec.json",
+      "source_spec_sha256": "0eef87e197e49694e1a5185fd5b0732aa505bfc18e94034b29737797ace3dba3",
+      "frame_data": [
+        {
+          "index": 0,
+          "source_index": 1,
+          "x": 0,
+          "y": 0,
+          "width": 192,
+          "height": 208,
+          "duration_ms": 150,
+          "phase": "neutral-alert",
+          "source": "gen-image/Chico-alert/03-qa-reference/chico-alert-frame-01-aligned.png",
+          "source_sha256": "b4c2571b383598e60d842ddb67fafd55def273b60cfb31d56b911e30669eb773",
+          "original_registered_source": "gen-image/Chico-alert/03-qa-reference/chico-alert-frame-01-aligned.png",
+          "source_metadata": {
+            "sequence_index": 1,
+            "source_frame": 1,
+            "file": "02-extracted-frames/chico-alert-frame-01.png",
+            "aligned_file": "03-qa-reference/chico-alert-frame-01-aligned.png",
+            "phase": "neutral-alert"
+          }
+        },
+        {
+          "index": 1,
+          "source_index": 2,
+          "x": 192,
+          "y": 0,
+          "width": 192,
+          "height": 208,
+          "duration_ms": 110,
+          "phase": "turn-screen-left",
+          "source": "gen-image/Chico-alert/03-qa-reference/chico-alert-frame-02-aligned.png",
+          "source_sha256": "974accd8caa9096752815e5a652729dfc8d2c8aac7baafb18a1c54c13972fb7f",
+          "original_registered_source": "gen-image/Chico-alert/03-qa-reference/chico-alert-frame-02-aligned.png",
+          "source_metadata": {
+            "sequence_index": 2,
+            "source_frame": 2,
+            "file": "02-extracted-frames/chico-alert-frame-02.png",
+            "aligned_file": "03-qa-reference/chico-alert-frame-02-aligned.png",
+            "phase": "turn-screen-left"
+          }
+        },
+        {
+          "index": 2,
+          "source_index": 3,
+          "x": 384,
+          "y": 0,
+          "width": 192,
+          "height": 208,
+          "duration_ms": 120,
+          "phase": "look-screen-left",
+          "source": "gen-image/Chico-alert/03-qa-reference/chico-alert-frame-03-aligned.png",
+          "source_sha256": "300ae161e8e83859ad3c32f3f026fbcd8acc653ae37d3d85da77344e724f0627",
+          "original_registered_source": "gen-image/Chico-alert/03-qa-reference/chico-alert-frame-03-aligned.png",
+          "source_metadata": {
+            "sequence_index": 3,
+            "source_frame": 3,
+            "file": "02-extracted-frames/chico-alert-frame-03.png",
+            "aligned_file": "03-qa-reference/chico-alert-frame-03-aligned.png",
+            "phase": "look-screen-left"
+          }
+        },
+        {
+          "index": 3,
+          "source_index": 4,
+          "x": 576,
+          "y": 0,
+          "width": 192,
+          "height": 208,
+          "duration_ms": 110,
+          "phase": "return-center",
+          "source": "gen-image/Chico-alert/03-qa-reference/chico-alert-frame-04-aligned.png",
+          "source_sha256": "c4849b5f30ffa1561d1b5456fd8ae80c33bfc25fffe92af51aa46360ecaaab83",
+          "original_registered_source": "gen-image/Chico-alert/03-qa-reference/chico-alert-frame-04-aligned.png",
+          "source_metadata": {
+            "sequence_index": 4,
+            "source_frame": 4,
+            "file": "02-extracted-frames/chico-alert-frame-04.png",
+            "aligned_file": "03-qa-reference/chico-alert-frame-04-aligned.png",
+            "phase": "return-center"
+          }
+        },
+        {
+          "index": 4,
+          "source_index": 7,
+          "x": 768,
+          "y": 0,
+          "width": 192,
+          "height": 208,
+          "duration_ms": 180,
+          "phase": "question-mark",
+          "source": "gen-image/Chico-alert/03-qa-reference/chico-alert-frame-07-aligned.png",
+          "source_sha256": "bf07281c1125f49fc0e573c860226317cb62d9490d1e018195585fefd56e6303",
+          "original_registered_source": "gen-image/Chico-alert/03-qa-reference/chico-alert-frame-07-aligned.png",
+          "source_metadata": {
+            "sequence_index": 5,
+            "source_frame": 7,
+            "file": "02-extracted-frames/chico-alert-frame-07.png",
+            "aligned_file": "03-qa-reference/chico-alert-frame-07-aligned.png",
+            "phase": "question-mark"
+          }
+        },
+        {
+          "index": 5,
+          "source_index": 5,
+          "x": 960,
+          "y": 0,
+          "width": 192,
+          "height": 208,
+          "duration_ms": 120,
+          "phase": "turn-screen-right",
+          "source": "gen-image/Chico-alert/03-qa-reference/chico-alert-frame-05-aligned.png",
+          "source_sha256": "c7a9cc287278e1467a19adce489f4801cccbc5fa99f7d71143b175fe35e6a7a8",
+          "original_registered_source": "gen-image/Chico-alert/03-qa-reference/chico-alert-frame-05-aligned.png",
+          "source_metadata": {
+            "sequence_index": 6,
+            "source_frame": 5,
+            "file": "02-extracted-frames/chico-alert-frame-05.png",
+            "aligned_file": "03-qa-reference/chico-alert-frame-05-aligned.png",
+            "phase": "turn-screen-right"
+          }
+        },
+        {
+          "index": 6,
+          "source_index": 6,
+          "x": 1152,
+          "y": 0,
+          "width": 192,
+          "height": 208,
+          "duration_ms": 110,
+          "phase": "look-screen-right",
+          "source": "gen-image/Chico-alert/03-qa-reference/chico-alert-frame-06-aligned.png",
+          "source_sha256": "03bd74862d9dcecd0ebd725b0c265a3a24cf05dd60d26ef181331a9a9a1abeb2",
+          "original_registered_source": "gen-image/Chico-alert/03-qa-reference/chico-alert-frame-06-aligned.png",
+          "source_metadata": {
+            "sequence_index": 7,
+            "source_frame": 6,
+            "file": "02-extracted-frames/chico-alert-frame-06.png",
+            "aligned_file": "03-qa-reference/chico-alert-frame-06-aligned.png",
+            "phase": "look-screen-right"
+          }
+        },
+        {
+          "index": 7,
+          "source_index": 8,
+          "x": 1344,
+          "y": 0,
+          "width": 192,
+          "height": 208,
+          "duration_ms": 220,
+          "phase": "settle-curious",
+          "source": "gen-image/Chico-alert/03-qa-reference/chico-alert-frame-08-aligned.png",
+          "source_sha256": "4b0e5634a93e27c8f67b4d4a4c5110e69c6b9f8bccd4a73bb5c7a6e19cf35827",
+          "original_registered_source": "gen-image/Chico-alert/03-qa-reference/chico-alert-frame-08-aligned.png",
+          "source_metadata": {
+            "sequence_index": 8,
+            "source_frame": 8,
+            "file": "02-extracted-frames/chico-alert-frame-08.png",
+            "aligned_file": "03-qa-reference/chico-alert-frame-08-aligned.png",
+            "phase": "settle-curious"
+          }
+        }
+      ],
+      "source_metadata": {
+        "sequence_id": "chico-alert-search-question",
+        "frame_count": 8,
+        "shared_registration_canvas": [
+          320,
+          320
+        ],
+        "timing_ms": [
+          150,
+          110,
+          120,
+          110,
+          180,
+          120,
+          110,
+          220
+        ],
+        "frame_order": [
+          1,
+          2,
+          3,
+          4,
+          7,
+          5,
+          6,
+          8
+        ],
+        "gesture": "Chico turns his head around searching; question mark appears mid-sequence",
+        "source": "01-generated-sequence/chico-alert-clean.png",
+        "alignment": {
+          "anchor": "largest connected cat component; question mark and detached marks excluded",
+          "target_body_center": [
+            160,
+            null
+          ],
+          "target_body_baseline_y": 292,
+          "target_body_width": 215
+        },
+        "frames": [
+          {
+            "sequence_index": 1,
+            "source_frame": 1,
+            "file": "02-extracted-frames/chico-alert-frame-01.png",
+            "aligned_file": "03-qa-reference/chico-alert-frame-01-aligned.png",
+            "phase": "neutral-alert"
+          },
+          {
+            "sequence_index": 2,
+            "source_frame": 2,
+            "file": "02-extracted-frames/chico-alert-frame-02.png",
+            "aligned_file": "03-qa-reference/chico-alert-frame-02-aligned.png",
+            "phase": "turn-screen-left"
+          },
+          {
+            "sequence_index": 3,
+            "source_frame": 3,
+            "file": "02-extracted-frames/chico-alert-frame-03.png",
+            "aligned_file": "03-qa-reference/chico-alert-frame-03-aligned.png",
+            "phase": "look-screen-left"
+          },
+          {
+            "sequence_index": 4,
+            "source_frame": 4,
+            "file": "02-extracted-frames/chico-alert-frame-04.png",
+            "aligned_file": "03-qa-reference/chico-alert-frame-04-aligned.png",
+            "phase": "return-center"
+          },
+          {
+            "sequence_index": 5,
+            "source_frame": 7,
+            "file": "02-extracted-frames/chico-alert-frame-07.png",
+            "aligned_file": "03-qa-reference/chico-alert-frame-07-aligned.png",
+            "phase": "question-mark"
+          },
+          {
+            "sequence_index": 6,
+            "source_frame": 5,
+            "file": "02-extracted-frames/chico-alert-frame-05.png",
+            "aligned_file": "03-qa-reference/chico-alert-frame-05-aligned.png",
+            "phase": "turn-screen-right"
+          },
+          {
+            "sequence_index": 7,
+            "source_frame": 6,
+            "file": "02-extracted-frames/chico-alert-frame-06.png",
+            "aligned_file": "03-qa-reference/chico-alert-frame-06-aligned.png",
+            "phase": "look-screen-right"
+          },
+          {
+            "sequence_index": 8,
+            "source_frame": 8,
+            "file": "02-extracted-frames/chico-alert-frame-08.png",
+            "aligned_file": "03-qa-reference/chico-alert-frame-08-aligned.png",
+            "phase": "settle-curious"
+          }
+        ]
+      },
+      "source_qa_findings": []
+    },
+    {
+      "name": "running-playful-roll",
+      "row": 1,
+      "frames": 8,
+      "sequence": "Layla-ball-rolling",
+      "loop": true,
+      "timing_ms": [
+        180,
+        140,
+        140,
+        150,
+        180,
+        180,
+        150,
+        220
+      ],
+      "duration_ms": 1340,
+      "source_spec": "gen-image/Layla-ball-rolling/04-integration-notes/sequence-spec.json",
+      "source_spec_sha256": "29582458b62e939d704bc31c1f9526fca4975445dfa43c1e680d76f06204c452",
+      "frame_data": [
+        {
+          "index": 0,
+          "source_index": 1,
+          "x": 0,
+          "y": 208,
+          "width": 192,
+          "height": 208,
+          "duration_ms": 180,
+          "phase": "back-roll-reach",
+          "source": "gen-image/Layla-ball-rolling/03-qa-reference/layla-ball-yarn-airborne-frame-01-aligned.png",
+          "source_sha256": "96ad186496b745b0d786d0f8c8376621fbdf604c73c9641b72245da553d9aac1",
+          "original_registered_source": "gen-image/Layla-ball-rolling/03-qa-reference/layla-ball-yarn-airborne-frame-01-aligned.png",
+          "source_metadata": {
+            "index": 1,
+            "file": "02-extracted-frames/layla-ball-yarn-airborne-frame-01.png",
+            "aligned_file": "03-qa-reference/layla-ball-yarn-airborne-frame-01-aligned.png",
+            "phase": "back-roll-reach",
+            "duration_ms": 180
+          }
+        },
+        {
+          "index": 1,
+          "source_index": 2,
+          "x": 192,
+          "y": 208,
+          "width": 192,
+          "height": 208,
+          "duration_ms": 140,
+          "phase": "reach-up",
+          "source": "gen-image/Layla-ball-rolling/03-qa-reference/layla-ball-yarn-airborne-frame-02-aligned.png",
+          "source_sha256": "0892258b3c64d9c95e776a24ec96d407e53701c20d39c07cfa47c63555efaa9f",
+          "original_registered_source": "gen-image/Layla-ball-rolling/03-qa-reference/layla-ball-yarn-airborne-frame-02-aligned.png",
+          "source_metadata": {
+            "index": 2,
+            "file": "02-extracted-frames/layla-ball-yarn-airborne-frame-02.png",
+            "aligned_file": "03-qa-reference/layla-ball-yarn-airborne-frame-02-aligned.png",
+            "phase": "reach-up",
+            "duration_ms": 140
+          }
+        },
+        {
+          "index": 2,
+          "source_index": 3,
+          "x": 384,
+          "y": 208,
+          "width": 192,
+          "height": 208,
+          "duration_ms": 140,
+          "phase": "paws-extended",
+          "source": "gen-image/Layla-ball-rolling/03-qa-reference/layla-ball-yarn-airborne-frame-03-aligned.png",
+          "source_sha256": "2935df4cb70f8beb5b911398c6d5a87fb47760ffabc70d3816e522b1a593a37c",
+          "original_registered_source": "gen-image/Layla-ball-rolling/03-qa-reference/layla-ball-yarn-airborne-frame-03-aligned.png",
+          "source_metadata": {
+            "index": 3,
+            "file": "02-extracted-frames/layla-ball-yarn-airborne-frame-03.png",
+            "aligned_file": "03-qa-reference/layla-ball-yarn-airborne-frame-03-aligned.png",
+            "phase": "paws-extended",
+            "duration_ms": 140
+          }
+        },
+        {
+          "index": 3,
+          "source_index": 4,
+          "x": 576,
+          "y": 208,
+          "width": 192,
+          "height": 208,
+          "duration_ms": 150,
+          "phase": "catch-near-face",
+          "source": "gen-image/Layla-ball-rolling/03-qa-reference/layla-ball-yarn-airborne-frame-04-aligned.png",
+          "source_sha256": "0a39659bc603a25a5c9d19dbc4337f10c1348239604e573e45c6413745d9dcae",
+          "original_registered_source": "gen-image/Layla-ball-rolling/03-qa-reference/layla-ball-yarn-airborne-frame-04-aligned.png",
+          "source_metadata": {
+            "index": 4,
+            "file": "02-extracted-frames/layla-ball-yarn-airborne-frame-04.png",
+            "aligned_file": "03-qa-reference/layla-ball-yarn-airborne-frame-04-aligned.png",
+            "phase": "catch-near-face",
+            "duration_ms": 150
+          }
+        },
+        {
+          "index": 4,
+          "source_index": 5,
+          "x": 768,
+          "y": 208,
+          "width": 192,
+          "height": 208,
+          "duration_ms": 180,
+          "phase": "hug-yarn",
+          "source": "gen-image/Layla-ball-rolling/03-qa-reference/layla-ball-yarn-airborne-frame-05-aligned.png",
+          "source_sha256": "f0ab6a2df18e03c8985d55485d2f566791f7d4086ebe02e86744c55aef893360",
+          "original_registered_source": "gen-image/Layla-ball-rolling/03-qa-reference/layla-ball-yarn-airborne-frame-05-aligned.png",
+          "source_metadata": {
+            "index": 5,
+            "file": "02-extracted-frames/layla-ball-yarn-airborne-frame-05.png",
+            "aligned_file": "03-qa-reference/layla-ball-yarn-airborne-frame-05-aligned.png",
+            "phase": "hug-yarn",
+            "duration_ms": 180
+          }
+        },
+        {
+          "index": 5,
+          "source_index": 6,
+          "x": 960,
+          "y": 208,
+          "width": 192,
+          "height": 208,
+          "duration_ms": 180,
+          "phase": "tumble-release",
+          "source": "gen-image/Layla-ball-rolling/03-qa-reference/layla-ball-yarn-airborne-frame-06-aligned.png",
+          "source_sha256": "d38d4b8a25562f0aadda1fb628442e5d92d090faf850be3c2e099e138021076f",
+          "original_registered_source": "gen-image/Layla-ball-rolling/03-qa-reference/layla-ball-yarn-airborne-frame-06-aligned.png",
+          "source_metadata": {
+            "index": 6,
+            "file": "02-extracted-frames/layla-ball-yarn-airborne-frame-06.png",
+            "aligned_file": "03-qa-reference/layla-ball-yarn-airborne-frame-06-aligned.png",
+            "phase": "tumble-release",
+            "duration_ms": 180
+          }
+        },
+        {
+          "index": 6,
+          "source_index": 7,
+          "x": 1152,
+          "y": 208,
+          "width": 192,
+          "height": 208,
+          "duration_ms": 150,
+          "phase": "reach-for-yarn",
+          "source": "gen-image/Layla-ball-rolling/03-qa-reference/layla-ball-yarn-airborne-frame-07-aligned.png",
+          "source_sha256": "6be87ef4326b244e89bdf281b07955a5df6772f6da9414fb40ab6e8e8d9a80cc",
+          "original_registered_source": "gen-image/Layla-ball-rolling/03-qa-reference/layla-ball-yarn-airborne-frame-07-aligned.png",
+          "source_metadata": {
+            "index": 7,
+            "file": "02-extracted-frames/layla-ball-yarn-airborne-frame-07.png",
+            "aligned_file": "03-qa-reference/layla-ball-yarn-airborne-frame-07-aligned.png",
+            "phase": "reach-for-yarn",
+            "duration_ms": 150
+          }
+        },
+        {
+          "index": 7,
+          "source_index": 8,
+          "x": 1344,
+          "y": 208,
+          "width": 192,
+          "height": 208,
+          "duration_ms": 220,
+          "phase": "return-back-roll",
+          "source": "gen-image/Layla-ball-rolling/03-qa-reference/layla-ball-yarn-airborne-frame-08-aligned.png",
+          "source_sha256": "b84ddcabd0ce03d2976426fcc247912dd50e36e46c7b819b3b5ff0a861995401",
+          "original_registered_source": "gen-image/Layla-ball-rolling/03-qa-reference/layla-ball-yarn-airborne-frame-08-aligned.png",
+          "source_metadata": {
+            "index": 8,
+            "file": "02-extracted-frames/layla-ball-yarn-airborne-frame-08.png",
+            "aligned_file": "03-qa-reference/layla-ball-yarn-airborne-frame-08-aligned.png",
+            "phase": "return-back-roll",
+            "duration_ms": 220
+          }
+        }
+      ],
+      "source_metadata": {
+        "sequence_id": "layla-ball-rolling",
+        "frame_count": 8,
+        "shared_registration_canvas": [
+          320,
+          320
+        ],
+        "timing_ms": [
+          180,
+          140,
+          140,
+          150,
+          180,
+          180,
+          150,
+          220
+        ],
+        "duration_ms": 1340,
+        "loop": true,
+        "gesture": "Layla rolls, reaches, catches and releases pink-purple yarn.",
+        "source": "01-generated-sequence/layla-ball-yarn-airborne-sequence-green-source.png",
+        "clean_source": "01-generated-sequence/layla-ball-yarn-airborne-sequence-clean-despilled.png",
+        "alignment": {
+          "scale": 0.7102272727272727,
+          "anchor": "largest 4-connected cat component, excludes separate yarn",
+          "target_body_center_x": 160,
+          "vertical_registration": "shared original-strip coordinates; preserve vertical motion instead of per-frame baseline pinning",
+          "source_bottom_y": 526
+        },
+        "approval": {
+          "status": "approved-for-integration",
+          "basis": "User requested remaining steps and atlas update after crop review."
+        },
+        "frames": [
+          {
+            "index": 1,
+            "file": "02-extracted-frames/layla-ball-yarn-airborne-frame-01.png",
+            "aligned_file": "03-qa-reference/layla-ball-yarn-airborne-frame-01-aligned.png",
+            "phase": "back-roll-reach",
+            "duration_ms": 180
+          },
+          {
+            "index": 2,
+            "file": "02-extracted-frames/layla-ball-yarn-airborne-frame-02.png",
+            "aligned_file": "03-qa-reference/layla-ball-yarn-airborne-frame-02-aligned.png",
+            "phase": "reach-up",
+            "duration_ms": 140
+          },
+          {
+            "index": 3,
+            "file": "02-extracted-frames/layla-ball-yarn-airborne-frame-03.png",
+            "aligned_file": "03-qa-reference/layla-ball-yarn-airborne-frame-03-aligned.png",
+            "phase": "paws-extended",
+            "duration_ms": 140
+          },
+          {
+            "index": 4,
+            "file": "02-extracted-frames/layla-ball-yarn-airborne-frame-04.png",
+            "aligned_file": "03-qa-reference/layla-ball-yarn-airborne-frame-04-aligned.png",
+            "phase": "catch-near-face",
+            "duration_ms": 150
+          },
+          {
+            "index": 5,
+            "file": "02-extracted-frames/layla-ball-yarn-airborne-frame-05.png",
+            "aligned_file": "03-qa-reference/layla-ball-yarn-airborne-frame-05-aligned.png",
+            "phase": "hug-yarn",
+            "duration_ms": 180
+          },
+          {
+            "index": 6,
+            "file": "02-extracted-frames/layla-ball-yarn-airborne-frame-06.png",
+            "aligned_file": "03-qa-reference/layla-ball-yarn-airborne-frame-06-aligned.png",
+            "phase": "tumble-release",
+            "duration_ms": 180
+          },
+          {
+            "index": 7,
+            "file": "02-extracted-frames/layla-ball-yarn-airborne-frame-07.png",
+            "aligned_file": "03-qa-reference/layla-ball-yarn-airborne-frame-07-aligned.png",
+            "phase": "reach-for-yarn",
+            "duration_ms": 150
+          },
+          {
+            "index": 8,
+            "file": "02-extracted-frames/layla-ball-yarn-airborne-frame-08.png",
+            "aligned_file": "03-qa-reference/layla-ball-yarn-airborne-frame-08-aligned.png",
+            "phase": "return-back-roll",
+            "duration_ms": 220
+          }
+        ]
+      },
+      "source_qa_findings": [
+        {
+          "severity": "WARN",
+          "check": "anchor-baseline",
+          "message": "frame 01 sits at y=265, expected baseline 291±2"
+        },
+        {
+          "severity": "WARN",
+          "check": "anchor-baseline",
+          "message": "frame 02 sits at y=277, expected baseline 291±2"
+        },
+        {
+          "severity": "WARN",
+          "check": "anchor-baseline",
+          "message": "frame 03 sits at y=269, expected baseline 291±2"
+        },
+        {
+          "severity": "WARN",
+          "check": "anchor-baseline",
+          "message": "frame 04 sits at y=258, expected baseline 291±2"
+        },
+        {
+          "severity": "WARN",
+          "check": "anchor-baseline",
+          "message": "frame 05 sits at y=265, expected baseline 291±2"
+        },
+        {
+          "severity": "WARN",
+          "check": "anchor-baseline",
+          "message": "frame 06 sits at y=284, expected baseline 291±2"
+        },
+        {
+          "severity": "WARN",
+          "check": "anchor-baseline",
+          "message": "frame 08 sits at y=264, expected baseline 291±2"
+        },
+        {
+          "severity": "WARN",
+          "check": "scale",
+          "message": "content height ranges 138–229px — frames may not share one scale"
+        }
+      ]
+    },
+    {
+      "name": "running-playful-jump",
+      "row": 2,
+      "frames": 10,
+      "sequence": "Chico-jump",
+      "loop": true,
+      "timing_ms": [
+        140,
+        110,
+        110,
+        110,
+        110,
+        90,
+        120,
+        110,
+        110,
+        180
+      ],
+      "duration_ms": 1190,
+      "source_spec": "gen-image/Chico-jump/04-integration-notes/sequence-spec.json",
+      "source_spec_sha256": "7e14749e154430380b0b408784ee406a0e34549d29e87fbcaa8cd77611dbbbb6",
+      "frame_data": [
+        {
+          "index": 0,
+          "source_index": 1,
+          "x": 0,
+          "y": 416,
+          "width": 192,
+          "height": 208,
+          "duration_ms": 140,
+          "phase": "crouched-ready",
+          "source": "gen-image/Chico-jump/02-extracted-frames/chico-jump-frame-01-normalized.png",
+          "source_sha256": "5333a1db7c160e78ce250c4babb3c98099d1b1b33031ab49ec31453f9ff71ebc",
+          "original_registered_source": "gen-image/Chico-jump/02-extracted-frames/chico-jump-frame-01-normalized.png",
+          "source_metadata": {
+            "index": 1,
+            "file": "02-extracted-frames/chico-jump-frame-01-normalized.png",
+            "phase": "crouched-ready"
+          }
+        },
+        {
+          "index": 1,
+          "source_index": 2,
+          "x": 192,
+          "y": 416,
+          "width": 192,
+          "height": 208,
+          "duration_ms": 110,
+          "phase": "compressed-crouch",
+          "source": "gen-image/Chico-jump/02-extracted-frames/chico-jump-frame-02-normalized.png",
+          "source_sha256": "5314c28a36c979be95802fcb93438f12f7885cb6201ddb9484e9aba8cf308042",
+          "original_registered_source": "gen-image/Chico-jump/02-extracted-frames/chico-jump-frame-02-normalized.png",
+          "source_metadata": {
+            "index": 2,
+            "file": "02-extracted-frames/chico-jump-frame-02-normalized.png",
+            "phase": "compressed-crouch"
+          }
+        },
+        {
+          "index": 2,
+          "source_index": 3,
+          "x": 384,
+          "y": 416,
+          "width": 192,
+          "height": 208,
+          "duration_ms": 110,
+          "phase": "tail-wiggle-left",
+          "source": "gen-image/Chico-jump/02-extracted-frames/chico-jump-frame-03-normalized.png",
+          "source_sha256": "684fef10f637ec293b7905176f93c325a5aa8eff02920bb2936de08ce95938f2",
+          "original_registered_source": "gen-image/Chico-jump/02-extracted-frames/chico-jump-frame-03-normalized.png",
+          "source_metadata": {
+            "index": 3,
+            "file": "02-extracted-frames/chico-jump-frame-03-normalized.png",
+            "phase": "tail-wiggle-left"
+          }
+        },
+        {
+          "index": 3,
+          "source_index": 4,
+          "x": 576,
+          "y": 416,
+          "width": 192,
+          "height": 208,
+          "duration_ms": 110,
+          "phase": "tail-wiggle-right",
+          "source": "gen-image/Chico-jump/02-extracted-frames/chico-jump-frame-04-normalized.png",
+          "source_sha256": "ec377c36cce03bb9076959e28d11b1d03f7c09f7cd4b1d3472f90511f20dd9e0",
+          "original_registered_source": "gen-image/Chico-jump/02-extracted-frames/chico-jump-frame-04-normalized.png",
+          "source_metadata": {
+            "index": 4,
+            "file": "02-extracted-frames/chico-jump-frame-04-normalized.png",
+            "phase": "tail-wiggle-right"
+          }
+        },
+        {
+          "index": 4,
+          "source_index": 5,
+          "x": 768,
+          "y": 416,
+          "width": 192,
+          "height": 208,
+          "duration_ms": 110,
+          "phase": "tail-wiggle-center",
+          "source": "gen-image/Chico-jump/02-extracted-frames/chico-jump-frame-05-normalized.png",
+          "source_sha256": "ca48d241c43ff16c3a1e41b566b8142a66f56934581ce627380137c14e9b0e5b",
+          "original_registered_source": "gen-image/Chico-jump/02-extracted-frames/chico-jump-frame-05-normalized.png",
+          "source_metadata": {
+            "index": 5,
+            "file": "02-extracted-frames/chico-jump-frame-05-normalized.png",
+            "phase": "tail-wiggle-center"
+          }
+        },
+        {
+          "index": 5,
+          "source_index": 6,
+          "x": 960,
+          "y": 416,
+          "width": 192,
+          "height": 208,
+          "duration_ms": 90,
+          "phase": "takeoff",
+          "source": "gen-image/Chico-jump/02-extracted-frames/chico-jump-frame-06-normalized.png",
+          "source_sha256": "10041eb580c0616c4577ac89a8169d7b24c32e7137ff1ef965b4dc735ce5302f",
+          "original_registered_source": "gen-image/Chico-jump/02-extracted-frames/chico-jump-frame-06-normalized.png",
+          "source_metadata": {
+            "index": 6,
+            "file": "02-extracted-frames/chico-jump-frame-06-normalized.png",
+            "phase": "takeoff"
+          }
+        },
+        {
+          "index": 6,
+          "source_index": 7,
+          "x": 1152,
+          "y": 416,
+          "width": 192,
+          "height": 208,
+          "duration_ms": 120,
+          "phase": "airborne-jump",
+          "source": "gen-image/Chico-jump/02-extracted-frames/chico-jump-frame-07-normalized.png",
+          "source_sha256": "0938cc5743dbb4feae5977a4c854cbff309ca900d9c70a53eef0afbacd3b9918",
+          "original_registered_source": "gen-image/Chico-jump/02-extracted-frames/chico-jump-frame-07-normalized.png",
+          "source_metadata": {
+            "index": 7,
+            "file": "02-extracted-frames/chico-jump-frame-07-normalized.png",
+            "phase": "airborne-jump"
+          }
+        },
+        {
+          "index": 7,
+          "source_index": 8,
+          "x": 1344,
+          "y": 416,
+          "width": 192,
+          "height": 208,
+          "duration_ms": 110,
+          "phase": "airborne-peak",
+          "source": "gen-image/Chico-jump/02-extracted-frames/chico-jump-frame-08-normalized.png",
+          "source_sha256": "6a88ecb172a3076bc458bfc56a477de496d29f4d7a0bc05cd3d4e0f5a4c53c06",
+          "original_registered_source": "gen-image/Chico-jump/02-extracted-frames/chico-jump-frame-08-normalized.png",
+          "source_metadata": {
+            "index": 8,
+            "file": "02-extracted-frames/chico-jump-frame-08-normalized.png",
+            "phase": "airborne-peak"
+          }
+        },
+        {
+          "index": 8,
+          "source_index": 9,
+          "x": 1536,
+          "y": 416,
+          "width": 192,
+          "height": 208,
+          "duration_ms": 110,
+          "phase": "descent-paws-reaching",
+          "source": "gen-image/Chico-jump/02-extracted-frames/chico-jump-frame-09-normalized.png",
+          "source_sha256": "162bec079e5cf57339cc852875a6c9ade28a7a4742406655f7d799516651712d",
+          "original_registered_source": "gen-image/Chico-jump/02-extracted-frames/chico-jump-frame-09-normalized.png",
+          "source_metadata": {
+            "index": 9,
+            "file": "02-extracted-frames/chico-jump-frame-09-normalized.png",
+            "phase": "descent-paws-reaching"
+          }
+        },
+        {
+          "index": 9,
+          "source_index": 10,
+          "x": 1728,
+          "y": 416,
+          "width": 192,
+          "height": 208,
+          "duration_ms": 180,
+          "phase": "landing-all-four",
+          "source": "gen-image/Chico-jump/02-extracted-frames/chico-jump-frame-10-normalized.png",
+          "source_sha256": "6d0fb6d83637484bacf6be028b1a1cb3d2786c389266edac6242659106d5fbd7",
+          "original_registered_source": "gen-image/Chico-jump/02-extracted-frames/chico-jump-frame-10-normalized.png",
+          "source_metadata": {
+            "index": 10,
+            "file": "02-extracted-frames/chico-jump-frame-10-normalized.png",
+            "phase": "landing-all-four"
+          }
+        }
+      ],
+      "source_metadata": {
+        "sequence_id": "chico-jump-revision-03-final",
+        "frame_count": 10,
+        "shared_registration_canvas": [
+          320,
+          320
+        ],
+        "timing_ms": [
+          140,
+          110,
+          110,
+          110,
+          110,
+          90,
+          120,
+          110,
+          110,
+          180
+        ],
+        "wiggle_frames": [
+          3,
+          4,
+          5
+        ],
+        "phases": [
+          "crouched-ready",
+          "compressed-crouch",
+          "tail-wiggle-left",
+          "tail-wiggle-right",
+          "tail-wiggle-center",
+          "takeoff",
+          "airborne-jump",
+          "airborne-peak",
+          "descent-paws-reaching",
+          "landing-all-four"
+        ],
+        "source": "01-generated-sequence/chico-jump-sequence-clean.png",
+        "frames": [
+          {
+            "index": 1,
+            "file": "02-extracted-frames/chico-jump-frame-01-normalized.png",
+            "phase": "crouched-ready"
+          },
+          {
+            "index": 2,
+            "file": "02-extracted-frames/chico-jump-frame-02-normalized.png",
+            "phase": "compressed-crouch"
+          },
+          {
+            "index": 3,
+            "file": "02-extracted-frames/chico-jump-frame-03-normalized.png",
+            "phase": "tail-wiggle-left"
+          },
+          {
+            "index": 4,
+            "file": "02-extracted-frames/chico-jump-frame-04-normalized.png",
+            "phase": "tail-wiggle-right"
+          },
+          {
+            "index": 5,
+            "file": "02-extracted-frames/chico-jump-frame-05-normalized.png",
+            "phase": "tail-wiggle-center"
+          },
+          {
+            "index": 6,
+            "file": "02-extracted-frames/chico-jump-frame-06-normalized.png",
+            "phase": "takeoff"
+          },
+          {
+            "index": 7,
+            "file": "02-extracted-frames/chico-jump-frame-07-normalized.png",
+            "phase": "airborne-jump"
+          },
+          {
+            "index": 8,
+            "file": "02-extracted-frames/chico-jump-frame-08-normalized.png",
+            "phase": "airborne-peak"
+          },
+          {
+            "index": 9,
+            "file": "02-extracted-frames/chico-jump-frame-09-normalized.png",
+            "phase": "descent-paws-reaching"
+          },
+          {
+            "index": 10,
+            "file": "02-extracted-frames/chico-jump-frame-10-normalized.png",
+            "phase": "landing-all-four"
+          }
+        ]
+      },
+      "source_qa_findings": [
+        {
+          "severity": "WARN",
+          "check": "airborne",
+          "message": "frame 06 ('takeoff') sits 2px off the baseline — the spec calls it airborne but it reads as grounded"
+        },
+        {
+          "severity": "WARN",
+          "check": "airborne",
+          "message": "frame 07 ('airborne-jump') sits 3px off the baseline — the spec calls it airborne but it reads as grounded"
+        },
+        {
+          "severity": "WARN",
+          "check": "airborne",
+          "message": "frame 08 ('airborne-peak') sits 3px off the baseline — the spec calls it airborne but it reads as grounded"
+        },
+        {
+          "severity": "WARN",
+          "check": "airborne",
+          "message": "frame 09 ('descent-paws-reaching') sits 2px off the baseline — the spec calls it airborne but it reads as grounded"
+        },
+        {
+          "severity": "WARN",
+          "check": "anchor-x",
+          "message": "frame 05 body centre at x=135, expected 160±4"
+        },
+        {
+          "severity": "WARN",
+          "check": "anchor-x",
+          "message": "frame 06 body centre at x=138, expected 160±4"
+        },
+        {
+          "severity": "WARN",
+          "check": "anchor-x",
+          "message": "frame 07 body centre at x=147, expected 160±4"
+        },
+        {
+          "severity": "WARN",
+          "check": "anchor-x",
+          "message": "frame 08 body centre at x=153, expected 160±4"
+        },
+        {
+          "severity": "WARN",
+          "check": "anchor-x",
+          "message": "frame 09 body centre at x=154, expected 160±4"
+        },
+        {
+          "severity": "WARN",
+          "check": "anchor-x",
+          "message": "frame 10 body centre at x=155, expected 160±4"
+        },
+        {
+          "severity": "WARN",
+          "check": "spec",
+          "message": "parsed, but malformed on disk — trailing '\\\\n'"
+        }
+      ]
+    },
+    {
+      "name": "waiting-deep-sleep",
+      "row": 3,
+      "frames": 8,
+      "sequence": "Chico-layla-nap",
+      "loop": true,
+      "timing_ms": [
+        160,
+        140,
+        140,
+        140,
+        160,
+        160,
+        180,
+        240
+      ],
+      "duration_ms": 1320,
+      "source_spec": "gen-image/Chico-layla-nap/04-integration-notes/sequence-spec.json",
+      "source_spec_sha256": "8f5fa1c26bc103ec8c1e659030bc463dea479e592734ed13239e70244c8ad6fb",
+      "frame_data": [
+        {
+          "index": 0,
+          "source_index": 1,
+          "x": 0,
+          "y": 624,
+          "width": 192,
+          "height": 208,
+          "duration_ms": 160,
+          "phase": "close-awake",
+          "source": "gen-image/Chico-layla-nap/03-qa-reference/chico-layla-nap-frame-01-aligned.png",
+          "source_sha256": "570f071fcb7b1ed2f3f481d754cef6252dac86e30bae3fa114744dc8f5b7c279",
+          "original_registered_source": "gen-image/Chico-layla-nap/03-qa-reference/chico-layla-nap-frame-01-aligned.png",
+          "source_metadata": {
+            "index": 1,
+            "file": "02-extracted-frames/chico-layla-nap-frame-01.png",
+            "aligned_file": "03-qa-reference/chico-layla-nap-frame-01-aligned.png",
+            "phase": "close-awake"
+          }
+        },
+        {
+          "index": 1,
+          "source_index": 2,
+          "x": 192,
+          "y": 624,
+          "width": 192,
+          "height": 208,
+          "duration_ms": 140,
+          "phase": "lean-together",
+          "source": "gen-image/Chico-layla-nap/03-qa-reference/chico-layla-nap-frame-02-aligned.png",
+          "source_sha256": "7cc1acbbf9feb81bdd16df4d8825b98572a2548b5a717a8b5da55ddbe1ed311d",
+          "original_registered_source": "gen-image/Chico-layla-nap/03-qa-reference/chico-layla-nap-frame-02-aligned.png",
+          "source_metadata": {
+            "index": 2,
+            "file": "02-extracted-frames/chico-layla-nap-frame-02.png",
+            "aligned_file": "03-qa-reference/chico-layla-nap-frame-02-aligned.png",
+            "phase": "lean-together"
+          }
+        },
+        {
+          "index": 2,
+          "source_index": 3,
+          "x": 384,
+          "y": 624,
+          "width": 192,
+          "height": 208,
+          "duration_ms": 140,
+          "phase": "paws-settle",
+          "source": "gen-image/Chico-layla-nap/03-qa-reference/chico-layla-nap-frame-03-aligned.png",
+          "source_sha256": "41b64f33a2beb99900a3d3e863d6f9219d189ba2b3388f7f5d76c6e731c7c184",
+          "original_registered_source": "gen-image/Chico-layla-nap/03-qa-reference/chico-layla-nap-frame-03-aligned.png",
+          "source_metadata": {
+            "index": 3,
+            "file": "02-extracted-frames/chico-layla-nap-frame-03.png",
+            "aligned_file": "03-qa-reference/chico-layla-nap-frame-03-aligned.png",
+            "phase": "paws-settle"
+          }
+        },
+        {
+          "index": 3,
+          "source_index": 4,
+          "x": 576,
+          "y": 624,
+          "width": 192,
+          "height": 208,
+          "duration_ms": 140,
+          "phase": "bodies-touch",
+          "source": "gen-image/Chico-layla-nap/03-qa-reference/chico-layla-nap-frame-04-aligned.png",
+          "source_sha256": "bdd6a93b3d21545f7da04f6e82c13a3489dcd2620fc06ec783bce5bc5f5635de",
+          "original_registered_source": "gen-image/Chico-layla-nap/03-qa-reference/chico-layla-nap-frame-04-aligned.png",
+          "source_metadata": {
+            "index": 4,
+            "file": "02-extracted-frames/chico-layla-nap-frame-04.png",
+            "aligned_file": "03-qa-reference/chico-layla-nap-frame-04-aligned.png",
+            "phase": "bodies-touch"
+          }
+        },
+        {
+          "index": 4,
+          "source_index": 5,
+          "x": 768,
+          "y": 624,
+          "width": 192,
+          "height": 208,
+          "duration_ms": 160,
+          "phase": "begin-dozing",
+          "source": "gen-image/Chico-layla-nap/03-qa-reference/chico-layla-nap-frame-05-aligned.png",
+          "source_sha256": "a684d70c347621b577a6e384f64fca3bc4e75ed8016bc3d6f4f31be8b1e206c5",
+          "original_registered_source": "gen-image/Chico-layla-nap/03-qa-reference/chico-layla-nap-frame-05-aligned.png",
+          "source_metadata": {
+            "index": 5,
+            "file": "02-extracted-frames/chico-layla-nap-frame-05.png",
+            "aligned_file": "03-qa-reference/chico-layla-nap-frame-05-aligned.png",
+            "phase": "begin-dozing"
+          }
+        },
+        {
+          "index": 5,
+          "source_index": 6,
+          "x": 960,
+          "y": 624,
+          "width": 192,
+          "height": 208,
+          "duration_ms": 160,
+          "phase": "cheek-to-cheek-with-Z",
+          "source": "gen-image/Chico-layla-nap/03-qa-reference/chico-layla-nap-frame-06-aligned.png",
+          "source_sha256": "6a795b8891914121f193918c8b428e306dd37a66b465b05b2a89364484ab563d",
+          "original_registered_source": "gen-image/Chico-layla-nap/03-qa-reference/chico-layla-nap-frame-06-aligned.png",
+          "source_metadata": {
+            "index": 6,
+            "file": "02-extracted-frames/chico-layla-nap-frame-06.png",
+            "aligned_file": "03-qa-reference/chico-layla-nap-frame-06-aligned.png",
+            "phase": "cheek-to-cheek-with-Z"
+          }
+        },
+        {
+          "index": 6,
+          "source_index": 7,
+          "x": 1152,
+          "y": 624,
+          "width": 192,
+          "height": 208,
+          "duration_ms": 180,
+          "phase": "tighter-dreamy-cuddle",
+          "source": "gen-image/Chico-layla-nap/03-qa-reference/chico-layla-nap-frame-07-aligned.png",
+          "source_sha256": "3f7ef52f24d8ab77e7f475b52ad7c96db22476d7e9fa6783f5f0a07cf470754d",
+          "original_registered_source": "gen-image/Chico-layla-nap/03-qa-reference/chico-layla-nap-frame-07-aligned.png",
+          "source_metadata": {
+            "index": 7,
+            "file": "02-extracted-frames/chico-layla-nap-frame-07.png",
+            "aligned_file": "03-qa-reference/chico-layla-nap-frame-07-aligned.png",
+            "phase": "tighter-dreamy-cuddle"
+          }
+        },
+        {
+          "index": 7,
+          "source_index": 8,
+          "x": 1344,
+          "y": 624,
+          "width": 192,
+          "height": 208,
+          "duration_ms": 240,
+          "phase": "deep-sleep-cuddle-with-Zs",
+          "source": "gen-image/Chico-layla-nap/03-qa-reference/chico-layla-nap-frame-08-aligned.png",
+          "source_sha256": "b8743856568b4203f9d57bcf5592731f66bcfd29b89be643d799bb6efc9f74d8",
+          "original_registered_source": "gen-image/Chico-layla-nap/03-qa-reference/chico-layla-nap-frame-08-aligned.png",
+          "source_metadata": {
+            "index": 8,
+            "file": "02-extracted-frames/chico-layla-nap-frame-08.png",
+            "aligned_file": "03-qa-reference/chico-layla-nap-frame-08-aligned.png",
+            "phase": "deep-sleep-cuddle-with-Zs"
+          }
+        }
+      ],
+      "source_metadata": {
+        "sequence_id": "chico-layla-nap",
+        "frame_count": 8,
+        "shared_registration_canvas": [
+          320,
+          320
+        ],
+        "timing_ms": [
+          160,
+          140,
+          140,
+          140,
+          160,
+          160,
+          180,
+          240
+        ],
+        "gesture": "Chico and Layla nap together, progressively nestle closer, and end in a deeply cozy shared sleep with small Z marks.",
+        "source": "01-generated-sequence/chico-layla-nap-sequence-green-source.png",
+        "clean_source": "01-generated-sequence/chico-layla-nap-sequence-clean-despilled.png",
+        "alignment": {
+          "anchor": "largest connected visible subject component",
+          "effects_excluded_from_anchor": true,
+          "target_body_center_x": 160,
+          "target_body_baseline_y": 292,
+          "review_frames": "03-qa-reference/chico-layla-nap-frame-01-aligned.png through chico-layla-nap-frame-08-aligned.png"
+        },
+        "frames": [
+          {
+            "index": 1,
+            "file": "02-extracted-frames/chico-layla-nap-frame-01.png",
+            "aligned_file": "03-qa-reference/chico-layla-nap-frame-01-aligned.png",
+            "phase": "close-awake"
+          },
+          {
+            "index": 2,
+            "file": "02-extracted-frames/chico-layla-nap-frame-02.png",
+            "aligned_file": "03-qa-reference/chico-layla-nap-frame-02-aligned.png",
+            "phase": "lean-together"
+          },
+          {
+            "index": 3,
+            "file": "02-extracted-frames/chico-layla-nap-frame-03.png",
+            "aligned_file": "03-qa-reference/chico-layla-nap-frame-03-aligned.png",
+            "phase": "paws-settle"
+          },
+          {
+            "index": 4,
+            "file": "02-extracted-frames/chico-layla-nap-frame-04.png",
+            "aligned_file": "03-qa-reference/chico-layla-nap-frame-04-aligned.png",
+            "phase": "bodies-touch"
+          },
+          {
+            "index": 5,
+            "file": "02-extracted-frames/chico-layla-nap-frame-05.png",
+            "aligned_file": "03-qa-reference/chico-layla-nap-frame-05-aligned.png",
+            "phase": "begin-dozing"
+          },
+          {
+            "index": 6,
+            "file": "02-extracted-frames/chico-layla-nap-frame-06.png",
+            "aligned_file": "03-qa-reference/chico-layla-nap-frame-06-aligned.png",
+            "phase": "cheek-to-cheek-with-Z"
+          },
+          {
+            "index": 7,
+            "file": "02-extracted-frames/chico-layla-nap-frame-07.png",
+            "aligned_file": "03-qa-reference/chico-layla-nap-frame-07-aligned.png",
+            "phase": "tighter-dreamy-cuddle"
+          },
+          {
+            "index": 8,
+            "file": "02-extracted-frames/chico-layla-nap-frame-08.png",
+            "aligned_file": "03-qa-reference/chico-layla-nap-frame-08-aligned.png",
+            "phase": "deep-sleep-cuddle-with-Zs"
+          }
+        ]
+      },
+      "source_qa_findings": []
+    },
+    {
+      "name": "waiting-dozy",
+      "row": 4,
+      "frames": 8,
+      "sequence": "Layla-sleeping",
+      "loop": true,
+      "timing_ms": [
+        180,
+        180,
+        120,
+        120,
+        140,
+        120,
+        140,
+        260
+      ],
+      "duration_ms": 1260,
+      "source_spec": "gen-image/Layla-sleeping/04-integration-notes/sequence-spec.json",
+      "source_spec_sha256": "3fec59d4db36b334548a45bd227dc6438b9b751a4bfcdd2f0a9179ec27537299",
+      "frame_data": [
+        {
+          "index": 0,
+          "source_index": 1,
+          "x": 0,
+          "y": 832,
+          "width": 192,
+          "height": 208,
+          "duration_ms": 180,
+          "phase": "sleep-neutral",
+          "source": "gen-image/Layla-sleeping/02-extracted-frames/layla-sleeping-frame-01.png",
+          "source_sha256": "98c839c47718b96989060bbef76ce03757c906c79d7621e27be0bea40d2951ee",
+          "original_registered_source": "gen-image/Layla-sleeping/02-extracted-frames/layla-sleeping-frame-01.png",
+          "source_metadata": {
+            "index": 1,
+            "file": "02-extracted-frames/layla-sleeping-frame-01.png",
+            "phase": "sleep-neutral"
+          }
+        },
+        {
+          "index": 1,
+          "source_index": 2,
+          "x": 192,
+          "y": 832,
+          "width": 192,
+          "height": 208,
+          "duration_ms": 180,
+          "phase": "sleep-with-zzs",
+          "source": "gen-image/Layla-sleeping/02-extracted-frames/layla-sleeping-frame-02.png",
+          "source_sha256": "78fa42b3592974b28715affebdf0de62f456fed92e20891ac0aba6ed5e988daf",
+          "original_registered_source": "gen-image/Layla-sleeping/02-extracted-frames/layla-sleeping-frame-02.png",
+          "source_metadata": {
+            "index": 2,
+            "file": "02-extracted-frames/layla-sleeping-frame-02.png",
+            "phase": "sleep-with-zzs"
+          }
+        },
+        {
+          "index": 2,
+          "source_index": 3,
+          "x": 384,
+          "y": 832,
+          "width": 192,
+          "height": 208,
+          "duration_ms": 120,
+          "phase": "head-lift-start",
+          "source": "gen-image/Layla-sleeping/02-extracted-frames/layla-sleeping-frame-03.png",
+          "source_sha256": "e26e655741f031bfbfa77434fad859afd8c606943f85df717f1c75db4a039179",
+          "original_registered_source": "gen-image/Layla-sleeping/02-extracted-frames/layla-sleeping-frame-03.png",
+          "source_metadata": {
+            "index": 3,
+            "file": "02-extracted-frames/layla-sleeping-frame-03.png",
+            "phase": "head-lift-start"
+          }
+        },
+        {
+          "index": 3,
+          "source_index": 4,
+          "x": 576,
+          "y": 832,
+          "width": 192,
+          "height": 208,
+          "duration_ms": 120,
+          "phase": "head-lift",
+          "source": "gen-image/Layla-sleeping/02-extracted-frames/layla-sleeping-frame-04.png",
+          "source_sha256": "ffbeb41ea7e203127f63d0b8d20de3bc10cf8e9a43bec941605629fcb3da22f2",
+          "original_registered_source": "gen-image/Layla-sleeping/02-extracted-frames/layla-sleeping-frame-04.png",
+          "source_metadata": {
+            "index": 4,
+            "file": "02-extracted-frames/layla-sleeping-frame-04.png",
+            "phase": "head-lift"
+          }
+        },
+        {
+          "index": 4,
+          "source_index": 5,
+          "x": 768,
+          "y": 832,
+          "width": 192,
+          "height": 208,
+          "duration_ms": 140,
+          "phase": "head-lift-pause",
+          "source": "gen-image/Layla-sleeping/02-extracted-frames/layla-sleeping-frame-05.png",
+          "source_sha256": "9defaaff88033201a07d598b5a6c0ee4837a828a5876a94a5316b696f73951fc",
+          "original_registered_source": "gen-image/Layla-sleeping/02-extracted-frames/layla-sleeping-frame-05.png",
+          "source_metadata": {
+            "index": 5,
+            "file": "02-extracted-frames/layla-sleeping-frame-05.png",
+            "phase": "head-lift-pause"
+          }
+        },
+        {
+          "index": 5,
+          "source_index": 6,
+          "x": 960,
+          "y": 832,
+          "width": 192,
+          "height": 208,
+          "duration_ms": 120,
+          "phase": "head-lower",
+          "source": "gen-image/Layla-sleeping/02-extracted-frames/layla-sleeping-frame-06.png",
+          "source_sha256": "eceaba18f486ffccd11d4131d047928fa7338f440f23f9b381f66c9a80380b46",
+          "original_registered_source": "gen-image/Layla-sleeping/02-extracted-frames/layla-sleeping-frame-06.png",
+          "source_metadata": {
+            "index": 6,
+            "file": "02-extracted-frames/layla-sleeping-frame-06.png",
+            "phase": "head-lower"
+          }
+        },
+        {
+          "index": 6,
+          "source_index": 7,
+          "x": 1152,
+          "y": 832,
+          "width": 192,
+          "height": 208,
+          "duration_ms": 140,
+          "phase": "nearly-asleep",
+          "source": "gen-image/Layla-sleeping/02-extracted-frames/layla-sleeping-frame-07.png",
+          "source_sha256": "d797f9a7fad8ba4cf41a536888ff267d434e6037938a5c1d4d90e2985c496aa3",
+          "original_registered_source": "gen-image/Layla-sleeping/02-extracted-frames/layla-sleeping-frame-07.png",
+          "source_metadata": {
+            "index": 7,
+            "file": "02-extracted-frames/layla-sleeping-frame-07.png",
+            "phase": "nearly-asleep"
+          }
+        },
+        {
+          "index": 7,
+          "source_index": 8,
+          "x": 1344,
+          "y": 832,
+          "width": 192,
+          "height": 208,
+          "duration_ms": 260,
+          "phase": "sleep-neutral-with-zzs",
+          "source": "gen-image/Layla-sleeping/02-extracted-frames/layla-sleeping-frame-08.png",
+          "source_sha256": "3ed83f577f2cf4ff4222229ddb108be0489642893df4ab5e36abd226451fe332",
+          "original_registered_source": "gen-image/Layla-sleeping/02-extracted-frames/layla-sleeping-frame-08.png",
+          "source_metadata": {
+            "index": 8,
+            "file": "02-extracted-frames/layla-sleeping-frame-08.png",
+            "phase": "sleep-neutral-with-zzs"
+          }
+        }
+      ],
+      "source_metadata": {
+        "sequence_id": "layla-sleeping-head-lift",
+        "frame_count": 8,
+        "shared_registration_canvas": [
+          320,
+          320
+        ],
+        "timing_ms": [
+          180,
+          180,
+          120,
+          120,
+          140,
+          120,
+          140,
+          260
+        ],
+        "gesture": "Layla sleeps, raises her head briefly, settles, and resumes sleeping",
+        "source": "01-generated-sequence/layla-sleeping-clean.png",
+        "frames": [
+          {
+            "index": 1,
+            "file": "02-extracted-frames/layla-sleeping-frame-01.png",
+            "phase": "sleep-neutral"
+          },
+          {
+            "index": 2,
+            "file": "02-extracted-frames/layla-sleeping-frame-02.png",
+            "phase": "sleep-with-zzs"
+          },
+          {
+            "index": 3,
+            "file": "02-extracted-frames/layla-sleeping-frame-03.png",
+            "phase": "head-lift-start"
+          },
+          {
+            "index": 4,
+            "file": "02-extracted-frames/layla-sleeping-frame-04.png",
+            "phase": "head-lift"
+          },
+          {
+            "index": 5,
+            "file": "02-extracted-frames/layla-sleeping-frame-05.png",
+            "phase": "head-lift-pause"
+          },
+          {
+            "index": 6,
+            "file": "02-extracted-frames/layla-sleeping-frame-06.png",
+            "phase": "head-lower"
+          },
+          {
+            "index": 7,
+            "file": "02-extracted-frames/layla-sleeping-frame-07.png",
+            "phase": "nearly-asleep"
+          },
+          {
+            "index": 8,
+            "file": "02-extracted-frames/layla-sleeping-frame-08.png",
+            "phase": "sleep-neutral-with-zzs"
+          }
+        ]
+      },
+      "source_qa_findings": [
+        {
+          "severity": "WARN",
+          "check": "anchor-x",
+          "message": "frame 01 body centre at x=165, expected 160±4"
+        },
+        {
+          "severity": "WARN",
+          "check": "anchor-x",
+          "message": "frame 02 body centre at x=165, expected 160±4"
+        },
+        {
+          "severity": "WARN",
+          "check": "anchor-x",
+          "message": "frame 03 body centre at x=166, expected 160±4"
+        },
+        {
+          "severity": "WARN",
+          "check": "anchor-x",
+          "message": "frame 04 body centre at x=166, expected 160±4"
+        },
+        {
+          "severity": "WARN",
+          "check": "anchor-x",
+          "message": "frame 05 body centre at x=165, expected 160±4"
+        },
+        {
+          "severity": "WARN",
+          "check": "anchor-x",
+          "message": "frame 06 body centre at x=166, expected 160±4"
+        },
+        {
+          "severity": "WARN",
+          "check": "anchor-x",
+          "message": "frame 07 body centre at x=165, expected 160±4"
+        },
+        {
+          "severity": "WARN",
+          "check": "scale",
+          "message": "content height ranges 140–224px — frames may not share one scale"
+        }
+      ]
+    },
+    {
+      "name": "blocked-grumpy",
+      "row": 5,
+      "frames": 8,
+      "sequence": "Layla-chico-mad",
+      "loop": true,
+      "timing_ms": [
+        150,
+        110,
+        110,
+        110,
+        110,
+        110,
+        130,
+        180
+      ],
+      "duration_ms": 1010,
+      "source_spec": "gen-image/Layla-chico-mad/04-integration-notes/sequence-spec.json",
+      "source_spec_sha256": "d551cf56e98dbd2584c3e3e3d1031829dd6661732d97599b0f185b786eaf6430",
+      "frame_data": [
+        {
+          "index": 0,
+          "source_index": 1,
+          "x": 0,
+          "y": 1040,
+          "width": 192,
+          "height": 208,
+          "duration_ms": 150,
+          "phase": "neutral-grumpy",
+          "source": "gen-image/Layla-chico-mad/02-extracted-frames/layla-and-chico-head-shake-frame-01.png",
+          "source_sha256": "fb89aa1eea1bd75664d8581eb3ff8702a17fcc2aac2df6c7142cdb2359fc5ec6",
+          "original_registered_source": "gen-image/Layla-chico-mad/02-extracted-frames/layla-and-chico-head-shake-frame-01.png",
+          "source_metadata": {
+            "index": 1,
+            "file": "02-extracted-frames/layla-and-chico-head-shake-frame-01.png",
+            "phase": "neutral-grumpy"
+          }
+        },
+        {
+          "index": 1,
+          "source_index": 2,
+          "x": 192,
+          "y": 1040,
+          "width": 192,
+          "height": 208,
+          "duration_ms": 110,
+          "phase": "tilt-screen-left",
+          "source": "gen-image/Layla-chico-mad/02-extracted-frames/layla-and-chico-head-shake-frame-02.png",
+          "source_sha256": "e7a43a83958898d8f2e494cfa9f745bbe8004ca23be66b885ca6b697ae678c0c",
+          "original_registered_source": "gen-image/Layla-chico-mad/02-extracted-frames/layla-and-chico-head-shake-frame-02.png",
+          "source_metadata": {
+            "index": 2,
+            "file": "02-extracted-frames/layla-and-chico-head-shake-frame-02.png",
+            "phase": "tilt-screen-left"
+          }
+        },
+        {
+          "index": 2,
+          "source_index": 3,
+          "x": 384,
+          "y": 1040,
+          "width": 192,
+          "height": 208,
+          "duration_ms": 110,
+          "phase": "center",
+          "source": "gen-image/Layla-chico-mad/02-extracted-frames/layla-and-chico-head-shake-frame-03.png",
+          "source_sha256": "cb8a98e2ab5cde534e2687126a67e9353335be720e7642cf33dec623f6d8b3d5",
+          "original_registered_source": "gen-image/Layla-chico-mad/02-extracted-frames/layla-and-chico-head-shake-frame-03.png",
+          "source_metadata": {
+            "index": 3,
+            "file": "02-extracted-frames/layla-and-chico-head-shake-frame-03.png",
+            "phase": "center"
+          }
+        },
+        {
+          "index": 3,
+          "source_index": 4,
+          "x": 576,
+          "y": 1040,
+          "width": 192,
+          "height": 208,
+          "duration_ms": 110,
+          "phase": "tilt-screen-right",
+          "source": "gen-image/Layla-chico-mad/02-extracted-frames/layla-and-chico-head-shake-frame-04.png",
+          "source_sha256": "7eee2ffd0f24ab13bf8f455fa0370223334d54a951ec91ac6aaa542281b5d404",
+          "original_registered_source": "gen-image/Layla-chico-mad/02-extracted-frames/layla-and-chico-head-shake-frame-04.png",
+          "source_metadata": {
+            "index": 4,
+            "file": "02-extracted-frames/layla-and-chico-head-shake-frame-04.png",
+            "phase": "tilt-screen-right"
+          }
+        },
+        {
+          "index": 4,
+          "source_index": 5,
+          "x": 768,
+          "y": 1040,
+          "width": 192,
+          "height": 208,
+          "duration_ms": 110,
+          "phase": "center",
+          "source": "gen-image/Layla-chico-mad/02-extracted-frames/layla-and-chico-head-shake-frame-05.png",
+          "source_sha256": "e8b89ace6a4cef45fa643152be95ed981b9870c025c4e7483372d500a6b6f3b5",
+          "original_registered_source": "gen-image/Layla-chico-mad/02-extracted-frames/layla-and-chico-head-shake-frame-05.png",
+          "source_metadata": {
+            "index": 5,
+            "file": "02-extracted-frames/layla-and-chico-head-shake-frame-05.png",
+            "phase": "center"
+          }
+        },
+        {
+          "index": 5,
+          "source_index": 6,
+          "x": 960,
+          "y": 1040,
+          "width": 192,
+          "height": 208,
+          "duration_ms": 110,
+          "phase": "tilt-screen-left-strong",
+          "source": "gen-image/Layla-chico-mad/02-extracted-frames/layla-and-chico-head-shake-frame-06.png",
+          "source_sha256": "4b069cf81918104d44af0b7fbaf6d0f2d5af776179a7a1aa17c2b39b27db314f",
+          "original_registered_source": "gen-image/Layla-chico-mad/02-extracted-frames/layla-and-chico-head-shake-frame-06.png",
+          "source_metadata": {
+            "index": 6,
+            "file": "02-extracted-frames/layla-and-chico-head-shake-frame-06.png",
+            "phase": "tilt-screen-left-strong"
+          }
+        },
+        {
+          "index": 6,
+          "source_index": 7,
+          "x": 1152,
+          "y": 1040,
+          "width": 192,
+          "height": 208,
+          "duration_ms": 130,
+          "phase": "center-annoyed",
+          "source": "gen-image/Layla-chico-mad/02-extracted-frames/layla-and-chico-head-shake-frame-07.png",
+          "source_sha256": "402df299b0c11f06cb46c44477d5eff5f85cb40c4e24f022e88caa69209b3a7c",
+          "original_registered_source": "gen-image/Layla-chico-mad/02-extracted-frames/layla-and-chico-head-shake-frame-07.png",
+          "source_metadata": {
+            "index": 7,
+            "file": "02-extracted-frames/layla-and-chico-head-shake-frame-07.png",
+            "phase": "center-annoyed"
+          }
+        },
+        {
+          "index": 7,
+          "source_index": 8,
+          "x": 1344,
+          "y": 1040,
+          "width": 192,
+          "height": 208,
+          "duration_ms": 180,
+          "phase": "settle-neutral",
+          "source": "gen-image/Layla-chico-mad/02-extracted-frames/layla-and-chico-head-shake-frame-08.png",
+          "source_sha256": "357793b5eb3d7064f65f0cc08037ffc33023c9b6851403d81d1809cce21089b6",
+          "original_registered_source": "gen-image/Layla-chico-mad/02-extracted-frames/layla-and-chico-head-shake-frame-08.png",
+          "source_metadata": {
+            "index": 8,
+            "file": "02-extracted-frames/layla-and-chico-head-shake-frame-08.png",
+            "phase": "settle-neutral"
+          }
+        }
+      ],
+      "source_metadata": {
+        "sequence_id": "layla-and-chico-head-shake-no",
+        "frame_count": 8,
+        "shared_registration_canvas": [
+          320,
+          320
+        ],
+        "timing_ms": [
+          150,
+          110,
+          110,
+          110,
+          110,
+          110,
+          130,
+          180
+        ],
+        "gesture": "synchronized head shake no",
+        "phases": [
+          "neutral-grumpy",
+          "tilt-screen-left",
+          "center",
+          "tilt-screen-right",
+          "center",
+          "tilt-screen-left-strong",
+          "center-annoyed",
+          "settle-neutral"
+        ],
+        "source": "01-generated-sequence/layla-and-chico-head-shake-clean.png",
+        "frames": [
+          {
+            "index": 1,
+            "file": "02-extracted-frames/layla-and-chico-head-shake-frame-01.png",
+            "phase": "neutral-grumpy"
+          },
+          {
+            "index": 2,
+            "file": "02-extracted-frames/layla-and-chico-head-shake-frame-02.png",
+            "phase": "tilt-screen-left"
+          },
+          {
+            "index": 3,
+            "file": "02-extracted-frames/layla-and-chico-head-shake-frame-03.png",
+            "phase": "center"
+          },
+          {
+            "index": 4,
+            "file": "02-extracted-frames/layla-and-chico-head-shake-frame-04.png",
+            "phase": "tilt-screen-right"
+          },
+          {
+            "index": 5,
+            "file": "02-extracted-frames/layla-and-chico-head-shake-frame-05.png",
+            "phase": "center"
+          },
+          {
+            "index": 6,
+            "file": "02-extracted-frames/layla-and-chico-head-shake-frame-06.png",
+            "phase": "tilt-screen-left-strong"
+          },
+          {
+            "index": 7,
+            "file": "02-extracted-frames/layla-and-chico-head-shake-frame-07.png",
+            "phase": "center-annoyed"
+          },
+          {
+            "index": 8,
+            "file": "02-extracted-frames/layla-and-chico-head-shake-frame-08.png",
+            "phase": "settle-neutral"
+          }
+        ]
+      },
+      "source_qa_findings": []
+    },
+    {
+      "name": "needs-input-sad",
+      "row": 6,
+      "frames": 8,
+      "sequence": "Chico-sad",
+      "loop": true,
+      "timing_ms": [
+        180,
+        150,
+        150,
+        170,
+        220,
+        170,
+        150,
+        240
+      ],
+      "duration_ms": 1430,
+      "source_spec": "gen-image/Chico-sad/04-integration-notes/sequence-spec.json",
+      "source_spec_sha256": "dd7d72f3f616829e3d2b7000096044b2a1cf0d76b289090cda0b412772bcd698",
+      "frame_data": [
+        {
+          "index": 0,
+          "source_index": 1,
+          "x": 0,
+          "y": 1248,
+          "width": 192,
+          "height": 208,
+          "duration_ms": 180,
+          "phase": "alert",
+          "source": "gen-image/Chico-sad/03-qa-reference/chico-sad-frame-01-aligned.png",
+          "source_sha256": "d79d925cfd5f8404a68c738caa6d4300000b341bfc09f4321be955fe289e0434",
+          "original_registered_source": "gen-image/Chico-sad/03-qa-reference/chico-sad-frame-01-aligned.png",
+          "source_metadata": {
+            "index": 1,
+            "file": "02-extracted-frames/chico-sad-frame-01.png",
+            "aligned_file": "03-qa-reference/chico-sad-frame-01-aligned.png",
+            "phase": "alert"
+          }
+        },
+        {
+          "index": 1,
+          "source_index": 2,
+          "x": 192,
+          "y": 1248,
+          "width": 192,
+          "height": 208,
+          "duration_ms": 150,
+          "phase": "ears-lower",
+          "source": "gen-image/Chico-sad/03-qa-reference/chico-sad-frame-02-aligned.png",
+          "source_sha256": "e7bc754955901faedfa491e3b10a4bc88fbee34389a61d78e5371debf7d77fe9",
+          "original_registered_source": "gen-image/Chico-sad/03-qa-reference/chico-sad-frame-02-aligned.png",
+          "source_metadata": {
+            "index": 2,
+            "file": "02-extracted-frames/chico-sad-frame-02.png",
+            "aligned_file": "03-qa-reference/chico-sad-frame-02-aligned.png",
+            "phase": "ears-lower"
+          }
+        },
+        {
+          "index": 2,
+          "source_index": 3,
+          "x": 384,
+          "y": 1248,
+          "width": 192,
+          "height": 208,
+          "duration_ms": 150,
+          "phase": "sad-gaze",
+          "source": "gen-image/Chico-sad/03-qa-reference/chico-sad-frame-03-aligned.png",
+          "source_sha256": "3aab78815ea1a82339d92cc68bfe67eb6984e127b7b87cabfebad368cb551962",
+          "original_registered_source": "gen-image/Chico-sad/03-qa-reference/chico-sad-frame-03-aligned.png",
+          "source_metadata": {
+            "index": 3,
+            "file": "02-extracted-frames/chico-sad-frame-03.png",
+            "aligned_file": "03-qa-reference/chico-sad-frame-03-aligned.png",
+            "phase": "sad-gaze"
+          }
+        },
+        {
+          "index": 3,
+          "source_index": 4,
+          "x": 576,
+          "y": 1248,
+          "width": 192,
+          "height": 208,
+          "duration_ms": 170,
+          "phase": "sad-pause",
+          "source": "gen-image/Chico-sad/03-qa-reference/chico-sad-frame-04-aligned.png",
+          "source_sha256": "0c8b70a6d0b768dcd3d3c66bc8adf3f9264f707d28675c5c3d8beae782ada618",
+          "original_registered_source": "gen-image/Chico-sad/03-qa-reference/chico-sad-frame-04-aligned.png",
+          "source_metadata": {
+            "index": 4,
+            "file": "02-extracted-frames/chico-sad-frame-04.png",
+            "aligned_file": "03-qa-reference/chico-sad-frame-04-aligned.png",
+            "phase": "sad-pause"
+          }
+        },
+        {
+          "index": 4,
+          "source_index": 5,
+          "x": 768,
+          "y": 1248,
+          "width": 192,
+          "height": 208,
+          "duration_ms": 220,
+          "phase": "tears",
+          "source": "gen-image/Chico-sad/03-qa-reference/chico-sad-frame-05-aligned.png",
+          "source_sha256": "9a0ba48ba20d97751be35f0977734c456bff248a475d74d8d0515d89b676bd8f",
+          "original_registered_source": "gen-image/Chico-sad/03-qa-reference/chico-sad-frame-05-aligned.png",
+          "source_metadata": {
+            "index": 5,
+            "file": "02-extracted-frames/chico-sad-frame-05.png",
+            "aligned_file": "03-qa-reference/chico-sad-frame-05-aligned.png",
+            "phase": "tears"
+          }
+        },
+        {
+          "index": 5,
+          "source_index": 6,
+          "x": 960,
+          "y": 1248,
+          "width": 192,
+          "height": 208,
+          "duration_ms": 170,
+          "phase": "recovering",
+          "source": "gen-image/Chico-sad/03-qa-reference/chico-sad-frame-06-aligned.png",
+          "source_sha256": "915744b10e46df34afb526b87de94e108d1e20b70eb2590ae7875b5551d7b59e",
+          "original_registered_source": "gen-image/Chico-sad/03-qa-reference/chico-sad-frame-06-aligned.png",
+          "source_metadata": {
+            "index": 6,
+            "file": "02-extracted-frames/chico-sad-frame-06.png",
+            "aligned_file": "03-qa-reference/chico-sad-frame-06-aligned.png",
+            "phase": "recovering"
+          }
+        },
+        {
+          "index": 6,
+          "source_index": 7,
+          "x": 1152,
+          "y": 1248,
+          "width": 192,
+          "height": 208,
+          "duration_ms": 150,
+          "phase": "hopeful",
+          "source": "gen-image/Chico-sad/03-qa-reference/chico-sad-frame-07-aligned.png",
+          "source_sha256": "145c10bd9ddf174c055239375f25d0ccc134aef565b7bd4e3406027b1e5b2745",
+          "original_registered_source": "gen-image/Chico-sad/03-qa-reference/chico-sad-frame-07-aligned.png",
+          "source_metadata": {
+            "index": 7,
+            "file": "02-extracted-frames/chico-sad-frame-07.png",
+            "aligned_file": "03-qa-reference/chico-sad-frame-07-aligned.png",
+            "phase": "hopeful"
+          }
+        },
+        {
+          "index": 7,
+          "source_index": 8,
+          "x": 1344,
+          "y": 1248,
+          "width": 192,
+          "height": 208,
+          "duration_ms": 240,
+          "phase": "soft-blink",
+          "source": "gen-image/Chico-sad/03-qa-reference/chico-sad-frame-08-aligned.png",
+          "source_sha256": "3559711ac44b5582134a1b8361f68adc275cdc9744ba91fd65e8bae176259838",
+          "original_registered_source": "gen-image/Chico-sad/03-qa-reference/chico-sad-frame-08-aligned.png",
+          "source_metadata": {
+            "index": 8,
+            "file": "02-extracted-frames/chico-sad-frame-08.png",
+            "aligned_file": "03-qa-reference/chico-sad-frame-08-aligned.png",
+            "phase": "soft-blink"
+          }
+        }
+      ],
+      "source_metadata": {
+        "sequence_id": "chico-sad",
+        "frame_count": 8,
+        "shared_registration_canvas": [
+          320,
+          320
+        ],
+        "timing_ms": [
+          180,
+          150,
+          150,
+          170,
+          220,
+          170,
+          150,
+          240
+        ],
+        "gesture": "Chico cycles from attentive concern into a sad, teary expression and gently recovers.",
+        "source": "01-generated-sequence/chico-sad-sequence-green-source.png",
+        "clean_source": "01-generated-sequence/chico-sad-sequence-clean-despilled.png",
+        "alignment": {
+          "anchor": "visible subject component",
+          "effects_excluded_from_anchor": true,
+          "target_body_center_x": 160,
+          "target_body_baseline_y": 292,
+          "shared_content_height_px": 260,
+          "review_frames": "03-qa-reference/chico-sad-frame-01-aligned.png through chico-sad-frame-08-aligned.png"
+        },
+        "frames": [
+          {
+            "index": 1,
+            "file": "02-extracted-frames/chico-sad-frame-01.png",
+            "aligned_file": "03-qa-reference/chico-sad-frame-01-aligned.png",
+            "phase": "alert"
+          },
+          {
+            "index": 2,
+            "file": "02-extracted-frames/chico-sad-frame-02.png",
+            "aligned_file": "03-qa-reference/chico-sad-frame-02-aligned.png",
+            "phase": "ears-lower"
+          },
+          {
+            "index": 3,
+            "file": "02-extracted-frames/chico-sad-frame-03.png",
+            "aligned_file": "03-qa-reference/chico-sad-frame-03-aligned.png",
+            "phase": "sad-gaze"
+          },
+          {
+            "index": 4,
+            "file": "02-extracted-frames/chico-sad-frame-04.png",
+            "aligned_file": "03-qa-reference/chico-sad-frame-04-aligned.png",
+            "phase": "sad-pause"
+          },
+          {
+            "index": 5,
+            "file": "02-extracted-frames/chico-sad-frame-05.png",
+            "aligned_file": "03-qa-reference/chico-sad-frame-05-aligned.png",
+            "phase": "tears"
+          },
+          {
+            "index": 6,
+            "file": "02-extracted-frames/chico-sad-frame-06.png",
+            "aligned_file": "03-qa-reference/chico-sad-frame-06-aligned.png",
+            "phase": "recovering"
+          },
+          {
+            "index": 7,
+            "file": "02-extracted-frames/chico-sad-frame-07.png",
+            "aligned_file": "03-qa-reference/chico-sad-frame-07-aligned.png",
+            "phase": "hopeful"
+          },
+          {
+            "index": 8,
+            "file": "02-extracted-frames/chico-sad-frame-08.png",
+            "aligned_file": "03-qa-reference/chico-sad-frame-08-aligned.png",
+            "phase": "soft-blink"
+          }
+        ]
+      },
+      "source_qa_findings": [
+        {
+          "severity": "WARN",
+          "check": "anchor-baseline",
+          "message": "frame 01 sits at y=287, expected baseline 291±2"
+        },
+        {
+          "severity": "WARN",
+          "check": "anchor-baseline",
+          "message": "frame 02 sits at y=287, expected baseline 291±2"
+        },
+        {
+          "severity": "WARN",
+          "check": "anchor-baseline",
+          "message": "frame 03 sits at y=287, expected baseline 291±2"
+        },
+        {
+          "severity": "WARN",
+          "check": "anchor-baseline",
+          "message": "frame 04 sits at y=286, expected baseline 291±2"
+        },
+        {
+          "severity": "WARN",
+          "check": "anchor-baseline",
+          "message": "frame 05 sits at y=287, expected baseline 291±2"
+        },
+        {
+          "severity": "WARN",
+          "check": "anchor-baseline",
+          "message": "frame 06 sits at y=286, expected baseline 291±2"
+        },
+        {
+          "severity": "WARN",
+          "check": "anchor-baseline",
+          "message": "frame 07 sits at y=287, expected baseline 291±2"
+        },
+        {
+          "severity": "WARN",
+          "check": "anchor-baseline",
+          "message": "frame 08 sits at y=286, expected baseline 291±2"
+        }
+      ]
+    },
+    {
+      "name": "running-busy-play",
+      "row": 7,
+      "frames": 8,
+      "sequence": "Layla-strolling",
+      "loop": false,
+      "timing_ms": [
+        180,
+        140,
+        150,
+        160,
+        130,
+        110,
+        110,
+        180
+      ],
+      "duration_ms": 1160,
+      "source_spec": "gen-image/Layla-strolling/04-integration-notes/sequence-spec.json",
+      "source_spec_sha256": "d869ab27575aee52e00ab29f18e6fe2325a812b1af12685fd398e79c0b54e6a0",
+      "frame_data": [
+        {
+          "index": 0,
+          "source_index": 1,
+          "x": 0,
+          "y": 1456,
+          "width": 192,
+          "height": 208,
+          "duration_ms": 180,
+          "phase": "seated-alert",
+          "source": "codex/run-002/derived/Layla-strolling/layla-strolling-frame-01-aligned.png",
+          "source_sha256": "c3100aa01d10d8dc3aa335e1a2baa3ebb31da85cd558aad096a11bfa4b2a462c",
+          "original_registered_source": "gen-image/Layla-strolling/03-qa-reference/layla-strolling-frame-01-aligned.png",
+          "source_metadata": {
+            "index": 1,
+            "file": "02-extracted-frames/layla-strolling-frame-01.png",
+            "aligned_file": "03-qa-reference/layla-strolling-frame-01-aligned.png",
+            "phase": "seated-alert"
+          }
+        },
+        {
+          "index": 1,
+          "source_index": 2,
+          "x": 192,
+          "y": 1456,
+          "width": 192,
+          "height": 208,
+          "duration_ms": 140,
+          "phase": "standing",
+          "source": "codex/run-002/derived/Layla-strolling/layla-strolling-frame-02-aligned.png",
+          "source_sha256": "4d8b9c64fa2a94f399e2a9c3bdb82a95764b91f9fb7a9afc77491dfb54ce351f",
+          "original_registered_source": "gen-image/Layla-strolling/03-qa-reference/layla-strolling-frame-02-aligned.png",
+          "source_metadata": {
+            "index": 2,
+            "file": "02-extracted-frames/layla-strolling-frame-02.png",
+            "aligned_file": "03-qa-reference/layla-strolling-frame-02-aligned.png",
+            "phase": "standing"
+          }
+        },
+        {
+          "index": 2,
+          "source_index": 3,
+          "x": 384,
+          "y": 1456,
+          "width": 192,
+          "height": 208,
+          "duration_ms": 150,
+          "phase": "front-leg-stretch",
+          "source": "codex/run-002/derived/Layla-strolling/layla-strolling-frame-03-aligned.png",
+          "source_sha256": "0dba63f7f8140fd95d857f5a1136ef6d8e0ec5b8d4ce9ca17f3c7b801ab547ae",
+          "original_registered_source": "gen-image/Layla-strolling/03-qa-reference/layla-strolling-frame-03-aligned.png",
+          "source_metadata": {
+            "index": 3,
+            "file": "02-extracted-frames/layla-strolling-frame-03.png",
+            "aligned_file": "03-qa-reference/layla-strolling-frame-03-aligned.png",
+            "phase": "front-leg-stretch"
+          }
+        },
+        {
+          "index": 3,
+          "source_index": 4,
+          "x": 576,
+          "y": 1456,
+          "width": 192,
+          "height": 208,
+          "duration_ms": 160,
+          "phase": "stretch-finish",
+          "source": "codex/run-002/derived/Layla-strolling/layla-strolling-frame-04-aligned.png",
+          "source_sha256": "ca36b48825436542f4612e082bc26bf342fc1540414fe88d8dc153d1b7801d0f",
+          "original_registered_source": "gen-image/Layla-strolling/03-qa-reference/layla-strolling-frame-04-aligned.png",
+          "source_metadata": {
+            "index": 4,
+            "file": "02-extracted-frames/layla-strolling-frame-04.png",
+            "aligned_file": "03-qa-reference/layla-strolling-frame-04-aligned.png",
+            "phase": "stretch-finish"
+          }
+        },
+        {
+          "index": 4,
+          "source_index": 5,
+          "x": 768,
+          "y": 1456,
+          "width": 192,
+          "height": 208,
+          "duration_ms": 130,
+          "phase": "first-step",
+          "source": "codex/run-002/derived/Layla-strolling/layla-strolling-frame-05-aligned.png",
+          "source_sha256": "c3911e5564ddee17cc1227113e8b614567cdefb26a2ec2c673b3bdbbc9757f37",
+          "original_registered_source": "gen-image/Layla-strolling/03-qa-reference/layla-strolling-frame-05-aligned.png",
+          "source_metadata": {
+            "index": 5,
+            "file": "02-extracted-frames/layla-strolling-frame-05.png",
+            "aligned_file": "03-qa-reference/layla-strolling-frame-05-aligned.png",
+            "phase": "first-step"
+          }
+        },
+        {
+          "index": 5,
+          "source_index": 6,
+          "x": 960,
+          "y": 1456,
+          "width": 192,
+          "height": 208,
+          "duration_ms": 110,
+          "phase": "walking",
+          "source": "codex/run-002/derived/Layla-strolling/layla-strolling-frame-06-aligned.png",
+          "source_sha256": "d737bb22cb2da02580216ba81c648bf87ce2eeb86ac451057762189ed6b6f903",
+          "original_registered_source": "gen-image/Layla-strolling/03-qa-reference/layla-strolling-frame-06-aligned.png",
+          "source_metadata": {
+            "index": 6,
+            "file": "02-extracted-frames/layla-strolling-frame-06.png",
+            "aligned_file": "03-qa-reference/layla-strolling-frame-06-aligned.png",
+            "phase": "walking"
+          }
+        },
+        {
+          "index": 6,
+          "source_index": 7,
+          "x": 1152,
+          "y": 1456,
+          "width": 192,
+          "height": 208,
+          "duration_ms": 110,
+          "phase": "near-exit",
+          "source": "codex/run-002/derived/Layla-strolling/layla-strolling-frame-07-aligned.png",
+          "source_sha256": "26a5ce4b03bc441694c957760626eb87bc2bebd1b3028220935a3e9df1c1bdf6",
+          "original_registered_source": "gen-image/Layla-strolling/03-qa-reference/layla-strolling-frame-07-aligned.png",
+          "source_metadata": {
+            "index": 7,
+            "file": "02-extracted-frames/layla-strolling-frame-07.png",
+            "aligned_file": "03-qa-reference/layla-strolling-frame-07-aligned.png",
+            "phase": "near-exit"
+          }
+        },
+        {
+          "index": 7,
+          "source_index": 8,
+          "x": 1344,
+          "y": 1456,
+          "width": 192,
+          "height": 208,
+          "duration_ms": 180,
+          "phase": "tail-exit",
+          "source": "codex/run-002/derived/Layla-strolling/layla-strolling-frame-08-aligned.png",
+          "source_sha256": "549daf8215a9c3138e68fe104f57ac5e180b0f6547ab8d7954a2f5742cdcd17c",
+          "original_registered_source": "gen-image/Layla-strolling/03-qa-reference/layla-strolling-frame-08-aligned.png",
+          "source_metadata": {
+            "index": 8,
+            "file": "02-extracted-frames/layla-strolling-frame-08.png",
+            "aligned_file": "03-qa-reference/layla-strolling-frame-08-aligned.png",
+            "phase": "tail-exit"
+          }
+        }
+      ],
+      "source_metadata": {
+        "sequence_id": "layla-strolling-get-up-stretch-walk-out",
+        "frame_count": 8,
+        "shared_registration_canvas": [
+          320,
+          320
+        ],
+        "timing_ms": [
+          180,
+          140,
+          150,
+          160,
+          130,
+          110,
+          110,
+          180
+        ],
+        "gesture": "Layla rises from sitting, stretches, then walks off screen-right",
+        "source": "01-generated-sequence/layla-strolling-sequence-green-source.png",
+        "clean_source": "01-generated-sequence/layla-strolling-sequence-clean-despilled.png",
+        "alignment": {
+          "anchor": "largest connected Layla silhouette component",
+          "scale": 1.0,
+          "target_body_center_x": 160,
+          "target_body_baseline_y": 292,
+          "max_body_bbox": [
+            258,
+            218
+          ]
+        },
+        "frames": [
+          {
+            "index": 1,
+            "file": "02-extracted-frames/layla-strolling-frame-01.png",
+            "aligned_file": "03-qa-reference/layla-strolling-frame-01-aligned.png",
+            "phase": "seated-alert"
+          },
+          {
+            "index": 2,
+            "file": "02-extracted-frames/layla-strolling-frame-02.png",
+            "aligned_file": "03-qa-reference/layla-strolling-frame-02-aligned.png",
+            "phase": "standing"
+          },
+          {
+            "index": 3,
+            "file": "02-extracted-frames/layla-strolling-frame-03.png",
+            "aligned_file": "03-qa-reference/layla-strolling-frame-03-aligned.png",
+            "phase": "front-leg-stretch"
+          },
+          {
+            "index": 4,
+            "file": "02-extracted-frames/layla-strolling-frame-04.png",
+            "aligned_file": "03-qa-reference/layla-strolling-frame-04-aligned.png",
+            "phase": "stretch-finish"
+          },
+          {
+            "index": 5,
+            "file": "02-extracted-frames/layla-strolling-frame-05.png",
+            "aligned_file": "03-qa-reference/layla-strolling-frame-05-aligned.png",
+            "phase": "first-step"
+          },
+          {
+            "index": 6,
+            "file": "02-extracted-frames/layla-strolling-frame-06.png",
+            "aligned_file": "03-qa-reference/layla-strolling-frame-06-aligned.png",
+            "phase": "walking"
+          },
+          {
+            "index": 7,
+            "file": "02-extracted-frames/layla-strolling-frame-07.png",
+            "aligned_file": "03-qa-reference/layla-strolling-frame-07-aligned.png",
+            "phase": "near-exit"
+          },
+          {
+            "index": 8,
+            "file": "02-extracted-frames/layla-strolling-frame-08.png",
+            "aligned_file": "03-qa-reference/layla-strolling-frame-08-aligned.png",
+            "phase": "tail-exit"
+          }
+        ]
+      },
+      "source_qa_findings": [
+        {
+          "severity": "WARN",
+          "check": "edge-bleed",
+          "message": "frame 06 has content touching the canvas edge — possible neighbouring pose in the crop"
+        },
+        {
+          "severity": "WARN",
+          "check": "edge-bleed",
+          "message": "frame 07 has content touching the canvas edge — possible neighbouring pose in the crop"
+        },
+        {
+          "severity": "WARN",
+          "check": "edge-bleed",
+          "message": "frame 08 has content touching the canvas edge — possible neighbouring pose in the crop"
+        }
+      ]
+    },
+    {
+      "name": "ready-pleased",
+      "row": 8,
+      "frames": 8,
+      "sequence": "Layla-Chico-Wave",
+      "loop": true,
+      "timing_ms": [
+        260,
+        140,
+        220,
+        140,
+        220,
+        180,
+        140,
+        200
+      ],
+      "duration_ms": 1500,
+      "source_spec": "gen-image/Layla-Chico-Wave/04-integration-notes/sequence-spec.json",
+      "source_spec_sha256": "3a25b4abc86f78ce92641245aa108ef01cd1c0ea527981198dbf6bf1e4798d25",
+      "frame_data": [
+        {
+          "index": 0,
+          "source_index": 1,
+          "x": 0,
+          "y": 1664,
+          "width": 192,
+          "height": 208,
+          "duration_ms": 260,
+          "phase": "Rest / greeting",
+          "source": "gen-image/Layla-Chico-Wave/03-qa-reference/layla-chico-wave-frame-01-aligned.png",
+          "source_sha256": "8f9efa9c00673c43553eb020877385d6a09eeba3e6defe3b39f463f64258d66c",
+          "original_registered_source": "gen-image/Layla-Chico-Wave/03-qa-reference/layla-chico-wave-frame-01-aligned.png",
+          "source_metadata": {
+            "index": 1,
+            "file": "02-extracted-frames/layla-chico-wave-frame-01.png",
+            "aligned_file": "03-qa-reference/layla-chico-wave-frame-01-aligned.png",
+            "phase": "Rest / greeting",
+            "duration_ms": 260,
+            "grounded": true
+          }
+        },
+        {
+          "index": 1,
+          "source_index": 2,
+          "x": 192,
+          "y": 1664,
+          "width": 192,
+          "height": 208,
+          "duration_ms": 140,
+          "phase": "Layla lifts paw",
+          "source": "gen-image/Layla-Chico-Wave/03-qa-reference/layla-chico-wave-frame-02-aligned.png",
+          "source_sha256": "a688ec63fb75c4a7e954c94d5617ea523acc7e351cc15d4a65342571c8372393",
+          "original_registered_source": "gen-image/Layla-Chico-Wave/03-qa-reference/layla-chico-wave-frame-02-aligned.png",
+          "source_metadata": {
+            "index": 2,
+            "file": "02-extracted-frames/layla-chico-wave-frame-02.png",
+            "aligned_file": "03-qa-reference/layla-chico-wave-frame-02-aligned.png",
+            "phase": "Layla lifts paw",
+            "duration_ms": 140,
+            "grounded": true
+          }
+        },
+        {
+          "index": 2,
+          "source_index": 3,
+          "x": 384,
+          "y": 1664,
+          "width": 192,
+          "height": 208,
+          "duration_ms": 220,
+          "phase": "Layla high wave",
+          "source": "gen-image/Layla-Chico-Wave/03-qa-reference/layla-chico-wave-frame-03-aligned.png",
+          "source_sha256": "d523e4b32d0adf716e159e24b45bd30065af958ffb235db5c24150d5863ade35",
+          "original_registered_source": "gen-image/Layla-Chico-Wave/03-qa-reference/layla-chico-wave-frame-03-aligned.png",
+          "source_metadata": {
+            "index": 3,
+            "file": "02-extracted-frames/layla-chico-wave-frame-03.png",
+            "aligned_file": "03-qa-reference/layla-chico-wave-frame-03-aligned.png",
+            "phase": "Layla high wave",
+            "duration_ms": 220,
+            "grounded": true
+          }
+        },
+        {
+          "index": 3,
+          "source_index": 4,
+          "x": 576,
+          "y": 1664,
+          "width": 192,
+          "height": 208,
+          "duration_ms": 140,
+          "phase": "Chico lifts; Layla rests",
+          "source": "gen-image/Layla-Chico-Wave/03-qa-reference/layla-chico-wave-frame-04-aligned.png",
+          "source_sha256": "6308de061c0122ed548191f06ccd77bc17a5285a48cb36cfe6889f3ed30a8267",
+          "original_registered_source": "gen-image/Layla-Chico-Wave/03-qa-reference/layla-chico-wave-frame-04-aligned.png",
+          "source_metadata": {
+            "index": 4,
+            "file": "02-extracted-frames/layla-chico-wave-frame-04.png",
+            "aligned_file": "03-qa-reference/layla-chico-wave-frame-04-aligned.png",
+            "phase": "Chico lifts; Layla rests",
+            "duration_ms": 140,
+            "grounded": true
+          }
+        },
+        {
+          "index": 4,
+          "source_index": 5,
+          "x": 768,
+          "y": 1664,
+          "width": 192,
+          "height": 208,
+          "duration_ms": 220,
+          "phase": "Chico high wave",
+          "source": "gen-image/Layla-Chico-Wave/03-qa-reference/layla-chico-wave-frame-05-aligned.png",
+          "source_sha256": "66bcfe39b121e3811ee78488f5520c9a0b13bfae57b49e85f8a0d3b2425593a2",
+          "original_registered_source": "gen-image/Layla-Chico-Wave/03-qa-reference/layla-chico-wave-frame-05-aligned.png",
+          "source_metadata": {
+            "index": 5,
+            "file": "02-extracted-frames/layla-chico-wave-frame-05.png",
+            "aligned_file": "03-qa-reference/layla-chico-wave-frame-05-aligned.png",
+            "phase": "Chico high wave",
+            "duration_ms": 220,
+            "grounded": true
+          }
+        },
+        {
+          "index": 5,
+          "source_index": 6,
+          "x": 960,
+          "y": 1664,
+          "width": 192,
+          "height": 208,
+          "duration_ms": 180,
+          "phase": "Chico outward waggle",
+          "source": "gen-image/Layla-Chico-Wave/03-qa-reference/layla-chico-wave-frame-06-aligned.png",
+          "source_sha256": "b7967eb8a0b16058c59f86b9c0c0c0454a26dcd125b332a07541fe4e6a255792",
+          "original_registered_source": "gen-image/Layla-Chico-Wave/03-qa-reference/layla-chico-wave-frame-06-aligned.png",
+          "source_metadata": {
+            "index": 6,
+            "file": "02-extracted-frames/layla-chico-wave-frame-06.png",
+            "aligned_file": "03-qa-reference/layla-chico-wave-frame-06-aligned.png",
+            "phase": "Chico outward waggle",
+            "duration_ms": 180,
+            "grounded": true
+          }
+        },
+        {
+          "index": 6,
+          "source_index": 7,
+          "x": 1152,
+          "y": 1664,
+          "width": 192,
+          "height": 208,
+          "duration_ms": 140,
+          "phase": "Both settled",
+          "source": "gen-image/Layla-Chico-Wave/03-qa-reference/layla-chico-wave-frame-07-aligned.png",
+          "source_sha256": "17196cf86d8c7d564c14ca0df4a924d993a035bb25b27c020d2849b1b01be607",
+          "original_registered_source": "gen-image/Layla-Chico-Wave/03-qa-reference/layla-chico-wave-frame-07-aligned.png",
+          "source_metadata": {
+            "index": 7,
+            "file": "02-extracted-frames/layla-chico-wave-frame-07.png",
+            "aligned_file": "03-qa-reference/layla-chico-wave-frame-07-aligned.png",
+            "phase": "Both settled",
+            "duration_ms": 140,
+            "grounded": true
+          }
+        },
+        {
+          "index": 7,
+          "source_index": 8,
+          "x": 1344,
+          "y": 1664,
+          "width": 192,
+          "height": 208,
+          "duration_ms": 200,
+          "phase": "Rest / loop close",
+          "source": "gen-image/Layla-Chico-Wave/03-qa-reference/layla-chico-wave-frame-08-aligned.png",
+          "source_sha256": "7266a8dfbfa67bd471a30347f3a9b5f75686c2e5deb7cbd7880867130c91e779",
+          "original_registered_source": "gen-image/Layla-Chico-Wave/03-qa-reference/layla-chico-wave-frame-08-aligned.png",
+          "source_metadata": {
+            "index": 8,
+            "file": "02-extracted-frames/layla-chico-wave-frame-08.png",
+            "aligned_file": "03-qa-reference/layla-chico-wave-frame-08-aligned.png",
+            "phase": "Rest / loop close",
+            "duration_ms": 200,
+            "grounded": true
+          }
+        }
+      ],
+      "source_metadata": {
+        "sequence_id": "layla-chico-wave",
+        "frame_count": 8,
+        "shared_registration_canvas": [
+          320,
+          320
+        ],
+        "timing_ms": [
+          260,
+          140,
+          220,
+          140,
+          220,
+          180,
+          140,
+          200
+        ],
+        "loop": true,
+        "duration_ms": 1500,
+        "gesture": "Layla waves first, then Chico, both seated and cheerful",
+        "source": "01-generated-sequence/layla-chico-wave-sequence-green-source.png",
+        "clean_source": "01-generated-sequence/layla-chico-wave-sequence-clean-despilled.png",
+        "alignment": {
+          "anchor": "largest connected paired-cat silhouette component",
+          "scale": 1.064638783269962,
+          "target_body_center_x": 160,
+          "target_body_baseline_y": 292,
+          "max_body_bbox": [
+            263,
+            208
+          ]
+        },
+        "approval": {
+          "status": "approved",
+          "basis": "User: Go ahead and generate the final files",
+          "accepted_visual_deviations": [
+            "Frame 4 Layla already rests instead of lowering to chest",
+            "Frame 7 Chico already rests instead of lowering to chest"
+          ]
+        },
+        "frames": [
+          {
+            "index": 1,
+            "file": "02-extracted-frames/layla-chico-wave-frame-01.png",
+            "aligned_file": "03-qa-reference/layla-chico-wave-frame-01-aligned.png",
+            "phase": "Rest / greeting",
+            "duration_ms": 260,
+            "grounded": true
+          },
+          {
+            "index": 2,
+            "file": "02-extracted-frames/layla-chico-wave-frame-02.png",
+            "aligned_file": "03-qa-reference/layla-chico-wave-frame-02-aligned.png",
+            "phase": "Layla lifts paw",
+            "duration_ms": 140,
+            "grounded": true
+          },
+          {
+            "index": 3,
+            "file": "02-extracted-frames/layla-chico-wave-frame-03.png",
+            "aligned_file": "03-qa-reference/layla-chico-wave-frame-03-aligned.png",
+            "phase": "Layla high wave",
+            "duration_ms": 220,
+            "grounded": true
+          },
+          {
+            "index": 4,
+            "file": "02-extracted-frames/layla-chico-wave-frame-04.png",
+            "aligned_file": "03-qa-reference/layla-chico-wave-frame-04-aligned.png",
+            "phase": "Chico lifts; Layla rests",
+            "duration_ms": 140,
+            "grounded": true
+          },
+          {
+            "index": 5,
+            "file": "02-extracted-frames/layla-chico-wave-frame-05.png",
+            "aligned_file": "03-qa-reference/layla-chico-wave-frame-05-aligned.png",
+            "phase": "Chico high wave",
+            "duration_ms": 220,
+            "grounded": true
+          },
+          {
+            "index": 6,
+            "file": "02-extracted-frames/layla-chico-wave-frame-06.png",
+            "aligned_file": "03-qa-reference/layla-chico-wave-frame-06-aligned.png",
+            "phase": "Chico outward waggle",
+            "duration_ms": 180,
+            "grounded": true
+          },
+          {
+            "index": 7,
+            "file": "02-extracted-frames/layla-chico-wave-frame-07.png",
+            "aligned_file": "03-qa-reference/layla-chico-wave-frame-07-aligned.png",
+            "phase": "Both settled",
+            "duration_ms": 140,
+            "grounded": true
+          },
+          {
+            "index": 8,
+            "file": "02-extracted-frames/layla-chico-wave-frame-08.png",
+            "aligned_file": "03-qa-reference/layla-chico-wave-frame-08-aligned.png",
+            "phase": "Rest / loop close",
+            "duration_ms": 200,
+            "grounded": true
+          }
+        ]
+      },
+      "source_qa_findings": []
+    },
+    {
+      "name": "working-together",
+      "row": 9,
+      "frames": 8,
+      "sequence": "Layla-Chico-Typing",
+      "loop": true,
+      "timing_ms": [
+        180,
+        140,
+        140,
+        140,
+        160,
+        180,
+        160,
+        200
+      ],
+      "duration_ms": 1300,
+      "source_spec": "gen-image/Layla-Chico-Typing/04-integration-notes/sequence-spec.json",
+      "source_spec_sha256": "38c110b7ddeedd320f86a880934f2c3aa03a95eddcb42593781c0b9e711a300d",
+      "frame_data": [
+        {
+          "index": 0,
+          "source_index": 1,
+          "x": 0,
+          "y": 1872,
+          "width": 192,
+          "height": 208,
+          "duration_ms": 180,
+          "phase": "both-paws-settled",
+          "source": "gen-image/Layla-Chico-Typing/03-qa-reference/layla-chico-typing-frame-01-aligned.png",
+          "source_sha256": "fab1301b1991e5c140dfb7f713104eb6c1f8e6fea266a028b5f3647d9ab1db45",
+          "source_metadata": {
+            "index": 1,
+            "file": "02-extracted-frames/layla-chico-typing-frame-01.png",
+            "aligned_file": "03-qa-reference/layla-chico-typing-frame-01-aligned.png",
+            "phase": "both-paws-settled",
+            "duration_ms": 180,
+            "grounded": true
+          }
+        },
+        {
+          "index": 1,
+          "source_index": 2,
+          "x": 192,
+          "y": 1872,
+          "width": 192,
+          "height": 208,
+          "duration_ms": 140,
+          "phase": "layla-type-left",
+          "source": "gen-image/Layla-Chico-Typing/03-qa-reference/layla-chico-typing-frame-02-aligned.png",
+          "source_sha256": "bb6bc42b7bfd407623f227411cb9c006a4efb28ed9e92ec944e0f3218d352685",
+          "source_metadata": {
+            "index": 2,
+            "file": "02-extracted-frames/layla-chico-typing-frame-02.png",
+            "aligned_file": "03-qa-reference/layla-chico-typing-frame-02-aligned.png",
+            "phase": "layla-type-left",
+            "duration_ms": 140,
+            "grounded": true
+          }
+        },
+        {
+          "index": 2,
+          "source_index": 3,
+          "x": 384,
+          "y": 1872,
+          "width": 192,
+          "height": 208,
+          "duration_ms": 140,
+          "phase": "chico-type-right",
+          "source": "gen-image/Layla-Chico-Typing/03-qa-reference/layla-chico-typing-frame-03-aligned.png",
+          "source_sha256": "8f0f5e9448fb8ea47203f9d20b3b9e8624558b07d7c215572790fb821e490a44",
+          "source_metadata": {
+            "index": 3,
+            "file": "02-extracted-frames/layla-chico-typing-frame-03.png",
+            "aligned_file": "03-qa-reference/layla-chico-typing-frame-03-aligned.png",
+            "phase": "chico-type-right",
+            "duration_ms": 140,
+            "grounded": true
+          }
+        },
+        {
+          "index": 3,
+          "source_index": 4,
+          "x": 576,
+          "y": 1872,
+          "width": 192,
+          "height": 208,
+          "duration_ms": 140,
+          "phase": "layla-tap-chico-ear-flick",
+          "source": "gen-image/Layla-Chico-Typing/03-qa-reference/layla-chico-typing-frame-04-aligned.png",
+          "source_sha256": "22aae7d0a0610f13b6caabfec0acc6f70203bbf7932c8a2d5d8f1f8601f40f83",
+          "source_metadata": {
+            "index": 4,
+            "file": "02-extracted-frames/layla-chico-typing-frame-04.png",
+            "aligned_file": "03-qa-reference/layla-chico-typing-frame-04-aligned.png",
+            "phase": "layla-tap-chico-ear-flick",
+            "duration_ms": 140,
+            "grounded": true
+          }
+        },
+        {
+          "index": 4,
+          "source_index": 5,
+          "x": 768,
+          "y": 1872,
+          "width": 192,
+          "height": 208,
+          "duration_ms": 160,
+          "phase": "chico-double-tap",
+          "source": "gen-image/Layla-Chico-Typing/03-qa-reference/layla-chico-typing-frame-05-aligned.png",
+          "source_sha256": "f7d02572fc7314b8686326da4035ff1a6133827499618a84ae96f574b567545e",
+          "source_metadata": {
+            "index": 5,
+            "file": "02-extracted-frames/layla-chico-typing-frame-05.png",
+            "aligned_file": "03-qa-reference/layla-chico-typing-frame-05-aligned.png",
+            "phase": "chico-double-tap",
+            "duration_ms": 160,
+            "grounded": true
+          }
+        },
+        {
+          "index": 5,
+          "source_index": 6,
+          "x": 960,
+          "y": 1872,
+          "width": 192,
+          "height": 208,
+          "duration_ms": 180,
+          "phase": "layla-head-tilt-read",
+          "source": "gen-image/Layla-Chico-Typing/03-qa-reference/layla-chico-typing-frame-06-aligned.png",
+          "source_sha256": "1d9e4fddd2fad56bcff2fa30057c77a91a96a6afb29924109a304cf19d11a97e",
+          "source_metadata": {
+            "index": 6,
+            "file": "02-extracted-frames/layla-chico-typing-frame-06.png",
+            "aligned_file": "03-qa-reference/layla-chico-typing-frame-06-aligned.png",
+            "phase": "layla-head-tilt-read",
+            "duration_ms": 180,
+            "grounded": true
+          }
+        },
+        {
+          "index": 6,
+          "source_index": 7,
+          "x": 1152,
+          "y": 1872,
+          "width": 192,
+          "height": 208,
+          "duration_ms": 160,
+          "phase": "chico-cheek-lean",
+          "source": "gen-image/Layla-Chico-Typing/03-qa-reference/layla-chico-typing-frame-07-aligned.png",
+          "source_sha256": "bf466bafdf3f12531a1ef418ae87e4fff1e87973206f2944ab6cf75673bb0a6a",
+          "source_metadata": {
+            "index": 7,
+            "file": "02-extracted-frames/layla-chico-typing-frame-07.png",
+            "aligned_file": "03-qa-reference/layla-chico-typing-frame-07-aligned.png",
+            "phase": "chico-cheek-lean",
+            "duration_ms": 160,
+            "grounded": true
+          }
+        },
+        {
+          "index": 7,
+          "source_index": 8,
+          "x": 1344,
+          "y": 1872,
+          "width": 192,
+          "height": 208,
+          "duration_ms": 200,
+          "phase": "settle-to-loop-close",
+          "source": "gen-image/Layla-Chico-Typing/03-qa-reference/layla-chico-typing-frame-08-aligned.png",
+          "source_sha256": "36343bfa87f605e1eace637ba3dc0b78c38ea56b64716f87758c0450c5f42ecf",
+          "source_metadata": {
+            "index": 8,
+            "file": "02-extracted-frames/layla-chico-typing-frame-08.png",
+            "aligned_file": "03-qa-reference/layla-chico-typing-frame-08-aligned.png",
+            "phase": "settle-to-loop-close",
+            "duration_ms": 200,
+            "grounded": true
+          }
+        }
+      ],
+      "source_metadata": {
+        "sequence_id": "layla-chico-typing",
+        "frame_count": 8,
+        "shared_registration_canvas": [
+          320,
+          320
+        ],
+        "timing_ms": [
+          180,
+          140,
+          140,
+          140,
+          160,
+          180,
+          160,
+          200
+        ],
+        "duration_ms": 1300,
+        "loop": true,
+        "source": "01-generated-sequence/layla-chico-typing-green-source-revision-03.png",
+        "clean_source": "01-generated-sequence/layla-chico-typing-sequence-clean-despilled.png",
+        "approval": {
+          "source_status": "approved",
+          "basis": "User: The sequence looks good please proceed to qa verification",
+          "aligned_preview_status": "prepared for review"
+        },
+        "alignment": {
+          "anchor": "largest 4-connected component, cats and computer together",
+          "shared_scale": 1.2334801762114538,
+          "target_body_center_x": 160,
+          "target_body_baseline_y": 291
+        },
+        "qa_warnings": [
+          "The approved generated art exceeds the original five-colour limit; its appearance is preserved.",
+          "Original raw green is nonuniform; clean outputs have transparent background.",
+          "Authored microgestures do not exactly realize every requested paw/tail/head beat; source approval retained.",
+          "Timing is a proposed calm 1300 ms loop, not a user-supplied timing reference.",
+          "Frame 5 has a 101-pixel detached tail fragment at x34:42/y185:202; the pair and computer remain the dominant connected shape and the anchor is unchanged.",
+          "Aligned silhouette width varies from 276 to 280 px; the requested exactly invariant extents are not met, although every registration anchor is x160."
+        ],
+        "frames": [
+          {
+            "index": 1,
+            "file": "02-extracted-frames/layla-chico-typing-frame-01.png",
+            "aligned_file": "03-qa-reference/layla-chico-typing-frame-01-aligned.png",
+            "phase": "both-paws-settled",
+            "duration_ms": 180,
+            "grounded": true
+          },
+          {
+            "index": 2,
+            "file": "02-extracted-frames/layla-chico-typing-frame-02.png",
+            "aligned_file": "03-qa-reference/layla-chico-typing-frame-02-aligned.png",
+            "phase": "layla-type-left",
+            "duration_ms": 140,
+            "grounded": true
+          },
+          {
+            "index": 3,
+            "file": "02-extracted-frames/layla-chico-typing-frame-03.png",
+            "aligned_file": "03-qa-reference/layla-chico-typing-frame-03-aligned.png",
+            "phase": "chico-type-right",
+            "duration_ms": 140,
+            "grounded": true
+          },
+          {
+            "index": 4,
+            "file": "02-extracted-frames/layla-chico-typing-frame-04.png",
+            "aligned_file": "03-qa-reference/layla-chico-typing-frame-04-aligned.png",
+            "phase": "layla-tap-chico-ear-flick",
+            "duration_ms": 140,
+            "grounded": true
+          },
+          {
+            "index": 5,
+            "file": "02-extracted-frames/layla-chico-typing-frame-05.png",
+            "aligned_file": "03-qa-reference/layla-chico-typing-frame-05-aligned.png",
+            "phase": "chico-double-tap",
+            "duration_ms": 160,
+            "grounded": true
+          },
+          {
+            "index": 6,
+            "file": "02-extracted-frames/layla-chico-typing-frame-06.png",
+            "aligned_file": "03-qa-reference/layla-chico-typing-frame-06-aligned.png",
+            "phase": "layla-head-tilt-read",
+            "duration_ms": 180,
+            "grounded": true
+          },
+          {
+            "index": 7,
+            "file": "02-extracted-frames/layla-chico-typing-frame-07.png",
+            "aligned_file": "03-qa-reference/layla-chico-typing-frame-07-aligned.png",
+            "phase": "chico-cheek-lean",
+            "duration_ms": 160,
+            "grounded": true
+          },
+          {
+            "index": 8,
+            "file": "02-extracted-frames/layla-chico-typing-frame-08.png",
+            "aligned_file": "03-qa-reference/layla-chico-typing-frame-08-aligned.png",
+            "phase": "settle-to-loop-close",
+            "duration_ms": 200,
+            "grounded": true
+          }
+        ]
+      },
+      "source_qa_findings": [
+        "The approved generated art exceeds the original five-colour limit; its appearance is preserved.",
+        "Original raw green is nonuniform; clean outputs have transparent background.",
+        "Authored microgestures do not exactly realize every requested paw/tail/head beat; source approval retained.",
+        "Timing is a proposed calm 1300 ms loop, not a user-supplied timing reference.",
+        "Frame 5 has a 101-pixel detached tail fragment at x34:42/y185:202; the pair and computer remain the dominant connected shape and the anchor is unchanged.",
+        "Aligned silhouette width varies from 276 to 280 px; the requested exactly invariant extents are not met, although every registration anchor is x160."
+      ]
+    }
+  ],
+  "transform": {
+    "source_canvas": [
+      320,
+      320
+    ],
+    "resized_canvas": [
+      192,
+      192
+    ],
+    "offset": [
+      0,
+      8
+    ],
+    "filter": "nearest",
+    "scale": 0.6
+  },
+  "compatibility": {
+    "codex_app_installable": false,
+    "consumer": "BuildPlan.md DesktopPet.load_sprites",
+    "notes": [
+      "Grid widened to 10 columns to preserve every finalized jump frame.",
+      "State mapping follows the project names; Chico-alert represents attentive and ready-pleased uses the paired wave.",
+      "Source timings are in playback order; the prototype uses a constant timer and must read timing_ms to reproduce these timings.",
+      "Strolling re-extracted from its original strip to remove neighboring fragments; tail-only final pose is intentional. Play once then return to idle.",
+      "Other source alignment and effects are preserved; no new gaze frames were generated.",
+      "Row 9 working-together is an additional optional busy animation; select it explicitly in the app state mapper. Existing rows are unchanged."
+    ]
+  },
+  "source_path_base": ".",
+  "excluded_unfinished_revisions": [
+    {
+      "sequence": "Layla-ball-rolling",
+      "revision": "revision-02",
+      "reason": "Unfinished revision without registered frames or integration spec.",
+      "findings": [
+        {
+          "severity": "BLOCK",
+          "check": "not-normalized",
+          "message": "8 tight crop(s) in 02-extracted-frames, but no 320x320 frames in 03-qa-reference — pipeline step 5 (normalize and align) has not been run"
+        },
+        {
+          "severity": "WARN",
+          "check": "spec",
+          "message": "not written yet — expected if 04-integration-notes has not been generated"
+        }
+      ]
+    }
+  ],
+  "metadata_warnings": [
+    "gen-image/Chico-jump/04-integration-notes/sequence-spec.json: ignored known literal trailing \\n in memory; source unchanged."
+  ]
+}
