@@ -10,10 +10,11 @@ card; drag them anywhere; steer them from the tray.
 
 ## What it does
 
-The pets read CPU, RAM, GPU, swap, disk and idle time once every 1.5 s on a worker thread, and
-pick one of ten animations to match. The mapping is a priority ladder with Schmitt-trigger
-hysteresis and a minimum dwell time, so the pet settles into a state rather than flickering at a
-threshold boundary.
+A background worker samples CPU, RAM, swap, GPU, battery and idle time without blocking the
+interface. Most readings update every 1.5 seconds, disk usage is cached on a slower cadence, and
+input activity is sampled every 250 ms. A state machine uses those readings to pick one of ten
+animations. Its priority ladder, hysteresis and minimum dwell time let the pet settle into a
+state instead of flickering at a threshold boundary.
 
 | State | Frames | Roughly when |
 | --- | --- | --- |
@@ -21,7 +22,7 @@ threshold boundary.
 | `running-playful-roll` | 8 | moderate load, CPU 20–60% |
 | `running-busy-play` | 8 | moderate load (one-shot flourish, holds its last frame) |
 | `running-playful-jump` | 10 | heavy load — CPU above 80% or RAM above 85% |
-| `working-together` | 8 | you are actively typing at the keyboard |
+| `working-together` | 8 | sustained keyboard or mouse activity while the system is calm |
 | `waiting-dozy` | 8 | no input for 1 minute |
 | `waiting-deep-sleep` | 8 | no input for 15 minutes |
 | `blocked-grumpy` | 8 | temperature above 80 °C, or heavy swap use |
@@ -31,10 +32,10 @@ threshold boundary.
 Idle isn't static: every five minutes the pet plays a weighted random flourish (a roll, a busy
 play, a wave) so a quiet desktop still has some life in it.
 
-**Typing detection is deliberately non-invasive.** It uses `GetLastInputInfo`, the same Win32
-call screensavers use — a timestamp of the last input event, sampled at 250 ms. There is no
-keyboard hook, no `GetAsyncKeyState` polling, no raw input capture, and nothing that records
-*what* you type. Only *that* something happened.
+**Input-activity detection is deliberately non-invasive.** It uses `GetLastInputInfo`, the same
+Win32 call screensavers use, to read the timestamp of the most recent keyboard or mouse event.
+There is no keyboard hook, `GetAsyncKeyState` polling, raw input capture, or record of what the
+user typed. The application only knows that some input occurred.
 
 ## Features
 
@@ -42,20 +43,20 @@ keyboard hook, no `GetAsyncKeyState` polling, no raw input capture, and nothing 
   `WindowStaysOnTopHint`, with `Qt.Tool` so it stays out of the taskbar and Alt-Tab.
 - **Drag to move** — left-click drag, with click-vs-drag separated by the platform's own
   `startDragDistance()`. Position persists across restarts, per screen.
-- **Hover stats card** — a semi-transparent panel showing CPU, RAM, GPU, temperature, swap,
-  disk and uptime. Click the pet to pin it open.
+- **Hover stats card** — a semi-transparent panel showing CPU and RAM, with GPU, temperature
+  and battery information when the hardware provides it. Click the pet to pin it open.
 - **Click-through mode** — the pet becomes decorative and clicks pass to whatever is beneath it
   (`WS_EX_TRANSPARENT`). Only ever enabled when the tray icon exists, so there is always a way
   back out.
 - **System tray** — toggle click-through, pet visibility, always-on-top and the stats card;
   reset position; poke the pets into any state; quit.
-- **Alpha-accurate hit testing** — hovering is tested against the sprite's actual opaque pixels,
-  not its bounding box, so the transparent gutter below the cats isn't hoverable.
+- **Alpha-aware dragging** — a drag can begin only on an opaque sprite pixel, so the pets cannot
+  be picked up by grabbing the empty transparent gutter around them.
 
 ## Requirements
 
 - Windows 10 or 11
-- [pixi](https://pixi.sh) (developed against 0.72)
+- [pixi](https://pixi.sh)
 
 macOS and Linux are not supported yet. The platform-specific code sits behind a small seam
 (`src/core/platform/`) with a working null backend, so adding them is a contained job rather
@@ -65,14 +66,14 @@ than a rewrite — but it hasn't been done or tested.
 
 ```powershell
 pixi install          # materialize the environment from pixi.lock
-pixi run pets         # start the pets
+pixi run -e pets pets # start the pets in the lean runtime environment
 ```
 
 Useful variants:
 
 ```powershell
-pixi run pets --validate   # check the sprite atlas and exit, no GUI
-pixi run pets --debug      # verbose logging
+pixi run -e pets pets --validate   # check the sprite atlas and exit, no GUI
+pixi run -e pets pets --debug      # verbose logging
 ```
 
 ## Development
@@ -88,7 +89,7 @@ There are three pixi environments, and the split is intentional:
 
 | Environment | Holds | Why |
 | --- | --- | --- |
-| `pets` | PyQt6, psutil, numpy, nvidia-ml-py | the runtime — 70 packages, deliberately lean |
+| `pets` | PyQt6, psutil, numpy, nvidia-ml-py | the deliberately lean runtime |
 | `dev` | the above plus pytest | the test suite, kept out of the runtime surface |
 | default | napari, JupyterLab, Pillow | the art pipeline, which the app never touches |
 
@@ -119,7 +120,7 @@ docs/
   BuildPlan.md          the original spec
   PHASE1-CONTRACT.md    the interface contract the modules were built against
   PHASE1-LOG.md         what was built, what broke, and what was measured
-tests/                  14 modules, 222 tests
+tests/                  runtime and integration test suite
 tools/frame_qa.py       the art QA gate
 ```
 
@@ -137,15 +138,21 @@ atlas.
 
 ## Status
 
-Phase 1. The app runs, the state machine is fully wired, and the test suite is green. Known gaps
-are tracked in [`docs/PHASE1-LOG.md`](docs/PHASE1-LOG.md) — the honest version, including the
-swap threshold that is still an unvalidated guess and the jump animation whose airborne frames
-don't actually leave the ground.
+Phase 1 implements the Windows desktop pet, telemetry worker, state machine, animation player,
+stats card and tray controls. Known gaps and measured limitations are tracked in
+[`docs/PHASE1-LOG.md`](docs/PHASE1-LOG.md).
+
+The broader Phase 2 goal is to learn how desktop applications can work with agentic AI. A
+future version may add a small chat window that connects Layla and Chico to LLMs and carefully
+scoped MCP tools, including a personal vault. This would let the pets answer questions, use
+relevant application context and eventually help with useful tasks while keeping their actions
+visible and under the user's control. This work is exploratory and has not been implemented
+yet.
 
 ## License
 
-Not yet chosen. Until this section says otherwise, all rights reserved.
+Licensed under the [Apache License 2.0](LICENSE).
 
 ---
 
-Layla and Chico are real cats. Any resemblance to your system load is intentional.
+**Layla 🐾  and Chico 🐾  are real cats. Any resemblance to your system load is intentional 🐈‍⬛.**
