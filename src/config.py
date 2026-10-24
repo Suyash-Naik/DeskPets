@@ -323,6 +323,9 @@ INTERACTION_GREETING_STATE: Final[str | None] = "ready-pleased"
 #: repeated clicks keep the animation smooth instead of stuttering back to frame 0.
 INTERACTION_GREETING_HOLD_MS: Final[int] = WAVE_FLOURISH_HOLD_MS
 
+#: ``--demo``: how long each state is held while cycling through the atlas for visual inspection.
+DEMO_HOLD_MS: Final[int] = 4000
+
 
 # =============================================================================
 # STATE COPY  (data-driven: a new sprite row needs one dict entry and no code change)

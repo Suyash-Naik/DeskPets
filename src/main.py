@@ -14,7 +14,7 @@ import argparse
 import logging
 import sys
 
-from PyQt6.QtCore import QObject, Qt
+from PyQt6.QtCore import QObject, Qt, QTimer
 from PyQt6.QtGui import QGuiApplication
 from PyQt6.QtWidgets import QApplication
 
@@ -22,7 +22,7 @@ from . import config
 from .core import platform as platform_seam
 from .core.animator import Animator
 from .core.sprite_loader import SpriteLoadError, load_spritesheet, validate_atlas
-from .core.state_machine import REQUIRED_STATES, StateMachine
+from .core.state_machine import REQUIRED_STATES, STATES, StateMachine
 from .core.telemetry import TelemetryService
 from .ui.pet_window import PetWindow
 from .ui.stats_card import StatsCard
@@ -40,7 +40,7 @@ class PetApp(QObject):
     pet they cannot interact with and no idea why.
     """
 
-    def __init__(self, app: QApplication) -> None:
+    def __init__(self, app: QApplication, *, demo_hold_ms: int | None = None) -> None:
         super().__init__()
         self._app = app
         self._settings = config.load_settings().clamped()
@@ -94,6 +94,28 @@ class PetApp(QObject):
         install_tray_async(self, sheet, self._on_tray_ready)
 
         self._telemetry.start()
+
+        if demo_hold_ms is not None:
+            self._start_demo(demo_hold_ms)
+
+    # -- demo ----------------------------------------------------------------
+
+    def _start_demo(self, hold_ms: int) -> None:
+        """Cycle every state the atlas has, forever, via the same override as the poke menu."""
+        self._demo_states = [s for s in STATES if self._machine.is_available(s)]
+        self._demo_index = 0
+        self._demo_hold_ms = hold_ms
+        log.info("demo: cycling %d states, %d ms each", len(self._demo_states), hold_ms)
+        self._demo_timer = QTimer(self)
+        self._demo_timer.timeout.connect(self._demo_step)
+        self._demo_timer.start(hold_ms)
+        self._demo_step()
+
+    def _demo_step(self) -> None:
+        state = self._demo_states[self._demo_index % len(self._demo_states)]
+        self._demo_index += 1
+        log.info("demo: %s", state)
+        self._machine.trigger_state(state, self._demo_hold_ms + 500)
 
     # -- wiring --------------------------------------------------------------
 
@@ -275,6 +297,10 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--debug", action="store_true", help="verbose logging")
     parser.add_argument("--validate", action="store_true",
                         help="validate the sprite atlas and exit, without a GUI")
+    parser.add_argument("--demo", nargs="?", type=float, const=config.DEMO_HOLD_MS / 1000,
+                        metavar="SECONDS",
+                        help="cycle through every available animation, holding each for "
+                             f"SECONDS (default {config.DEMO_HOLD_MS / 1000:g})")
     args = parser.parse_args(argv if argv is not None else sys.argv[1:])
 
     _configure_logging(args.debug)
@@ -297,7 +323,8 @@ def main(argv: list[str] | None = None) -> int:
     app.setQuitOnLastWindowClosed(False)
 
     try:
-        pet_app = PetApp(app)
+        demo_hold_ms = None if args.demo is None else max(500, int(args.demo * 1000))
+        pet_app = PetApp(app, demo_hold_ms=demo_hold_ms)
     except SpriteLoadError as exc:
         log.error("%s", exc)
         return 1
