@@ -4,342 +4,306 @@ Guidance for Claude Code when working in this repository.
 
 ## Project
 
-**LC-pet-stat** — a lightweight, frameless, always-on-top desktop companion in Python.
+**LC-pet-stat** — a lightweight, frameless, always-on-top Windows desktop companion in Python.
 Two cat pets, **Layla** and **Chico**, sit on the desktop and react to live system load
-(CPU / RAM / GPU) through state-driven sprite animations. Hovering them shows a
-semi-transparent stats card.
+(CPU / RAM / swap / GPU / temperature / user idle time) through state-driven sprite animations.
+Hovering them shows a semi-transparent stats card.
 
-Authoritative spec: `BuildPlan.md`. Read it before any implementation work.
+Spec history: `docs/BuildPlan.md` (original sketch, now superseded in places),
+`docs/PHASE1-CONTRACT.md` (**authoritative interface contract** the modules were built against),
+`docs/PHASE1-LOG.md` (what was built, what broke, what was measured), `docs/index.md`
+(personal write-up), `tests/README.md` (test suite, regression index).
 
-## Current state — Phase 0, animation production
+## Current state — Phase 1 implemented, Phase 2 not started
 
-**There is no source code yet.** The repo contains only `BuildPlan.md` and `assets/`.
-`src/`, `requirements.txt`, and `README.md` described in the plan do not exist.
+**Phase 1 is built and runnable.** `src/` holds ~6,800 lines; `tests/` holds ~4,800 lines.
+Art production and atlas packing are finished: the atlas is in `assets/`.
 
-Active work is **art**: building the per-state animation sequences one at a time. Six folders
-exist and four have extracted frames, against the nine rows the state machine needs — see the
-sequence registry below, and run `tools/frame_qa.ipynb` for the live state.
+Verified on 2026-10-24 (not just claimed):
 
-`assets/layla-and-chico-pet-spritesheet.png` and `.json` are **incoming, not yet in the
-repo**. Every one of them is what `sprite_loader.py` consumes, so nothing downstream can be
-run end-to-end until they land. Treat their absence as expected, not as a bug to work
-around — do not invent a placeholder atlas or stub the loader against one.
+| Check | Result |
+| --- | --- |
+| `pixi run -e pets python -m src.main --validate` | `PASS (0 block, 0 warn)` — 1920×2080, 82 frames in 10 animations |
+| `pixi run -e dev test -m "not slow"` | 188 collected: **184 pass, 3 fail, 1 skip** (35 slow tests deselected, **not run**) |
 
-Useful work that does *not* block on the spritesheet: `src/` scaffolding,
-`config.py` thresholds, `telemetry.py` (fully testable on its own), and the tray/window
-shell. Everything frame-related waits.
+The 3 failures are **config drift, not code bugs** — thresholds in `src/config.py` were tuned
+after the tests were written, and the tests still assert the old numbers:
+
+| Failing test | Asserts | `config.py` now has |
+| --- | --- | --- |
+| `test_config::test_thresholds_match_the_cleaned_spec_table_not_the_prototype` | `CPU_MODERATE_MIN == 20.0` | `1.0` |
+| `test_state_machine::test_regression_idle_attentive_is_reachable_at_seventy_percent_ram` | `RAM_HIGH == 85.0` | `55.0` |
+| `test_state_machine::test_sleep_states_split_by_depth_and_wake_instantly` | dozy at 5 min | `IDLE_DOZY_S = 60.0` (1 min) |
+
+Note what those constants actually do: `RAM_HIGH = 55` only turns the **card's RAM meter**
+red (`stats_card.py`); the real RAM state gate is `BAND_RAM_HIGH = (85, 80)`. `CPU_MODERATE_MIN`
+is not read anywhere in `src/` — the moderate gate is `BAND_CPU_MODERATE = (20, 14)`. Either
+update the tests or revert the constants; do not "fix" the tests by loosening them silently.
+
+Uncommitted at time of writing: `src/config.py` (+`DEMO_HOLD_MS`) and `src/main.py` (the
+`--demo` flag, below). The repo **is** `git init`-ed (27 commits, `main`).
 
 ## Tech stack
 
 | Concern | Choice |
 | --- | --- |
-| Language | Python 3.14 (pinned in `pixi.toml`; plan said 3.10+) |
-| GUI | PyQt6 6.8.1 (frameless, `WA_TranslucentBackground`, always-on-top, click-through) |
-| Metrics | `psutil` (CPU/RAM/disk), `gputil` / `pynvml` (NVIDIA GPU) — GPU libs not installed |
-| Images | Pillow — slices spritesheets into per-frame `QPixmap`s |
-| Frame QA | `tools/frame_qa.py` (checks) + `frame_qa.ipynb` (napari review) |
+| Language | Python 3.14 (`>=3.14.7,<3.15`, pinned in `pixi.toml`) |
+| GUI | PyQt6 `>=6.8.1,<7` — frameless, `WA_TranslucentBackground`, always-on-top, `Qt.Tool`, click-through via `WS_EX_TRANSPARENT` |
+| Metrics | `psutil >=7.0.0` (CPU/RAM/swap/disk/battery), `nvidia-ml-py >=13.610.43` (NVIDIA GPU load/VRAM/temp) |
+| Windows APIs | `ctypes` only, confined to `src/core/platform/windows.py` (`GetLastInputInfo`, ex-style get/set) |
+| Sprites | Atlas PNG decoded and sliced with Qt's own `QImage` — **Pillow is not a runtime dependency** |
+| Frame QA | `tools/frame_qa.py` (checks) + `tools/frame_qa.ipynb` (napari review) |
+| Tests | pytest `>=9.1.1`, `pytest.ini`, marker `slow` / `windows` |
 | Env | pixi + `pixi.toml`, `win-64` only |
 
-`BuildPlan.md` lists PyObjC for macOS hooks. **Out of scope** — the app targets Windows.
+PyObjC / macOS hooks from `BuildPlan.md` are **out of scope**.
 
 ## Environment
 
-**Target platform is Windows.** macOS/Linux are not supported and not tested; wil be added upon later development.
+**Windows only.** macOS/Linux are not supported or tested; the platform seam exists so they can
+be added later (see *Platform seam*). Environment manager is [pixi](https://pixi.sh) via
+`pixi.toml` — not venv, bare pip, conda, or `pyproject.toml`. `pixi.lock` is committed.
 
-**Environment manager is [pixi](https://pixi.sh), configured in `pixi.toml`** — not venv,
-not bare pip, not conda, and *not* `pyproject.toml`. `requirements.txt` in the plan's tree
-is superseded; if it ever exists it is only a generated export.
+Three environments, split on purpose (`no-default-feature = true` on `pets` and `dev` is
+load-bearing — without it pixi folds napari/Jupyter/Pillow into both):
 
-Live config (`pixi.toml`, workspace `LC-pet-stat`, `win-64`, channel `conda-forge`):
-
-| Dependency | Pin | Note |
+| Environment | Holds | Purpose |
 | --- | --- | --- |
-| `python` | `>=3.14.7,<3.15` | resolves the version question — pinned high |
-| `pyqt6` | `>=6.8.1,<7` | Qt6, matching `BuildPlan.md`'s API spellings |
-| `napari` | `>=0.9.1,<0.10` | frame QA only; binds to PyQt6 via `qtpy` |
-| `jupyterlab` | `>=4.6.3,<5` | runs `tools/frame_qa.ipynb` |
-| `ipywidgets` | `>=8.1.9,<9` | sequence picker in the QA notebook |
+| `pets` | python, pyqt6, psutil, numpy, nvidia-ml-py | lean runtime |
+| `dev` | the `pets` pins **mirrored** + pytest | test suite; `test_packaging.py` fails if the pins drift |
+| default | napari, jupyterlab, ipywidgets, pillow, numpy, pyqt6 | art pipeline; the app never touches it |
 
-Also available transitively: `numpy`, `pillow`, `psutil`, `imageio`, `ipykernel`,
-`nbformat`. **Not** present: `matplotlib`, `pynvml`/`gputil`.
+`pets` and `dev` share one `solve-group`, so tests run against the versions the app ships.
 
-`pixi.lock` is committed — it is what makes the environment reproducible. `.gitignore` and
-`.gitattributes` are in place (`.pixi/` ignored, `pixi.lock` marked binary/generated), but
-**the repo is not `git init`-ed yet** — there is no history to commit against.
-
-Commands (pixi **0.72.0**):
+Commands:
 
 ```powershell
-pixi install              # materialize the env from pixi.lock into .pixi/
-pixi run check            # frame QA on every sequence (exit 1 = blocked)
-pixi run qa               # frame QA notebook in JupyterLab
-pixi run python -m src.main
-pixi add <pkg>            # conda-forge dependency
-pixi add --pypi <pkg>     # PyPI dependency
-pixi shell                # interactive shell in the project env
+pixi install                                   # materialize envs from pixi.lock
+pixi run -e pets pets                          # launch the pets
+pixi run -e pets pets --validate               # atlas check, no GUI, exit 1 on failure
+pixi run -e pets pets --debug                  # verbose logging
+pixi run -e pets pets --demo [SECONDS]         # cycle every available animation (default 4 s each)
+pixi run -e pets python -m src.core.sprite_loader -v   # per-frame atlas report
+pixi run -e dev test                           # full suite (~60 s)
+pixi run -e dev test -m "not slow"             # fast subset (~6 s) — use while editing
+pixi run -e dev test -m "not windows"          # skip tests needing a real HWND
+pixi run check                                 # frame QA over every art sequence (exit 1 = blocked)
+pixi run check <Sequence> [--json] [-v]
+pixi run qa                                    # frame QA notebook in JupyterLab
 ```
 
-`[tasks]` defines `check` and `qa`. There is no `start` task yet — nothing to launch.
+**Do not run project code through bare `python` or `pip`.** `python` on PATH is a pixi global
+env and `pip` targets a separate CPython 3.10; neither is the project env. Always `pixi run`.
 
-**Do not run project code through bare `python`.** `python` on PATH is a pixi *global*
-env (`C:\Users\Suyash\.pixi\envs\python\python.exe`, currently 3.14.7) and is unrelated to
-this project. `pip` on PATH is more misleading still — it targets a separate CPython 3.10
-install at `C:\Users\Suyash\AppData\Local\Programs\Python\Python310\`. So `pip install X`
-followed by `python -c "import X"` fails, because they are two different interpreters and
-neither is the project env. Always go through `pixi run`.
-
-## Target structure (from BuildPlan.md — not yet created)
+## What is implemented in `src/`
 
 ```
-desktop-pet/
-├── assets/
-│   ├── layla-and-chico-pet-spritesheet.png
-│   └── layla-and-chico-pet-spritesheet.json
-├── src/
-│   ├── __init__.py
-│   ├── main.py                # App entry point & SystemTray setup
-│   ├── ui/
-│   │   ├── pet_window.py      # Frameless overlay window & drag logic
-│   │   └── stats_card.py      # Telemetry hover tooltip card
-│   ├── core/
-│   │   ├── sprite_loader.py   # Slices JSON/PNG into QPixmap frames
-│   │   ├── animator.py        # QTimer-driven frame player & state switcher
-│   │   └── telemetry.py       # Background thread monitoring CPU/RAM/GPU
-│   └── config.py              # Threshold settings and update intervals
-├── requirements.txt
-└── README.md
+src/
+  main.py                 PetApp wiring + CLI (--debug, --validate, --demo). No behaviour of its own.
+  config.py               every tunable + Settings persistence
+  core/
+    sprite_loader.py      atlas JSON+PNG -> validated SpriteSheet of QPixmap frames (890 lines)
+    animator.py           drift-compensated per-frame QTimer player
+    state_machine.py      metrics -> state: ladder, Schmitt bands, dwell, overrides, flourishes
+    telemetry.py          worker-thread metrics sampling + 250 ms input sub-sampler
+    platform/             OS seam: base.py (ABC + NullBackend), windows.py (ctypes), __init__.py
+  ui/
+    _overlay.py           shared frameless/translucent/on-top flag recipe
+    pet_window.py         overlay window, alpha-aware drag, click-through, position persistence
+    stats_card.py         hover/pinned card, hand-painted shadow, glyph painters (1,212 lines)
+    tray.py               QSystemTrayIcon + menu, async install with retry
+tests/                    13 modules, see tests/README.md
+tools/frame_qa.py         art QA gate
 ```
 
-Deviations from that tree as written:
+### Behaviour as built
 
-- The repo root is `LC-pet-stat/`, not `desktop-pet/`.
-- `requirements.txt` is replaced by `pyproject.toml` + `pixi.lock` (see **Environment**).
-- The real `assets/` also holds the whole art pipeline below the two spritesheet files.
+- **Atlas loader.** Reads per-frame `x/y/width/height` and `duration_ms` verbatim from JSON —
+  never computes `col * frame_width`. Validates schema version (`{1}`), verifies sha256,
+  warns/blocks via an `AtlasReport` (same verdict vocabulary as `frame_qa`), computes opaque
+  content bounds with numpy, exposes `alpha_at()` for hit-testing, and `require()` as the one
+  place that asserts which rows the app needs. `AssetsMissingError` / `AtlasValidationError`
+  give one clear failure at startup.
+- **Animator.** Honours authored per-frame durations (measured worst error 2.0 ms), compensates
+  drift (−0.012 % over 3 loops), drops missed beats instead of machine-gunning after a stall,
+  pauses when the window is hidden. Non-looping rows **hold** the last frame and emit
+  `sequence_finished`; it never reverts on its own.
+- **State machine.** Ten states. Priority ladder, first match wins: `blocked-grumpy`
+  (temp or swap) → `running-playful-jump` (CPU or RAM high) → sleep rows (idle ≥ 60 s dozy /
+  ≥ 900 s deep sleep, both gated on CPU not moderate) → `running-playful-roll` (CPU moderate)
+  → `working-together` (sustained input) → `idle-attentive` (unconditional default).
+  Every numeric gate is a **Schmitt band** (`config.BAND_*`: CPU-high 80/70, RAM-high 85/80,
+  CPU-moderate 20/14, swap 30/22, temp 80/75) plus `MIN_STATE_DWELL_MS = 4000`; escalations
+  (by `PRIORITY`) bypass dwell. Timed **overrides** (poke menu, greeting, flourishes) expire on
+  a single-shot timer that re-arms if it fires early. `ready-pleased` fires from a latch:
+  CPU ≥ 60 % for ≥ 8 s, then ≤ 20 % for 2 samples. **Idle flourishes** every ~5 min ± 30 s,
+  weighted pool roll 6 / stroll 3 / wave 1 — load-mapped rows are deliberately excluded so the
+  pet stays readable as a monitor. While in the moderate band, `running-busy-play` plays every
+  ~25 s ± 5 s. The idle schedule is **not** reset when the pet briefly leaves idle.
+- **Optional rows.** `OPTIONAL_STATES = {working-together}`. `main.py` calls
+  `set_available_states(sheet.names())`; four independent filters make an absent row
+  unreachable, so a state can ship before its art. `REQUIRED_STATES` is derived.
+- **Telemetry.** `TelemetryService` owns a `QThread` + `_TelemetryWorker` driven by a `QTimer`
+  (1500 ms default, clamped 500–10,000 ms). Non-blocking `cpu_percent(interval=None)`, primed.
+  Emits a frozen `Metrics` (CPU, RAM, swap, disk every 20 ticks, temp, `GpuSample`,
+  `BatterySample`, idle seconds). GPU and temperature providers are **lazily probed Protocols**
+  with Null fallbacks; a GPU provider is dropped after 3 consecutive errors. A separate 250 ms
+  sub-sampler on the same thread emits a latched `input_activity_changed(bool)` (enter at ≥ 75 %
+  of a 1 s window, 2.2 s idle grace), measured against `QElapsedTimer`, not nominal ticks.
+  `stop()` is `quit()` + `wait()`; measured 2–15 ms, second call a no-op.
+- **Input detection is non-invasive by design.** `GetLastInputInfo` only. No keyboard hook,
+  `GetAsyncKeyState` polling, or Raw Input. Do not add any.
+- **Pet window.** 192×208 (the atlas frame box, read from JSON). Direct `paintEvent` (no
+  `QLabel` margins), try/except net around paint. `set_flag_override()` is the **only** way
+  to change window flags and re-applies native state after the HWND is recreated.
+  Left-drag with click-vs-drag split by `startDragDistance()`; drag starts only on an opaque
+  pixel; click pins the card and plays a greeting; drag greets on drop. Position persists per
+  screen and is clamped/revalidated on monitor changes. Optional integer render scale.
+- **Click-through.** `WS_EX_TRANSPARENT` via the Windows backend, only enabled when a tray icon
+  exists, so there is always a way back. `WA_TransparentForMouseEvents` alone does not work
+  across processes.
+- **Stats card.** CPU and RAM always; GPU, VRAM, temperature, battery, disk rows appear only if
+  the hardware provides them (structurally absent GPU omits the row; a failed sample keeps a
+  greyed one). Per-state title/subtitle/accent/glyph from `config.STATE_PRESENTATION`
+  (data-driven; unknown template keys degrade to an em-dash). Hover with 250 ms show / 700 ms
+  hide delays, 120/160 ms fades, anchors below the pet and flips above at screen edges, can be
+  pinned. Hand-painted 18-layer shadow in a 29 px transparent margin — use `card_rect()`, not
+  `width()`, for the visible card. Surface alpha 242.
+- **Tray.** Click-through, Show pet, Show stats card, Always on top (checkable);
+  **Poke the pets** submenu (one entry per state, greyed if the atlas lacks the row);
+  Reset position; Quit. Double-click is the "give me my pet back" gesture: shows the pet if hidden,
+  raises it, and turns click-through off. Single left-click is ignored. Installed asynchronously with a 2 s retry; icon
+  built from the idle sprite with a drawn fallback.
+- **Settings.** `%APPDATA%\LC-pet-stat\settings.json` (override with
+  `$LC_PET_STAT_CONFIG_DIR`). Atomic write with read-back verification, tolerant parse, unknown
+  keys ignored, never deletes a bad file. Saved on drag-finish and on quit.
+- **`--demo`.** Cycles every available state through the poke override, each held for
+  `DEMO_HOLD_MS` (4 s) or the given seconds (minimum 500 ms). Uncommitted.
+- **Platform seam.** No file outside `core/platform/` may contain `ctypes`, `sys.platform`, or
+  `win32`; no file outside `telemetry.py` may call `psutil`; no file in `src/` may hard-code
+  sprite geometry (`192`, `208`, `8`, `9`, `74`). `NullBackend` degrades non-Windows runs with
+  a single warning.
 
-## Animation state machine
+### State and trigger summary (as implemented)
 
-Nine states, one spritesheet row each. The names are the contract between the loader, the
-animator, and the telemetry mapper — use them verbatim.
-
-| Row | State | Frames | Trigger |
-| --- | --- | --- | --- |
-| 0 | `idle-attentive` | 6 | CPU < 20% and RAM < 60% |
-| 1 | `running-playful-roll` | 8 | CPU 20–60% |
-| 2 | `running-playful-jump` | 8 | CPU > 80% or RAM > 85% |
-| 3 | `waiting-deep-sleep` | 4 | user idle > 5 min |
-| 4 | `waiting-dozy` | 5 | user idle > 5 min |
-| 5 | `blocked-grumpy` | 8 | CPU/GPU temp > 80 °C, or high swap |
-| 6 | `needs-input-sad` | 6 | input needed / prompt active |
-| 7 | `running-busy-play` | 6 | CPU 20–60% |
-| 8 | `ready-pleased` | 6 | CPU spike drops back to idle |
-
-Telemetry runs on a background `QThread` at a 1–2 s interval and emits into the Qt main
-thread via signal. **Never call psutil or touch widgets across threads directly.**
+| Row | State | Frames | Trigger in code |
+| --- | --- | ---: | --- |
+| 0 | `idle-attentive` | 8 | default; plus idle flourish host |
+| 1 | `running-playful-roll` | 8 | CPU moderate band; also the main idle flourish |
+| 2 | `running-playful-jump` | 10 | CPU ≥ 80 (band 80/70) or RAM ≥ 85 (band 85/80) |
+| 3 | `waiting-deep-sleep` | 8 | idle ≥ 900 s, CPU not moderate |
+| 4 | `waiting-dozy` | 8 | idle ≥ 60 s, CPU not moderate |
+| 5 | `blocked-grumpy` | 8 | temp ≥ 80 °C (GPU, via NVML) or swap ≥ 30 % |
+| 6 | `needs-input-sad` | 8 | **no automatic trigger** — tray "Poke the pets" only |
+| 7 | `running-busy-play` | 8 | one-shot flourish (`loop: false`, holds last frame) |
+| 8 | `ready-pleased` | 8 | CPU spike (≥ 60 % for ≥ 8 s) then calm; also click/drag greeting |
+| 9 | `working-together` | 8 | sustained keyboard/mouse activity, calm system |
 
 ## Asset pipeline
 
-`assets/` is the one part of the project with established conventions. Follow them.
+`assets/` conventions are unchanged and must be followed. Full process:
+`docs/codex-animation-pipeline-guide.md`; check docs: `assets/README.md`. `AGENTS.md` holds the
+current atlas contract and QA registry.
 
 ```
 assets/
-  gen-image/                     # generated character art (~1144x1375 sources)
-  gen-image/<Sequence>/          # one folder per animation sequence
-    00-inputs/                   # source reference art
-    01-generated-sequence/       # the wide generated strip
-    02-extracted-frames/         # per-frame PNGs
-    03-qa-reference/             # labeled contact sheet + timing GIF
-    04-integration-notes/        # README.md + sequence-spec.json
-    revision-NN/                 # a re-run; same numbered subfolders
-  gen-gifs/                      # legacy 192x208 GIFs (running-right, waiting, waving)
-  red-image/                     # empty
+  layla-and-chico-pet-spritesheet.png/.json   the only two files the runtime needs
+  gen-image/<Sequence>/                       one folder per animation sequence
+    00-inputs/ 01-generated-sequence/ 02-extracted-frames/ 03-qa-reference/ 04-integration-notes/
+  codex/                                      packing scripts, run-001/002, delivery-001, backups
+  gen-gifs/                                   legacy 192×208 GIFs
 ```
 
-Rules the existing work follows, and new work must too:
-
-- **Numbered stage folders.** Never flatten them; each stage is separately reviewable.
-- **Revisions are additive.** A re-run goes in a new `revision-NN/` (then `revision-NN-final/`
-  once approved). Earlier revisions are kept, not overwritten. `Chico-jump` currently holds
-  the original, `revision-02`, `revision-03`, and `revision-03-final`.
-- **Two frame variants per frame.** `frame-NN.png` is the tight crop (varying size, e.g.
-  196×229); `frame-NN-normalized.png` is registered onto a shared **320×320** canvas at one
-  shared scale. *Only the normalized frames are integration-ready.* Grounded frames share a
-  bottom baseline; airborne frames rise within the canvas without rescaling.
-- **`sequence-spec.json` is the source of truth** for a sequence: `frame_count`, per-frame
-  `timing_ms`, phase names, canvas size, `grounded` flags. Read it rather than inferring
-  from filenames.
-- **Non-destructive.** A new sequence never modifies existing atlases or installed pets;
-  integration is an explicit, separate step.
-- QA GIF previews are timing references, **not** production assets.
-
-Canonical example to imitate: `assets/gen-image/Chico-jump/`
-(10 frames, 320×320, crouch → wiggle ×3 → takeoff → airborne → descent → land).
-
-### Frame QA gate
-
-Process spec: `codex-animation-pipeline-guide.md`. Short version and the check's own docs:
-`assets/README.md`.
-
-**Normalization happens in step 4, and its output lands in `03-qa-reference/` as
-`*-aligned.png` — not in `02-extracted-frames/`.** Run the gate after that, before any
-step-6/7 artefact (contact sheet, GIF, spec, README) is generated.
-
-| | |
-| --- | --- |
-| `pixi run check` | every sequence, text report, **exit 1 if anything is blocked** |
-| `pixi run check <Sequence>` | just that one |
-| `... --json` / `-v` | machine-readable / crop sizes, per-frame lift and centres |
-| `pixi run qa` | `tools/frame_qa.ipynb` — pick one sequence, then scrub it in napari |
-
-The notebook renders a sequence **whether or not it has been aligned**. Unregistered crops
-are padded onto a common canvas so they can still be viewed — the cell says so loudly and
-suppresses the baseline overlay, because padding is not registration. A blocked verdict
-never stops you looking at the art.
-
-Both are read-only; neither writes into `assets/`. Exit codes: 0 clean or warnings only,
-1 at least one BLOCK, 2 bad usage — so `pixi run check` can gate a generation script.
-
-**Registration contract** (guide step 5, verified honoured on disk): canvas 320×320, body
-centre `x=160` measured on the **largest connected component** so detached effects (`?`,
-`Z`, tears) cannot drag it, baseline `y≈292` (291 in practice) taken from the bbox bottom
-with the shadow included, one shared scale.
-
-What it checks: frame-number continuity · foreign files · crops present but never aligned ·
-empty frames · canvas size · background actually cut out · residual chroma green · content
-touching the canvas edge · body centre and baseline against the anchor · near-identical
-consecutive frames · scale consistency · and a cross-check that `sequence-spec.json` parses,
-counts match, every `frames[].file` exists and belongs to this sequence, and frames the spec
-calls airborne actually leave the baseline.
-
-Severity: a **missing** `sequence-spec.json` is a WARN (step 7 writes it, after this gate);
-a spec that is present but broken or contradicts the frames on disk is a BLOCK.
-
-**Two package layouts**, both auto-detected and named in the report: `aligned-03` (current)
-and `normalized-02` (older sequences, registered frames beside the crops in step 02).
-Registered frames are found by 320×320 size, never by suffix.
-
-Tunables are module constants at the top of `frame_qa.py`. The notebook `reload()`s the
-module, so edits land without restarting the kernel.
+- **Numbered stage folders**; never flatten. **Revisions additive**; never overwrite art.
+- Registered frames are **320×320**; identify them by size, **never by filename suffix**.
+- Atlas packing: one uniform 0.6 nearest-neighbour scale 320→192, padded (0,8) to 192×208.
+  The atlas is **packed outside `src/`** by scripts in `assets/codex/scripts/`.
+- Registration contract: x=160 on the largest 4-connected component, baseline y=291 (inclusive),
+  one shared scale per sequence; airborne/rolling sequences keep vertical motion.
+- `sequence-spec.json` is the source of truth for a sequence. QA GIFs are not production assets.
+- Run `pixi run check` after registration and again once the spec exists.
 
 ### Sequence registry
 
-Generated from disk by `pixi run check` — that command is the live version of this table.
-Seven packages; six aligned.
+Live version: `pixi run check`. Last recorded in `AGENTS.md` (2026-09-14):
 
-| Sequence folder | Target row | Layout | QA verdict |
+| Sequence | Row | Layout | QA |
 | --- | --- | --- | --- |
-| `Chico-alert/` | 6 · `needs-input-sad` | aligned-03 | **pass** |
-| `Chico-layla-nap/` | 3/4 · `waiting-*` | aligned-03 | **pass** |
-| `Layla-chico-mad/` | 5 · `blocked-grumpy` | normalized-02 | **pass** |
-| `Layla-strolling/` | 1/7 · `running-*` | aligned-03 | warn — edge contact, frames 6–8 |
-| `Layla-sleeping/` | 3/4 · `waiting-*` | normalized-02 | warn — anchor-x drift, scale spread |
-| `Chico-jump/` | 2 · `running-playful-jump` | normalized-02 | warn — anchor-x, airborne frames don't lift |
-| `Chico-sad/` | 6 · `needs-input-sad` | none | mid-run when last checked |
-| — | rows 0, 8 | — | not started |
+| `Chico-alert` | 0 | aligned-03 | pass |
+| `Layla-ball-rolling` | 1 | aligned-03 | pass with warnings (0 block, 8 warn) |
+| `Chico-jump` | 2 | normalized-02 | warn — limited lift, anchor-x, malformed trailing escape in spec |
+| `Chico-layla-nap` | 3 | aligned-03 | pass |
+| `Layla-sleeping` | 4 | normalized-02 | warn — anchor-x, content height |
+| `Layla-chico-mad` | 5 | normalized-02 | pass |
+| `Chico-sad` | 6 | aligned-03 | warn — baseline |
+| `Layla-strolling` | 7 | aligned-03 | warn — edge frames 6–8; atlas uses corrected extraction in `assets/codex/run-002/derived/` |
+| `Layla-Chico-Wave` | 8 | aligned-03 | pass |
+| `Layla-Chico-Working` | 9 | aligned-03 | pass; visual deviations recorded separately |
 
-`Chico-jump` has been flattened — `revision-NN/` subfolders are gone and the
-`revision-03-final` content now sits at the sequence root.
+## Known gaps (carry forward, do not silently fix)
 
-**Filename suffixes differ per sequence** — `-aligned`, `-normalized`, `-raw`, `-unnormal`,
-or none at all. Identify registered frames **by 320×320 size, never by suffix**.
-`frame_qa.py` does this, and picks the owning stem by matching the folder name rather than
-by file count, because a package can hold more foreign files than its own.
+1. **3 failing fast tests** from config drift — see *Current state*.
+2. **`Chico-jump` has 0 px of lift.** Every frame's bbox bottom is at exactly y=182 in the atlas;
+   the arc was erased by per-frame bottom pinning. A fix needs a per-frame `draw_offset` in the
+   atlas JSON applied through `Frame.offset` — not a row-2 special case.
+3. **`needs-input-sad` has no trigger.** Reachable only from the tray. Reserved for Phase 2.
+4. **CPU temperature has no Windows source.** `psutil.sensors_temperatures()` does not exist
+   on Windows. `blocked-grumpy` fires on **GPU** temp (NVML) or swap only. Needs
+   LibreHardwareMonitor. Non-NVIDIA GPUs are unsupported.
+5. **`SWAP_HIGH = 30` is a guess**, unvalidated under real memory pressure.
+6. **Pixel art is stretched 1.5×** on a DPR-1.5 display (non-integer device pixels). The
+   `DEVICE_PIXEL_SNAP` path described in the log is **not implemented**.
+7. **`ready-pleased` flashes `idle-attentive` for one ~1.5 s sample** before firing.
+8. **No global hotkey** as a second click-through escape hatch (`RegisterHotKey`, Phase 2).
+9. **`running-busy-play` ends with Layla out of frame** and must stay one-shot; the log wants it
+   redrawn to loop in before Phase 2.
+10. **Working row:** spec says 1800 ms total, timings sum to 1300 ms; art exceeds the original
+    palette cap; frame 5 has a detached 101-px tail fragment.
+11. **Idle-attentive depends on RAM not gating it** (box idles ~70 % RAM). An adaptive threshold is
+    a Phase 2/3 item.
+12. **Not tested:** visual appearance, multi-monitor, real sustained load, long-running
+    behaviour, sleep/resume, `working-together` end-to-end latency, 35 slow tests unrun here.
+13. **macOS/Linux** structurally seamed, unimplemented. Wayland needs `wlr-layer-shell`.
+14. **Historical scripts** under `assets/codex/scripts/` reference old paths — inspect before
+    rerunning; they do not safely rebuild the current atlas.
+15. `Segoe UI Variable Text` is not installed on the dev box; the card is judged on `Segoe UI`.
 
-## Open questions / known gaps
+## Phase 2 (not implemented)
 
-Flag these rather than silently guessing:
+Exploratory only: a small chat window connecting Layla and Chico to LLMs with carefully scoped
+MCP tools (including a personal vault), keeping actions visible and under user control. Nothing
+exists in the repo for this yet. Do not describe it as built.
 
-1. **Who packs the spritesheet?** The atlas is incoming, but nothing in the repo turns
-   per-sequence 320×320 frames into the 8×9 / 192×208 / 1536×1872 atlas the loader expects.
-   If it is produced by hand outside the repo, say so and the packer question closes; if it
-   should be scripted, that tool is unwritten.
-2. **Frame size conflict.** Every sequence frame is **320×320**; the atlas spec says
-   **192×208** (as do the legacy GIFs). Whoever builds the atlas has to rescale, and 320 → 192
-   is a non-integer 0.6× — it will soften pixel edges unless the art is redrawn to fit.
-3. **Frame count conflict.** `chico-jump` final is **10 frames**; row 2
-   (`running-playful-jump`) is specced as **8**. `Layla-chico-mad` is 8 and row 5 wants 8, so
-   that one lines up. Retime or drop frames per the sequence README's guidance — don't
-   truncate blindly.
-4. **Temperature triggers do not work on Windows.** `psutil.sensors_temperatures()` is
-   Linux/BSD only — the attribute does not exist on Windows. Since Windows is now the only
-   target, row 5 `blocked-grumpy` needs a different source (`pynvml` gives GPU temp;
-   LibreHardwareMonitor for CPU) or a different trigger entirely — high swap alone is the
-   cheap fallback.
-5. **Rows 1 and 7 share a trigger, and so do rows 3 and 4.** Needs a tiebreak — alternate,
-   randomize, or split the CPU band.
-6. **`Chico-jump`'s airborne frames don't leave the ground.** The spec labels frames 6–9
-   takeoff / airborne-jump / airborne-peak / descent, but every frame's body sits within
-   3px of the same baseline. Either the art never shows the arc, or normalization
-   re-registered the airborne frames down onto it — which is exactly what the sequence
-   README says must *not* happen. Confirm visually in napari before this row ships.
-7. **`Chico-alert` is contaminated.** 16 files from `chico-jump` and a stray
-   `chico-alert-unnormal-frame-01.png` sit in its `02-extracted-frames/`. Same pattern as
-   the one already cleared out of `Layla-chico-mad` — the generation step appears to copy
-   the previous sequence's folder.
-8. `BuildPlan.md`'s markdown is mangled — the state table is flattened into a prose run-on
-   and it carries stray LaTeX (`$192 \times 208$`). The table above is the cleaned reading.
+## Defects fixed from the BuildPlan §4 prototype (all done — see `docs/PHASE1-LOG.md`)
 
-## Prototype code caveats
-
-`BuildPlan.md` §4 is a sketch, not a reference implementation. Do not copy it verbatim;
-these are real defects to fix when lifting it into `src/`:
-
-- `QImage(crop.tobytes(), w, h, Format_RGBA8888)` omits `bytesPerLine` and keeps no
-  reference to the buffer — the bytes are freed while the QImage still points at them. Keep
-  the `bytes` object alive and pass the stride, or use `PIL.ImageQt`.
-- `TelemetryThread.run` is `while True` with no stop flag; the thread never exits cleanly.
-- `psutil.cpu_percent(interval=1)` blocks, so the poll rate is pinned at 1 s regardless of
-  any configured interval.
-- Thresholds in the code (30 / 75) contradict the plan's table (20 / 60 / 80 / 85), and
-  there is **no hysteresis** — the pet will flap between states at a boundary. Add a dwell
-  time or Schmitt-trigger band, and keep the numbers in `config.py`.
-- Asset paths are bare filenames; they must resolve relative to `assets/`.
-- No system tray, no stats card, no click-through toggle yet — all three are required.
+`QImage` use-after-free and missing `bytesPerLine` (removed Pillow from runtime) · `SubWindow`
+→ `Qt.Tool` · `QLabel` 9 px margins · `while True` telemetry thread · blocking
+`cpu_percent(interval=1)` · thresholds 30/75 vs table and no hysteresis · bare-filename asset
+paths. Each has a named regression test in `tests/README.md`'s index.
 
 ## Generated files — validate before handing them over
 
-A lesson from this repo, learned the expensive way. It applies to anything written in a
-format that has a spec.
+If a format has a validator or builder library, use it; do not hand-author serialized output.
+Content that parses is not content that conforms. Round-trip everything: write, re-read with the
+real parser, assert it matches (`config.save_settings` does this).
 
-**If the format has a validator or a builder library, use it. Do not hand-author the
-serialized form and eyeball it.** Content that parses is not content that conforms —
-structurally valid JSON can still violate the schema wrapped around it, and the failure is
-silent until some other tool chokes on it.
-
-The case that prompted this: `tools/frame_qa.ipynb` was first written as raw JSON via a
-plain file write. It parsed, it ran, it looked finished. But it declared
-`nbformat_minor: 5`, and nbformat ≥ 4.5 **requires a unique `id` on every cell** — which
-hand-written JSON had no reason to include. Two consequences, neither visible on inspection:
-
-- Jupyter would have silently assigned random ids on first save, churning the file on every
-  open.
-- Cell-addressed editing (`NotebookEdit`) targets cells *by id*, so every later edit would
-  have had to rewrite the entire notebook.
-
-One `nbformat.validate()` call would have caught it at generation time. The fix — stable,
-meaningful ids per cell — cost minutes after the fact; it would have cost nothing up front.
-
-So, concretely:
-
-- **Notebooks**: build with `nbformat.v4.new_notebook()` / `new_code_cell()` rather than
-  literal JSON, and always finish with `nbformat.validate()`. Both are in the pixi env.
-- **`sequence-spec.json`**: plain UTF-8, no BOM, no trailing text. The two malformed specs
-  in `assets/` are this same class of bug — written without a read-back — and they are why
-  `frame_qa.ipynb` needs a tolerant loader at all.
-- **Anything else with a schema**: round-trip it. Write, re-read with the real parser,
-  assert it matches.
-
-And the general form: **run the artifact before calling it done.** Every substantive defect
-found in this repo's tooling surfaced from executing it against real data, never from
-reading it back.
+- **Notebooks**: `nbformat.v4.new_notebook()` / `new_code_cell()`, finish with
+  `nbformat.validate()`. (A hand-written notebook once lacked the cell `id`s nbformat ≥ 4.5 needs.)
+- **JSON** (`sequence-spec.json`, atlas): UTF-8, no BOM, no trailing text.
+- **Run the artifact before calling it done.** Every substantive defect in this repo — including
+  the exit-code-9 `QPoint`/`QPointF` crash and the inverted pause wiring — surfaced from
+  execution, not from reading.
 
 ## Working conventions
 
-- Run everything through `pixi run`. Never `pip install` into the global interpreters.
-- Run `pixi run check` after extracting frames, before generating a QA sheet or GIF.
-- Windows-only. No macOS/Linux branches unless asked.
-- Keep thresholds, intervals, and frame timings in `config.py` / `sequence-spec.json`,
-  never inline in widget code.
-- GUI work stays non-blocking; anything that polls or does I/O belongs on a worker thread.
-- Don't regenerate or overwrite art. Add a new `revision-NN/` folder instead.
-- When a sequence lands, update the **Sequence registry** table above.
-- Validate generated files with the format's own tooling before handing them over.
+- Run everything through `pixi run`; never `pip install` into global interpreters.
+- Windows only; no macOS/Linux branches unless asked.
+- Thresholds, intervals and timings live in `config.py` / the atlas JSON, never inline in widgets.
+- Telemetry and I/O stay on the worker thread; **never touch widgets or call psutil across
+  threads**. Signals are `snake_case`; modules start with `from __future__ import annotations`;
+  public classes/functions docstring which thread may call them; frozen+slots dataclasses.
+- Tests inject the clock (`StateMachine.evaluate(m, now)`) and seed the flourish RNG; the user's
+  real settings file must never be touched (`$LC_PET_STAT_CONFIG_DIR`).
+- Don't regenerate or overwrite art; add a new `revision-NN/`. Back up before any atlas update.
+- Run `pixi run check` after extracting frames and before generating a QA sheet or GIF.
+- When a sequence lands, update the registry here and in `AGENTS.md`.

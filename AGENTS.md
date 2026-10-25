@@ -6,11 +6,13 @@ Before animation or atlas work, also read docs/codex-animation-pipeline-guide.md
 
 ## Project and current status
 
-LC-pet-stat is a planned lightweight, frameless, always-on-top Windows desktop companion. Layla and Chico react to CPU/RAM/GPU activity and show a hover stats card.
+LC-pet-stat is a lightweight, frameless, always-on-top Windows desktop companion. Layla and Chico react to CPU/RAM/swap/GPU/temperature/user-idle activity through ten sprite states and show a hover stats card. **Phase 1 is implemented.** Phase 2 (LLM chat + scoped MCP tools) is exploratory and not started.
 
-Read [BuildPlan.md](BuildPlan.md) for product architecture and [the animation pipeline guide](docs/codex-animation-pipeline-guide.md) for current art/integration procedure. The plan's atlas dimensions and frame counts predate current deliverables. Actual serialized atlas metadata is authoritative for slicing and timing; documented inconsistencies still need explicit resolution.
+Read [docs/PHASE1-CONTRACT.md](docs/PHASE1-CONTRACT.md) (authoritative interface contract), [docs/PHASE1-LOG.md](docs/PHASE1-LOG.md) (decisions, defects, measurements), `tests/README.md` (suite and regression index) and [the animation pipeline guide](docs/codex-animation-pipeline-guide.md) (art/integration procedure). `docs/BuildPlan.md` is the original sketch; its atlas dimensions and frame counts are historical. Actual serialized atlas metadata is authoritative for slicing and timing.
 
-Art production and atlas integration are complete through the working-together and updated yarn sequences. The assets-root PNG/JSON **exist**. A `src/` directory is not currently present; the runtime is not verified end-to-end. The repository now has `.git/`; do not repeat earlier claims that it is not initialized or assume lockfile tracking status without checking Git.
+Art production and atlas integration are complete through the working-together and updated yarn sequences. The assets-root PNG/JSON exist and validate. The repository is under Git (27 commits on `main`); `src/config.py` and `src/main.py` have uncommitted changes (the `--demo` flag). Check Git rather than assuming tracking status of the lockfile.
+
+Verified 2026-10-24: `--validate` is `PASS (0 block, 0 warn)` (1920×2080, 82 frames, 10 animations). `pixi run -e dev test -m "not slow"`: 188 collected, **184 pass, 3 fail, 1 skip**; the 35 slow tests were not run. The 3 failures are config drift (tests assert `CPU_MODERATE_MIN == 20`, `RAM_HIGH == 85`, dozy at 5 min; `config.py` now has `1.0`, `55.0`, `IDLE_DOZY_S = 60`). `RAM_HIGH` only colours the card's RAM meter; the state gate is `BAND_RAM_HIGH = (85, 80)`. Resolve by updating the tests or reverting the constants deliberately.
 
 ## Environment
 
@@ -28,16 +30,38 @@ Current default art/QA dependencies:
 | Pillow | >=12.3.0,<13 |
 | NumPy | >=2.5.3,<3 |
 
-Pillow and NumPy are now explicit dependencies. The declared `pets` feature also includes Python, PyQt6, NumPy, psutil >=7.0.0 and nvidia-ml-py >=13.610.43,<14, and defines `python -m src.main` as the `pets` task. This declaration is not evidence that the absent application source runs. Inspect Pixi's effective environment before claiming dependency isolation.
+Pixi has three environments. `pets` (runtime): Python, PyQt6, NumPy, psutil >=7.0.0, nvidia-ml-py >=13.610.43,<14 — no Pillow, napari or Jupyter. `dev`: the same pins mirrored plus pytest >=9.1.1. Default: the art/QA stack above. `pets` and `dev` use `no-default-feature = true` (otherwise the default feature leaks Pillow and napari into them) and share a solve-group. `tests/test_packaging.py` asserts all of this; **Pillow must never become a runtime dependency**.
 
 ```powershell
 pixi install
+pixi run -e pets pets                  # launch
+pixi run -e pets pets --validate       # atlas check, no GUI
+pixi run -e pets pets --debug
+pixi run -e pets pets --demo [SECONDS] # cycle every available animation (default 4 s)
+pixi run -e dev test                   # full suite (~60 s)
+pixi run -e dev test -m "not slow"     # fast subset (~6 s)
 pixi run check
 pixi run check Layla-ball-rolling
 pixi run check --json
 pixi run qa
-pixi run -e pets pets  # declared runtime task; requires src.main
 ```
+
+## Runtime as implemented (`src/`)
+
+~6,800 lines across `main.py`, `config.py`, `core/` (`sprite_loader`, `animator`, `state_machine`, `telemetry`, `platform/`) and `ui/` (`_overlay`, `pet_window`, `stats_card`, `tray`). ~4,800 lines of tests in 13 modules. Full per-module behaviour is in `CLAUDE.md`; the contract an agent must not break:
+
+- **Threading.** Telemetry runs on a `QThread` worker driven by a `QTimer` (1500 ms, clamped 500–10,000). Only `telemetry.py` calls psutil. Widgets are touched only on the main thread via signals. `stop()` is `quit()` + `wait()` (measured 2–15 ms). A separate 250 ms sub-sampler emits a latched `input_activity_changed(bool)` from `GetLastInputInfo`.
+- **Privacy.** Input detection is `GetLastInputInfo` only. No keyboard hook, `GetAsyncKeyState` polling or Raw Input — do not add one.
+- **Platform seam.** `ctypes`, `sys.platform` and `win32` live only in `src/core/platform/`; `NullBackend` degrades other platforms. No sprite geometry literals (`192`, `208`, `8`, `9`, `74`) anywhere in `src/`.
+- **Atlas as data.** The loader reads frame rects, counts, durations, loop flags and default animation from JSON, verifies sha256, builds `QPixmap`s with Qt-owned `QImage.copy()` (no Pillow, so the prototype's use-after-free cannot recur) and fails once, clearly, via `SpriteSheet.require()`.
+- **State machine.** Ladder, first match wins: `blocked-grumpy` (temp ≥ 80 °C or swap ≥ 30 %) → `running-playful-jump` (CPU ≥ 80 or RAM ≥ 85) → sleep rows (idle ≥ 60 s `waiting-dozy`, ≥ 900 s `waiting-deep-sleep`, both only when CPU is not moderate) → `running-playful-roll` (CPU moderate band) → `working-together` (sustained input, optional row) → `idle-attentive` (unconditional default, deliberately not gated on RAM). Every gate is a Schmitt band in `config.BAND_*` plus `MIN_STATE_DWELL_MS = 4000`; escalations bypass dwell. Timed overrides (poke, greeting, flourishes) hand back via a single-shot timer that re-arms if it fires early. `ready-pleased` fires after CPU ≥ 60 % for ≥ 8 s then ≤ 20 % for 2 samples.
+- **Tiebreaks (resolved).** Rows 1 vs 7: roll is resident, the stroll is a one-shot flourish (~25 s ± 5 s in the moderate band). Rows 3 vs 4: split by idle depth. Idle flourish every ~5 min ± 30 s, weighted roll 6 / stroll 3 / wave 1; load-mapped rows are excluded so state stays readable; the schedule is not reset when the pet briefly leaves idle.
+- **One owner of reversion.** The animator holds a non-looping row's last frame and emits `sequence_finished`; the state machine alone reverts. Never add an animator-side fallback.
+- **Optional rows.** `OPTIONAL_STATES = {working-together}`; `set_available_states()` makes an absent row unreachable by every route, so a state can ship before its art.
+- **Window.** `PetWindow` is the atlas frame box (192×208), direct `paintEvent`, `Qt.Tool` (not `SubWindow`), alpha-aware drag, click pins the card and plays a greeting (`INTERACTION_GREETING_STATE = ready-pleased`), position persisted per screen and revalidated on monitor change. `set_flag_override()` is the only way to change flags. Click-through is `WS_EX_TRANSPARENT`, enabled only while a tray icon exists.
+- **Card and tray.** `StatsCard` shows CPU/RAM always and GPU/VRAM/temp/battery/disk when available, with per-state copy from `config.STATE_PRESENTATION`, hover/pin, fades, edge-flip anchoring and a hand-painted shadow (use `card_rect()` for the visible card). Tray: Click-through, Show pet, Show stats card, Always on top, **Poke the pets** (one entry per state), Reset position, Quit; double-click restores the pet and disables click-through.
+- **Settings.** `%APPDATA%\LC-pet-stat\settings.json` (`$LC_PET_STAT_CONFIG_DIR` overrides). Atomic write with read-back, tolerant parse, never deletes a bad file; saved on drag-finish and quit.
+- **Not implemented:** automatic trigger for `needs-input-sad` (tray only); CPU temperature on Windows (GPU temp via NVML only; non-NVIDIA unsupported); device-pixel snapping (1.5× DPR stretches the art); global hotkey; real jump arc (`draw_offset`); macOS/Linux; any Phase 2 chat/LLM/MCP code.
 
 The local skill `assets/codex/.agents/skills/hatch-pet-local/SKILL.md` adapts packaging to Pixi. The unavailable `load_workspace_dependencies` tool is not a Python dependency to install. The globally installed hatch-pet skill remains unchanged.
 
@@ -66,7 +90,7 @@ The loader contract includes `rows[].name`, integer `rows[].frames`, per-frame r
 
 Keep these names stable. `working-together` is the user-requested name; it was initially drafted as `running-typing`. Selecting the new row requires state-mapper integration, not just an atlas update. Row 7 is a one-shot stroll ending in an intentional tail-exit pose; respect its `loop: false`.
 
-Historical planned CPU thresholds remain 20/60/80 percent and RAM 60/85 percent. They are design targets, not tested code. Resolve shared triggers (rows 1/7, 3/4) and selection of row 9 explicitly in runtime work.
+The thresholds above are now implemented in `src/config.py` and `state_machine.py` (see *Runtime as implemented*). The shared triggers (rows 1/7, 3/4) and the selection of row 9 are resolved there. Only the CPU and RAM *high* gates and the 20 % idle edge follow the original 20/60/80 and 60/85 design numbers; the sleep thresholds (60 s / 900 s) were tuned from the planned 5 min.
 
 ## Separate Codex app pets
 
@@ -142,17 +166,16 @@ Current backups and evidence:
 
 When updating a row, verify other rows remain pixel-identical, source art is unchanged, unused cells are transparent, source paths resolve, and hashes agree. Publish the PNG/JSON pair consistently. The root JSON uses `source_path_base: "."`; copies in nested revision folders need appropriate relative bases.
 
-## Future runtime work
+## Runtime rules to preserve, and remaining work
 
-`BuildPlan.md` is a prototype sketch, not production code:
-- Use owned image buffers or QImage decoding/copying; avoid QImage referencing temporary Python bytes without a safe lifetime/stride.
-- Provide thread cancellation and clean shutdown. Never touch widgets from telemetry workers.
-- Keep GUI work non-blocking; configure polling rather than accidentally pinning it with a blocking one-second call.
-- Put thresholds/timing in configuration or sequence metadata and add hysteresis/dwell time.
-- Resolve assets relative to their actual location and read current geometry.
-- Implement tray, stats card and click-through deliberately; their existence has not been verified.
-- Windows temperature telemetry needs a supported provider; do not assume psutil exposes Linux-style sensor APIs.
-- GPU dependency declarations do not prove GPU availability or sensor behavior.
+The prototype defects in `BuildPlan.md` §4 are fixed and each has a regression test (`tests/README.md` index). Preserve:
+- Qt-owned image buffers; no Pillow in the runtime path.
+- Clean thread shutdown; never touch widgets from the telemetry worker; never call psutil outside `telemetry.py`.
+- Non-blocking polling; thresholds and timings in `config.py` or the atlas JSON, with hysteresis and dwell.
+- Assets resolved relative to the JSON's directory; geometry read from JSON.
+- The platform seam and the no-keylogging input rule.
+
+Remaining work: reconcile the 3 drifted tests; validate thresholds (especially `SWAP_HIGH = 30`) under real load; Windows CPU temperature provider (LibreHardwareMonitor); non-NVIDIA GPUs; device-pixel snapping; a real trigger for `needs-input-sad`; redraw `running-busy-play` so it loops in; restore the jump arc; run and report the 35 slow tests; then Phase 2. GPU dependency declarations do not prove GPU availability — the no-GPU path is tested by blocking the `pynvml` import.
 
 ## Validation and working conventions
 
