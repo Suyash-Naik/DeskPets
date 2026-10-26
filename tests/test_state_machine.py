@@ -137,7 +137,9 @@ def test_regression_idle_attentive_is_reachable_at_seventy_percent_ram(
     trace = drive(machine, [make_metrics(cpu=5.0, ram=70.5)] * 3, t0=0.0, step=5.0)
     assert states(trace)[-1] == DEFAULT_STATE
     assert config.RAM_BUSY_HINT == 60.0, "the number survives as copy"
-    assert config.RAM_HIGH == 85.0, "and the real RAM gate is far above idle"
+    # `config.RAM_HIGH` (55) is only the card's meter colour; the state gate is the band.
+    assert config.BAND_RAM_HIGH[0] == 85.0, "and the real RAM gate is far above idle"
+    assert config.BAND_RAM_HIGH[1] > 70.5, "even the band's exit edge sits above idle RAM"
 
 
 def test_regression_dwell_uses_only_the_injected_clock(
@@ -339,24 +341,31 @@ def test_ram_above_its_gate_triggers_the_heavy_load_row(
 
 def test_sleep_states_split_by_depth_and_wake_instantly(
         make_machine: Callable[..., StateMachine], make_metrics) -> None:
-    """Rows 3 vs 4 tiebreak: dozy at 5 min, deep sleep at 15 min, awake on the next sample.
+    """Rows 3 vs 4 tiebreak: dozy at 1 min, deep sleep at 15 min, awake on the next sample.
+
+    Dozy was originally 5 min (the spec's "idle > 5 min") and was tuned down to 60 s so the pet
+    is seen dozing more often; the thresholds are pinned explicitly so a further change is a
+    deliberate edit here too.
 
     Waking is the interesting half. The state age when the user touches the keyboard is
     typically far inside `MIN_STATE_DWELL_MS`, so waking on that very sample is only possible
     because the sleep rows are ranked *below* `idle-attentive` in `PRIORITY`, making every exit
     from sleep an escalation that bypasses dwell.
     """
+    assert config.IDLE_DOZY_S == 60.0
+    assert config.IDLE_DEEP_SLEEP_S == 900.0
+
     machine = make_machine()
     seen: dict[int, str] = {}
     t = 0.0
-    for idle in (0, 60, 299, 301, 600, 899, 901, 1200):
+    for idle in (0, 30, 59, 61, 300, 899, 901, 1200):
         t += 10.0
         state = machine.evaluate(make_metrics(cpu=3.0, idle=float(idle)), t)
         machine._commit(state, t, from_override=machine._last_from_override)
         seen[idle] = state
 
-    assert seen[299] == DEFAULT_STATE
-    assert seen[301] == "waiting-dozy"
+    assert seen[59] == DEFAULT_STATE
+    assert seen[61] == "waiting-dozy"
     assert seen[899] == "waiting-dozy"
     assert seen[901] == "waiting-deep-sleep"
 

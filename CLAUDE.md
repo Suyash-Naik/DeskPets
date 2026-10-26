@@ -19,29 +19,19 @@ Spec history: `docs/BuildPlan.md` (original sketch, now superseded in places),
 **Phase 1 is built and runnable.** `src/` holds ~6,800 lines; `tests/` holds ~4,800 lines.
 Art production and atlas packing are finished: the atlas is in `assets/`.
 
-Verified on 2026-10-24 (not just claimed):
+Verified on 2026-10-26 (not just claimed):
 
 | Check | Result |
 | --- | --- |
 | `pixi run -e pets python -m src.main --validate` | `PASS (0 block, 0 warn)` — 1920×2080, 82 frames in 10 animations |
-| `pixi run -e dev test -m "not slow"` | 188 collected: **184 pass, 3 fail, 1 skip** (35 slow tests deselected, **not run**) |
+| `pixi run -e dev test` (full, 62 s) | **222 passed, 1 skipped** (the skip is a tray test that needs an atlas missing a row) |
 
-The 3 failures are **config drift, not code bugs** — thresholds in `src/config.py` were tuned
-after the tests were written, and the tests still assert the old numbers:
+Config constants that were tuned after the spec table, and are pinned at their current values in
+the tests: `IDLE_DOZY_S = 60` (was 5 min), `CPU_MODERATE_MIN = 1.0` (not read anywhere in `src/`;
+the moderate gate is `BAND_CPU_MODERATE = (20, 14)`) and `RAM_HIGH = 55` (only turns the **card's
+RAM meter** red; the real RAM state gate is `BAND_RAM_HIGH = (85, 80)`, asserted separately).
 
-| Failing test | Asserts | `config.py` now has |
-| --- | --- | --- |
-| `test_config::test_thresholds_match_the_cleaned_spec_table_not_the_prototype` | `CPU_MODERATE_MIN == 20.0` | `1.0` |
-| `test_state_machine::test_regression_idle_attentive_is_reachable_at_seventy_percent_ram` | `RAM_HIGH == 85.0` | `55.0` |
-| `test_state_machine::test_sleep_states_split_by_depth_and_wake_instantly` | dozy at 5 min | `IDLE_DOZY_S = 60.0` (1 min) |
-
-Note what those constants actually do: `RAM_HIGH = 55` only turns the **card's RAM meter**
-red (`stats_card.py`); the real RAM state gate is `BAND_RAM_HIGH = (85, 80)`. `CPU_MODERATE_MIN`
-is not read anywhere in `src/` — the moderate gate is `BAND_CPU_MODERATE = (20, 14)`. Either
-update the tests or revert the constants; do not "fix" the tests by loosening them silently.
-
-Uncommitted at time of writing: `src/config.py` (+`DEMO_HOLD_MS`) and `src/main.py` (the
-`--demo` flag, below). The repo **is** `git init`-ed (27 commits, `main`).
+The repo **is** `git init`-ed (32 commits, `main`). The `--demo` flag is committed.
 
 ## Tech stack
 
@@ -178,7 +168,7 @@ tools/frame_qa.py         art QA gate
   `$LC_PET_STAT_CONFIG_DIR`). Atomic write with read-back verification, tolerant parse, unknown
   keys ignored, never deletes a bad file. Saved on drag-finish and on quit.
 - **`--demo`.** Cycles every available state through the poke override, each held for
-  `DEMO_HOLD_MS` (4 s) or the given seconds (minimum 500 ms). Uncommitted.
+  `DEMO_HOLD_MS` (4 s) or the given seconds (minimum 500 ms).
 - **Platform seam.** No file outside `core/platform/` may contain `ctypes`, `sys.platform`, or
   `win32`; no file outside `telemetry.py` may call `psutil`; no file in `src/` may hard-code
   sprite geometry (`192`, `208`, `8`, `9`, `74`). `NullBackend` degrades non-Windows runs with
@@ -242,7 +232,7 @@ Live version: `pixi run check`. Last recorded in `AGENTS.md` (2026-09-14):
 
 ## Known gaps (carry forward, do not silently fix)
 
-1. **3 failing fast tests** from config drift — see *Current state*.
+1. **Tuned-constant trap:** `config.RAM_HIGH` (card colour) and `BAND_RAM_HIGH` (state gate) are different numbers on purpose; the tests assert both.
 2. **`Chico-jump` has 0 px of lift.** Every frame's bbox bottom is at exactly y=182 in the atlas;
    the arc was erased by per-frame bottom pinning. A fix needs a per-frame `draw_offset` in the
    atlas JSON applied through `Frame.offset` — not a row-2 special case.
@@ -262,7 +252,8 @@ Live version: `pixi run check`. Last recorded in `AGENTS.md` (2026-09-14):
 11. **Idle-attentive depends on RAM not gating it** (box idles ~70 % RAM). An adaptive threshold is
     a Phase 2/3 item.
 12. **Not tested:** visual appearance, multi-monitor, real sustained load, long-running
-    behaviour, sleep/resume, `working-together` end-to-end latency, 35 slow tests unrun here.
+    behaviour, sleep/resume, `working-together` end-to-end latency. Slow-test timing tolerances were derived from
+    measurements on one machine.
 13. **macOS/Linux** structurally seamed, unimplemented. Wayland needs `wlr-layer-shell`.
 14. **Historical scripts** under `assets/codex/scripts/` reference old paths — inspect before
     rerunning; they do not safely rebuild the current atlas.

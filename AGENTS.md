@@ -10,9 +10,9 @@ LC-pet-stat is a lightweight, frameless, always-on-top Windows desktop companion
 
 Read [docs/PHASE1-CONTRACT.md](docs/PHASE1-CONTRACT.md) (authoritative interface contract), [docs/PHASE1-LOG.md](docs/PHASE1-LOG.md) (decisions, defects, measurements), `tests/README.md` (suite and regression index) and [the animation pipeline guide](docs/codex-animation-pipeline-guide.md) (art/integration procedure). `docs/BuildPlan.md` is the original sketch; its atlas dimensions and frame counts are historical. Actual serialized atlas metadata is authoritative for slicing and timing.
 
-Art production and atlas integration are complete through the working-together and updated yarn sequences. The assets-root PNG/JSON exist and validate. The repository is under Git (27 commits on `main`); `src/config.py` and `src/main.py` have uncommitted changes (the `--demo` flag). Check Git rather than assuming tracking status of the lockfile.
+Art production and atlas integration are complete through the working-together and updated yarn sequences. The assets-root PNG/JSON exist and validate. The repository is under Git (32 commits on `main`), including the `--demo` flag. Check Git rather than assuming tracking status of the lockfile.
 
-Verified 2026-10-24: `--validate` is `PASS (0 block, 0 warn)` (1920×2080, 82 frames, 10 animations). `pixi run -e dev test -m "not slow"`: 188 collected, **184 pass, 3 fail, 1 skip**; the 35 slow tests were not run. The 3 failures are config drift (tests assert `CPU_MODERATE_MIN == 20`, `RAM_HIGH == 85`, dozy at 5 min; `config.py` now has `1.0`, `55.0`, `IDLE_DOZY_S = 60`). `RAM_HIGH` only colours the card's RAM meter; the state gate is `BAND_RAM_HIGH = (85, 80)`. Resolve by updating the tests or reverting the constants deliberately.
+Verified 2026-10-26: `--validate` is `PASS (0 block, 0 warn)` (1920×2080, 82 frames, 10 animations). Full `pixi run -e dev test`: **222 passed, 1 skipped** in 62 s. Constants tuned after the spec table are pinned at their current values in the tests: `IDLE_DOZY_S = 60`, `CPU_MODERATE_MIN = 1.0` (unused in `src/`), `RAM_HIGH = 55` (card meter colour only; the state gate is `BAND_RAM_HIGH = (85, 80)`).
 
 ## Environment
 
@@ -175,7 +175,7 @@ The prototype defects in `BuildPlan.md` §4 are fixed and each has a regression 
 - Assets resolved relative to the JSON's directory; geometry read from JSON.
 - The platform seam and the no-keylogging input rule.
 
-Remaining work: reconcile the 3 drifted tests; validate thresholds (especially `SWAP_HIGH = 30`) under real load; Windows CPU temperature provider (LibreHardwareMonitor); non-NVIDIA GPUs; device-pixel snapping; a real trigger for `needs-input-sad`; redraw `running-busy-play` so it loops in; restore the jump arc; run and report the 35 slow tests; then Phase 2. GPU dependency declarations do not prove GPU availability — the no-GPU path is tested by blocking the `pynvml` import.
+Remaining work: validate thresholds (especially `SWAP_HIGH = 30`) under real load; Windows CPU temperature provider (LibreHardwareMonitor); non-NVIDIA GPUs; device-pixel snapping; a real trigger for `needs-input-sad`; redraw `running-busy-play` so it loops in; restore the jump arc; then Phase 2. GPU dependency declarations do not prove GPU availability — the no-GPU path is tested by blocking the `pynvml` import.
 
 ## Validation and working conventions
 

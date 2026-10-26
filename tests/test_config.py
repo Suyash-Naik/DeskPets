@@ -169,18 +169,26 @@ def test_schmitt_bands_all_have_a_lower_exit_than_enter() -> None:
 
 
 def test_thresholds_match_the_cleaned_spec_table_not_the_prototype() -> None:
-    """20 / 60 / 80 / 85, from CLAUDE.md's state table -- not the prototype's 30 / 75.
+    """CPU 20 / 60 / 80 and RAM 85 gates, not the prototype's 30 / 75.
 
     PHASE1-LOG.md defect 7. The prototype's numbers contradicted the spec, and the two sets are
     close enough that the discrepancy is invisible unless something asserts it.
+
+    Two constants were tuned after the spec table and are pinned at their *current* values:
+    `CPU_MODERATE_MIN` is 1.0 (a documentation floor; nothing in `src/` reads it) and
+    `RAM_HIGH` is 55.0, which only turns the stats card's RAM meter red. The RAM *state* gate
+    is `BAND_RAM_HIGH`, asserted below at the spec's 85 so the two cannot be confused.
     """
     assert config.CPU_IDLE_MAX == 20.0
-    assert config.CPU_MODERATE_MIN == 20.0
+    assert config.CPU_MODERATE_MIN == 1.0
     assert config.CPU_MODERATE_MAX == 60.0
     assert config.CPU_HIGH == 80.0
-    assert config.RAM_HIGH == 85.0
+    assert config.RAM_HIGH == 55.0, "card meter colour only, not a state gate"
+    assert config.BAND_CPU_MODERATE[0] == config.CPU_IDLE_MAX, "the real moderate gate is 20"
+    assert config.BAND_CPU_HIGH[0] == config.CPU_HIGH
+    assert config.BAND_RAM_HIGH == (85.0, 80.0), "the real RAM state gate"
     assert 30.0 not in (config.CPU_IDLE_MAX, config.CPU_HIGH)
-    assert 75.0 not in (config.RAM_HIGH, config.CPU_HIGH)
+    assert 75.0 not in (config.BAND_RAM_HIGH[0], config.CPU_HIGH)
 
 
 def test_nonloop_end_policy_stays_hold() -> None:
