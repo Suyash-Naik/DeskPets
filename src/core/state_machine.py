@@ -540,8 +540,14 @@ class StateMachine(QObject):
     # -- timed override slot --------------------------------------------------------------
 
     def _install_override(self, state: str, duration_ms: int, now: float) -> None:
+        new_until = now + duration_ms / 1000.0
+        # Never shorten a live hold of the SAME state: a click's 1.5 s greeting is also
+        # ``ready-pleased`` and would otherwise cut a 5-minute pomodoro "all done" short.
+        if (self._override_state == state and self._override_until is not None
+                and self._override_until > new_until and self._override_until > now):
+            return
         self._override_state = state
-        self._override_until = now + duration_ms / 1000.0
+        self._override_until = new_until
         # Without this the slot is only noticed as expired on the NEXT telemetry sample, so a
         # flourish shorter than the poll interval overstays. The stroll is the visible case:
         # 1160 ms of animation followed by up to 1500 ms parked on its tail-only final frame,
