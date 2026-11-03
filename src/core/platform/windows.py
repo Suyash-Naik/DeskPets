@@ -273,6 +273,19 @@ class WindowsBackend(PlatformBackend):
             log.exception("unexpected failure setting click-through (handle=%r)", handle)
             return False
 
+    def play_ping(self) -> bool:
+        """Play the system "asterisk" sound. Asynchronous: ``MessageBeep`` returns at once.
+
+        Never raises. Any thread.
+        """
+        try:
+            import winsound
+            winsound.MessageBeep(winsound.MB_ICONASTERISK)
+            return True
+        except Exception:  # noqa: BLE001
+            log.exception("could not play the notification sound")
+            return False
+
     def get_idle_seconds(self) -> float | None:
         """Seconds since the last global user input, or ``None``.
 
