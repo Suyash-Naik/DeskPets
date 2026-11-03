@@ -139,6 +139,7 @@ class TrayIcon(QSystemTrayIcon):
     always_on_top_toggled = pyqtSignal(bool)
     reset_position_requested = pyqtSignal()
     poke_requested = pyqtSignal(str)
+    pomodoro_toggle_requested = pyqtSignal()
     quit_requested = pyqtSignal()
     activated_by_user = pyqtSignal()
 
@@ -159,6 +160,11 @@ class TrayIcon(QSystemTrayIcon):
             "Show stats card", self._on_card_visible)
         self._act_always_on_top = self._add_checkable(
             "Always on top", self._on_always_on_top, checked=True)
+
+        # Plain (non-checkable) action whose label flips; the owner pushes the truth back.
+        self._act_pomodoro = QAction("Start Pomodoro", self)
+        self._act_pomodoro.triggered.connect(self.pomodoro_toggle_requested.emit)
+        self._menu.addAction(self._act_pomodoro)
 
         # "Poke the pets" is the manual trigger for needs-input-sad (which has no telemetry
         # signal) and doubles as the QA path for every animation row while the art is WIP --
@@ -240,6 +246,10 @@ class TrayIcon(QSystemTrayIcon):
 
     def set_always_on_top_checked(self, on: bool) -> None:
         self._set_checked(self._act_always_on_top, on)
+
+    def set_pomodoro_running(self, running: bool) -> None:
+        """Flip the menu label to match the timer. GUI thread."""
+        self._act_pomodoro.setText("Stop Pomodoro" if running else "Start Pomodoro")
 
     def set_click_through_available(self, available: bool, reason: str = "") -> None:
         """Enable or disable the click-through item, with a readable reason when disabled."""
