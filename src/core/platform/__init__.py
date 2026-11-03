@@ -40,6 +40,7 @@ __all__ = [
     "set_click_through",
     "set_always_on_top",
     "get_idle_seconds",
+    "play_ping",
 ]
 
 
@@ -130,6 +131,18 @@ def set_always_on_top(widget: QWidget, enabled: bool) -> bool:
     if not handle:
         return False
     return _BACKEND.set_always_on_top(handle, enabled)
+
+
+def play_ping() -> bool:
+    """Play a short, non-blocking notification sound (the pomodoro "done" ping).
+
+    ``False`` if this backend has no sound. Never raises. Any thread.
+    """
+    try:
+        return _BACKEND.play_ping()
+    except Exception:  # noqa: BLE001 -- a missing sound must never break the timer
+        log.exception("play_ping failed")
+        return False
 
 
 def get_idle_seconds() -> float | None:
