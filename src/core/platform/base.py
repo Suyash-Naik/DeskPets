@@ -95,6 +95,13 @@ class PlatformBackend(ABC):
         """
         return None
 
+    def play_ping(self) -> bool:
+        """Play a short, non-blocking notification sound. Default: unimplemented, ``False``.
+
+        Never raises. Returns whether a sound was requested. Any thread.
+        """
+        return False
+
     def unsupported_reason(self) -> str:
         """Human-readable reason click-through is unavailable; ``""`` when it is available.
 
