@@ -326,6 +326,22 @@ INTERACTION_GREETING_HOLD_MS: Final[int] = WAVE_FLOURISH_HOLD_MS
 #: ``--demo``: how long each state is held while cycling through the atlas for visual inspection.
 DEMO_HOLD_MS: Final[int] = 4000
 
+#: Pomodoro focus length, started from the play button on the stats card.
+POMODORO_WORK_MS: Final[int] = 45 * 60 * 1000
+
+#: How long the pets show the "all done" row once a pomodoro finishes. Forced through the
+#: same override as the poke menu, so it outranks every ladder state (including grumpy).
+POMODORO_DONE_MS: Final[int] = 5 * 60 * 1000
+
+#: The row shown while the done-hold runs.
+POMODORO_DONE_STATE: Final[str] = "ready-pleased"
+
+#: Countdown redraw cadence. The deadline is monotonic; this only drives the display.
+POMODORO_TICK_MS: Final[int] = 1000
+
+#: Card copy while the done-hold runs (replaces the shared "system is back to idle" subtitle).
+POMODORO_DONE_SUBTITLE: Final[str] = "Pomodoro complete · take a break"
+
 
 # =============================================================================
 # STATE COPY  (data-driven: a new sprite row needs one dict entry and no code change)
@@ -430,6 +446,12 @@ CARD_LABEL_COL_W: Final[int] = 40
 CARD_VALUE_COL_W: Final[int] = 40
 CARD_METER_HEIGHT: Final[int] = 6
 CARD_GLYPH_D: Final[int] = 28
+
+#: Pomodoro play/pause button in the card header (left of the state glyph). Diameter, and the
+#: gap between it and the glyph disc; the countdown text sits under the subtitle's baseline
+#: rather than inside the button so the button stays a fixed size.
+CARD_PLAY_D: Final[int] = 24
+CARD_PLAY_GAP: Final[int] = 8
 
 CARD_GAP_PX: Final[int] = 12         # gap between pet and card
 CARD_EDGE_MARGIN: Final[int] = 8
