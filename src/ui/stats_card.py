@@ -454,6 +454,8 @@ class StatsCard(QWidget):
     """
 
     pinned_changed = pyqtSignal(bool)
+    #: The play/pause button was clicked. The card holds no timer; the owner decides.
+    pomodoro_toggled = pyqtSignal()
 
     def __init__(self, parent: QWidget | None = None) -> None:
         """Build the card hidden. GUI thread; a ``QApplication`` must already exist."""
@@ -477,6 +479,11 @@ class StatsCard(QWidget):
         self._pinned = False
         self._hovered = False       # cursor is over the *pet*
         self._cursor_inside = False  # cursor is over the *card*
+
+        self._pomo_running = False
+        self._pomo_remaining = 0
+        self._pomo_done = False
+        self._play_hover = False
 
         #: State name whose paint has already been reported as failing; see ``paintEvent``.
         self._paint_failed_for: str | None = None
@@ -555,6 +562,8 @@ class StatsCard(QWidget):
         """Adopt a new animation state's copy, accent and glyph. **GUI thread.**"""
         self._state = state
         self._presentation = presentation_for(state)
+        if state != config.POMODORO_DONE_STATE:
+            self._pomo_done = False  # the hold ended; the shared copy applies again
         self.update()
 
     # -- anchoring ------------------------------------------------------------------------
@@ -800,7 +809,23 @@ class StatsCard(QWidget):
         (see ``__init__``), so it fires with no button held.
         """
         self._set_cursor_inside(self._in_card(event))
+        hover = self._on_play_button(event)
+        if hover != self._play_hover:
+            self._play_hover = hover
+            self.setCursor(Qt.CursorShape.PointingHandCursor if hover
+                           else Qt.CursorShape.ArrowCursor)
+            self.update()
         super().mouseMoveEvent(event)
+
+    def _on_play_button(self, event) -> bool:  # noqa: ANN001 - Qt signature
+        """Is this event's position over the pomodoro button? False if it has no position."""
+        position = getattr(event, "position", None)
+        if position is None:
+            return False
+        try:
+            return self._play_rect().contains(position())
+        except TypeError:  # pragma: no cover - defensive
+            return False
 
     def mousePressEvent(self, event) -> None:  # noqa: ANN001 - Qt signature
         """Left-click on the card toggles the pin. **GUI thread.**
@@ -808,6 +833,11 @@ class StatsCard(QWidget):
         A press in the shadow margin is not a press on the card and must not pin it.
         """
         if event.button() == Qt.MouseButton.LeftButton and self._in_card(event):
+            if self._on_play_button(event):
+                # The button is not a pin gesture: swallow it so the card stays as it was.
+                self.pomodoro_toggled.emit()
+                event.accept()
+                return
             self.toggle_pinned()
             event.accept()
             return
@@ -1038,10 +1068,16 @@ class StatsCard(QWidget):
         glyph_box = QRectF(box.right() - glyph_d, box.center().y() - glyph_d / 2.0,
                            glyph_d, glyph_d)
         self._paint_glyph(painter, glyph_box, accent)
+        self._paint_play_button(painter, self._play_rect(box), accent)
 
-        text_w = box.width() - glyph_d - _COL_GAP
+        text_w = box.width() - glyph_d - _COL_GAP - config.CARD_PLAY_D - config.CARD_PLAY_GAP
         title = self._format(self._presentation.title)
-        subtitle = self._format(self._presentation.subtitle)
+        if self._pomo_running:
+            subtitle = f"Focus · {self._pomo_remaining // 60:02d}:{self._pomo_remaining % 60:02d} left"
+        elif self._pomo_done and self._state == config.POMODORO_DONE_STATE:
+            subtitle = config.POMODORO_DONE_SUBTITLE
+        else:
+            subtitle = self._format(self._presentation.subtitle)
 
         block_h = self._fm_title.height() + _HEADER_LEADING + self._fm_subtitle.height()
         top = box.top() + (box.height() - block_h) / 2.0
@@ -1060,6 +1096,64 @@ class StatsCard(QWidget):
                    text_w, self._fm_subtitle.height()),
             int(Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter),
             self._fm_subtitle.elidedText(subtitle, Qt.TextElideMode.ElideRight, int(text_w)))
+
+    def _header_rect(self) -> QRectF:
+        """The header box in widget coordinates. Shared by paint and hit-testing. **GUI thread.**"""
+        inner = QRectF(self.card_rect()).adjusted(
+            config.CARD_PADDING_X, config.CARD_PADDING_Y,
+            -config.CARD_PADDING_X, -config.CARD_PADDING_Y)
+        header_h = max(config.CARD_GLYPH_D,
+                       self._fm_title.height() + _HEADER_LEADING + self._fm_subtitle.height())
+        return QRectF(inner.left(), inner.top(), inner.width(), header_h)
+
+    def _play_rect(self, header: QRectF | None = None) -> QRectF:
+        """The pomodoro button, immediately left of the state glyph. **GUI thread.**"""
+        box = header if header is not None else self._header_rect()
+        d = config.CARD_PLAY_D
+        x = box.right() - config.CARD_GLYPH_D - config.CARD_PLAY_GAP - d
+        return QRectF(x, box.center().y() - d / 2.0, d, d)
+
+    def _paint_play_button(self, painter: QPainter, box: QRectF, accent: QColor) -> None:
+        """A disc with a play triangle, or two pause bars while a pomodoro runs."""
+        disc = QColor(accent)
+        disc.setAlpha(_GLYPH_RING_ALPHA if self._play_hover else _GLYPH_DISC_ALPHA)
+        painter.save()
+        painter.setPen(QPen(QColor(accent.red(), accent.green(), accent.blue(),
+                                   _GLYPH_RING_ALPHA), 1.0))
+        painter.setBrush(disc)
+        painter.drawEllipse(box.adjusted(0.5, 0.5, -0.5, -0.5))
+        w, h = box.width(), box.height()
+        painter.setPen(Qt.PenStyle.NoPen)
+        painter.setBrush(accent)
+        if self._pomo_running:
+            bar_w, bar_h = w * 0.12, h * 0.34
+            top = box.center().y() - bar_h / 2.0
+            painter.drawRect(QRectF(box.center().x() - bar_w * 1.4, top, bar_w, bar_h))
+            painter.drawRect(QRectF(box.center().x() + bar_w * 0.4, top, bar_w, bar_h))
+        else:
+            tri = QPainterPath()
+            x0, y0 = box.left() + w * 0.40, box.top() + h * 0.30
+            tri.moveTo(x0, y0)
+            tri.lineTo(x0, box.top() + h * 0.70)
+            tri.lineTo(box.left() + w * 0.72, box.center().y())
+            tri.closeSubpath()
+            painter.drawPath(tri)
+        painter.restore()
+
+    def set_pomodoro(self, running: bool, remaining_s: int = 0) -> None:
+        """Show the timer state: button icon plus a countdown subtitle. **GUI thread.**"""
+        if running:
+            self._pomo_done = False
+        if (running, remaining_s) != (self._pomo_running, self._pomo_remaining):
+            self._pomo_running = running
+            self._pomo_remaining = max(0, int(remaining_s))
+            self.update()
+
+    def set_pomodoro_done(self, done: bool) -> None:
+        """Flag that the "all done" hold is a pomodoro's, so the subtitle says so. **GUI thread.**"""
+        if done != self._pomo_done:
+            self._pomo_done = done
+            self.update()
 
     def _paint_glyph(self, painter: QPainter, box: QRectF, accent: QColor) -> None:
         """A soft accent disc with the state's mark inside it."""
