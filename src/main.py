@@ -21,6 +21,7 @@ from PyQt6.QtWidgets import QApplication
 from . import config
 from .core import platform as platform_seam
 from .core.animator import Animator
+from .core.pomodoro import PomodoroTimer
 from .core.sprite_loader import SpriteLoadError, load_spritesheet, validate_atlas
 from .core.state_machine import REQUIRED_STATES, STATES, StateMachine
 from .core.telemetry import TelemetryService
@@ -60,6 +61,7 @@ class PetApp(QObject):
         self._card = StatsCard()
         self._machine = StateMachine()
         self._telemetry = TelemetryService(interval_ms=config.POLL_INTERVAL_MS)
+        self._pomodoro = PomodoroTimer(self)
         self._tray: TrayIcon | None = None
 
         # Before anything can ask the machine for a state. Every route to a state name -- the
@@ -145,6 +147,13 @@ class PetApp(QObject):
         self._pet.drag_finished.connect(self._save)
         self._card.pinned_changed.connect(self._on_card_pinned)
 
+        self._card.pomodoro_toggled.connect(self._pomodoro.toggle)
+        self._pomodoro.state_changed.connect(self._on_pomodoro_state)
+        self._pomodoro.ticked.connect(
+            lambda secs: self._card.set_pomodoro(self._pomodoro.running, secs))
+        self._pomodoro.finished.connect(self._on_pomodoro_done)
+
+        self._app.aboutToQuit.connect(self._pomodoro.stop)
         self._app.aboutToQuit.connect(self._telemetry.stop)
         self._app.aboutToQuit.connect(self._save)
 
@@ -167,6 +176,8 @@ class PetApp(QObject):
         tray.always_on_top_toggled.connect(self._on_always_on_top)
         tray.reset_position_requested.connect(self._on_reset_position)
         tray.poke_requested.connect(self._on_poke)
+        tray.pomodoro_toggle_requested.connect(self._pomodoro.toggle)
+        tray.set_pomodoro_running(self._pomodoro.running)
         tray.quit_requested.connect(self._quit)
         tray.activated_by_user.connect(self._on_tray_double_click)
 
@@ -241,6 +252,17 @@ class PetApp(QObject):
         # fire on a machine with no temperature source -- this is how both get exercised.
         self._machine.trigger_state(state, 5000)
 
+    def _on_pomodoro_state(self, running: bool) -> None:
+        self._card.set_pomodoro(running, self._pomodoro.remaining_s())
+        if self._tray is not None:
+            self._tray.set_pomodoro_running(running)
+
+    def _on_pomodoro_done(self) -> None:
+        """Ping, then hold the "all done" row. Outranks the ladder, alarms included."""
+        platform_seam.play_ping()
+        self._card.set_pomodoro_done(True)
+        self._machine.trigger_state(config.POMODORO_DONE_STATE, config.POMODORO_DONE_MS)
+
     def _on_tray_double_click(self) -> None:
         if not self._pet.isVisible():
             self._on_pet_visible(True)
@@ -278,6 +300,7 @@ class PetApp(QObject):
 
     def _quit(self) -> None:
         self._save()
+        self._pomodoro.stop()
         self._telemetry.stop()
         if self._tray is not None:
             self._tray.shutdown()
