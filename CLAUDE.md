@@ -167,6 +167,13 @@ tools/frame_qa.py         art QA gate
 - **Settings.** `%APPDATA%\LC-pet-stat\settings.json` (override with
   `$LC_PET_STAT_CONFIG_DIR`). Atomic write with read-back verification, tolerant parse, unknown
   keys ignored, never deletes a bad file. Saved on drag-finish and on quit.
+- **Pomodoro.** Play/pause button in the stats-card header (left of the state glyph) and a tray
+  "Start/Stop Pomodoro" item. `core/pomodoro.py` (`PomodoroTimer`, monotonic deadline, 1 s display
+  ticker, not persisted) runs `config.POMODORO_WORK_MS` (45 min); on finish `PetApp` plays
+  `platform.play_ping()` (winsound via the Windows backend; QtMultimedia is not in the env) and
+  forces `ready-pleased` for `POMODORO_DONE_MS` (5 min) via `trigger_state`. The hold outranks the
+  whole ladder, `blocked-grumpy` included. `_install_override` never shortens a live hold of the
+  same state, so a click's 1.5 s greeting cannot cut the 5 min short.
 - **`--demo`.** Cycles every available state through the poke override, each held for
   `DEMO_HOLD_MS` (4 s) or the given seconds (minimum 500 ms).
 - **Platform seam.** No file outside `core/platform/` may contain `ctypes`, `sys.platform`, or
