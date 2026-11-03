@@ -1114,7 +1114,7 @@ class StatsCard(QWidget):
         return QRectF(x, box.center().y() - d / 2.0, d, d)
 
     def _paint_play_button(self, painter: QPainter, box: QRectF, accent: QColor) -> None:
-        """A disc with a play triangle, or two pause bars while a pomodoro runs."""
+        """A disc with a play triangle, or a stop square while a pomodoro runs."""
         disc = QColor(accent)
         disc.setAlpha(_GLYPH_RING_ALPHA if self._play_hover else _GLYPH_DISC_ALPHA)
         painter.save()
@@ -1126,10 +1126,12 @@ class StatsCard(QWidget):
         painter.setPen(Qt.PenStyle.NoPen)
         painter.setBrush(accent)
         if self._pomo_running:
-            bar_w, bar_h = w * 0.12, h * 0.34
-            top = box.center().y() - bar_h / 2.0
-            painter.drawRect(QRectF(box.center().x() - bar_w * 1.4, top, bar_w, bar_h))
-            painter.drawRect(QRectF(box.center().x() + bar_w * 0.4, top, bar_w, bar_h))
+            # Clicking while running cancels the countdown (it does not pause), so the icon is
+            # a stop square rather than pause bars.
+            side = w * 0.34
+            painter.drawRoundedRect(
+                QRectF(box.center().x() - side / 2.0, box.center().y() - side / 2.0, side, side),
+                1.5, 1.5)
         else:
             tri = QPainterPath()
             x0, y0 = box.left() + w * 0.40, box.top() + h * 0.30
