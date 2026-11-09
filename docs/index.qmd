@@ -1,14 +1,14 @@
 ---
 title: "DeskPets"
-subtitle: "Layla and Chico, Pets dwelling on your screen that shows how your computer is doing and help you work with a Pomodoro timer"
+subtitle: "Layla and Chico: desktop pets that show how your computer is doing and keep you on track with a Pomodoro timer"
 toc: false
 ---
 
 ![Layla and Chico reacting to system activity](pets_showcase.gif){fig-alt="Two cats, Layla and Chico, animating on the desktop" fig-align="center"}
 
-DeskPets puts my two small cats, **Layla** and **Chico**, on your Windows desktop. They stay on top of your windows and react to what your computer is doing. When the system is calm they sit attentively. When it is busy they play, and under heavy load they jump. They get grumpy when it is struggling, and they fall asleep when you have been away.
+DeskPets puts two small cats, **Layla** and **Chico**, on your Windows desktop. They stay on top of your windows and react to what your computer is doing. They change their animations based on what you are doing and how busy your system is. 
 
-Hover over them and a small card shows the actual numbers. The goal is to answer one question at a glance, without opening a monitoring dashboard: *is my computer calm, busy, struggling, or waiting for me?*
+Hover over them and a small card shows the actual numbers depending upon your hardware. The goal is to answer one question at a glance, without opening a monitoring dashboard: *is my computer calm, busy, struggling, or waiting for me?*
 
 ::: {.callout-note}
 ## Status
@@ -27,7 +27,7 @@ DeskPets is a personal project in active development. Phase 1, the Windows app, 
 | Working together | You are actively typing or using the mouse on a calm system |
 | Pleased | A heavy burst of work just finished |
 
-Thresholds use hysteresis and minimum dwell times, so the animation does not flicker when a reading hovers around a limit. Every value is a tunable default.
+Thresholds use hysteresis and minimum dwell times, so the animation does not flicker when a reading hovers around a limit. Every value is a tunable default (which may be customized upon request).
 
 ## Features
 
@@ -53,6 +53,8 @@ pixi run -e pets pets
 ```
 
 Two flags are useful while you are exploring: `--demo` cycles through every animation, and `--validate` checks the sprite atlas without opening a window.
+
+Dowload link: **coming soon**
 
 ## How it works
 
