@@ -167,7 +167,7 @@ tools/frame_qa.py         art QA gate
 - **Settings.** `%APPDATA%\LC-pet-stat\settings.json` (override with
   `$LC_PET_STAT_CONFIG_DIR`). Atomic write with read-back verification, tolerant parse, unknown
   keys ignored, never deletes a bad file. Saved on drag-finish and on quit.
-- **Pomodoro.** Play/pause button in the stats-card header (left of the state glyph) and a tray
+- **Pomodoro.** Play/stop button (stop square while running; clicking cancels, there is no pause) in the stats-card header (left of the state glyph) and a tray
   "Start/Stop Pomodoro" item. `core/pomodoro.py` (`PomodoroTimer`, monotonic deadline, 1 s display
   ticker, not persisted) runs `config.POMODORO_WORK_MS` (45 min); on finish `PetApp` plays
   `platform.play_ping()` (winsound via the Windows backend; QtMultimedia is not in the env) and
