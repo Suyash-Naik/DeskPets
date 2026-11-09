@@ -92,7 +92,7 @@ turning its responses into actions that remain understandable and under my contr
 features are still open, but I would like the AI integration to grow naturally from the pets
 rather than feel like a separate assistant placed on top of them.
 
-Windows is the current target. Linux and macOS support may follow later, but their desktop and
+Windows is the current target. Linux and macOS support will follow later as time allows, but their desktop and
 window-management behavior requires dedicated platform work rather than a simple packaging
 change.
 
