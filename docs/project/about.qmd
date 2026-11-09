@@ -43,7 +43,7 @@ They love to cuddle together.
 
 The idea came to me in a spurt of ADHD frustration and inspiration. Keeping track of computer vitals while actively exploring and working on other projects is an arduous ask for an attention-deficient mind, so I wanted to make it easier.
 
-I directed the project and wrote the specs and instructions. Claude drafted the code and documentation, I reviewed and released it. I prompted Codex to produced the art to use its inbuilt image generation modules. I corrected and tested everything before commits. The process is described in [Built with agents](/internals/built-with-agents.qmd), and the artwork has its own page: [Art pipeline](/internals/art-pipeline.qmd).
+I directed the project and wrote the specs and instructions. Claude drafted the code and documentation, I reviewed and released it. I prompted Codex to produce the art to use its inbuilt image generation modules. I corrected and tested everything before commits. The process is described in [Built with agents](/internals/built-with-agents.qmd), and the artwork has its own page: [Art pipeline](/internals/art-pipeline.qmd).
 
 ### Agentic AI
 

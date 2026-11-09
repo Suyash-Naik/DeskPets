@@ -27,8 +27,8 @@ website:
       - sidebar:internals
       - sidebar:project
     right:
-      - text: "suyashnaik.com"
-        href: https://suyashnaik.com
+      - text: "Case Study"
+        href: https://suyashnaik.com/projects/desk-pets.html
       - icon: github
         href: https://github.com/Suyash-Naik/DeskPets
         aria-label: GitHub
@@ -36,7 +36,7 @@ website:
   # One sidebar per navbar group. A page appears in a sidebar only once it is listed here, so
   # add each new page as it is written. Planned pages, by group:
   #   guide:     stats-card, tray-and-controls, pomodoro, configuration, known-limitations
-  #   internals: contributing
+  #   internals: built-with-agents
   #   project:   roadmap, download
   sidebar:
     - id: guide
@@ -51,6 +51,8 @@ website:
       contents:
         - internals/how-it-works.qmd
         - internals/art-pipeline.qmd
+        - internals/generating-sprites.qmd
+        - internals/contributing.qmd
     - id: project
       title: "Project"
       style: docked
