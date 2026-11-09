@@ -1,0 +1,67 @@
+---
+title: "Pets and states"
+subtitle: "What Layla and Chico are doing, and what it tells you about your computer"
+---
+
+Layla and Chico always show one of ten animations. Most are tied to what your computer is doing. A few are just there to keep them alive.
+
+## What the pets are telling you
+
+| What you see | What it means | When it happens (defaults) |
+| --- | --- | --- |
+| **Sitting attentively** | The system is calm | The fallback when nothing else applies |
+| **Rolling with a ball of yarn** | CPU is moderately busy | CPU above 20% |
+| **Jumping** | The system is working hard | CPU above 80%, or RAM above 85% |
+| **Grumpy** | The system is under stress | GPU temperature above 80 °C, or swap usage above 30% |
+| **Dozing** | You have stepped away | No input for 1 minute, and the CPU is not busy |
+| **Deep asleep** | You have been away for a while | No input for 15 minutes, and the CPU is not busy |
+| **Working together** | You are busy at the keyboard or mouse | Sustained input on a calm system |
+| **Pleased, waving** | A heavy burst of work just finished | CPU was above 60% for 8 seconds or more, then calmed down |
+| **Strolling** | Moderate load, or just a bit of life | Plays every so often while the CPU is moderately busy |
+| **Sad** | Nothing yet | See [below](#dev) |
+
+These are the shipped defaults. They are tuned for one machine, so expect to adjust them for yours. They live in `src/config.py`, and I'm happy to customize them on request.
+
+## Which one wins
+
+Several conditions can be true at once, so the pets check them in a fixed order and use the first one that matches:
+
+1. **Grumpy**: high temperature or swap
+2. **Jumping**: high CPU or RAM
+3. **Sleeping**: idle for long enough, as long as the CPU isn't moderately busy
+4. **Rolling**: moderate CPU
+5. **Working together**: sustained input
+6. **Sitting attentively**: everything else
+
+So a hot GPU always outranks a busy CPU, and a busy computer never lets the pets fall asleep, however long you've been away from it.
+
+## No flickering
+
+Raw readings jump around, and a pet that changed pose every second would be unreadable. Two rules keep the animation steady:
+
+- **Different on and off thresholds.** The pets get excited at 80% CPU but only calm down below 70%, so a reading hovering around the limit doesn't toggle them. This is called hysteresis, and every threshold has its own band.
+- **A minimum stay of 4 seconds** in a state before it changes.
+
+Getting *worse* is the exception. When the situation escalates, say from moderate load to a hot GPU, the pets react immediately. 
+
+## Things they do on their own
+
+- **Greetings.** Click a pet, or drop it after dragging, and they greet you for a moment.
+- **Idle moments.** About every five minutes, give or take thirty seconds, the pets roll, stroll, or wave. The jump, grumpy, and sleeping animations are never used for this, so those always mean what they say. A roll can still happen on an idle computer, so treat a roll on its own as a hint, not a reading.
+- **Pomodoro finish.** When a [Pomodoro](/index.qmd#features) ends, the pets celebrate with the *pleased* animation for five minutes, even if the system is under stress.
+
+## Development {#dev}
+
+Some animations exist and are drawn, but **nothing triggers it automatically yet**. They are reserved for integrating the visual feedback for future features. For now you can only see it by asking or testing.
+
+## Seeing every animation
+
+There are two ways to look at all of them without waiting for your computer to do something interesting:
+
+- **Tray menu:** right-click the tray icon and choose *Poke the pets*. There is one entry per animation.
+- **Demo mode:** `pixi run -e pets pets --demo` cycles through every animation, 4 seconds each. Add a number to change the time, for example `--demo 8`.
+
+## What it can't see
+
+- **CPU temperature.** Windows doesn't expose it through the library DeskPets uses, so *grumpy* reacts to **GPU** temperature, and only on NVIDIA GPUs.
+- **Input detection** only reads how long you've been idle. It doesn't see what you type, so *working together* means "you've been active lately", and not "you're typing code".
