@@ -1,0 +1,45 @@
+project:
+  type: website
+  output-dir: _site
+  # Only .qmd pages are rendered, so the internal .md notes (BuildPlan, PHASE1-*, codex guide)
+  # stay out of the public site. Move one to .qmd to publish it.
+  render:
+    - "*.qmd"
+
+website:
+  title: "DeskPets"
+  description: "DeskPets is a reactive desktop pet app that interacts with the user based on their computer usage. It is designed to be the perfect ADHD friendly working companion."
+  site-url: https://suyashnaik.com/DeskPets
+  repo-url: https://github.com/Suyash-Naik/DeskPets
+  repo-actions: [issue]
+
+  open-graph: true
+  twitter-card: true
+
+  navbar:
+    pinned: true
+    left:
+      - text: "Home"
+        href: index.qmd
+    right:
+      - text: "suyashnaik.com"
+        href: https://suyashnaik.com
+      - icon: github
+        href: https://github.com/Suyash-Naik/DeskPets
+        aria-label: GitHub
+
+  page-footer:
+    center: "© 2026 Suyash Naik · Built with [Quarto](https://quarto.org)"
+
+format:
+  html:
+    theme:
+      light: lux
+      dark: darkly
+    toc: true
+    anchor-sections: true
+    smooth-scroll: true
+    grid:
+      body-width: 860px
+      margin-width: 180px
+    lightbox: auto
