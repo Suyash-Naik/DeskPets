@@ -4,7 +4,7 @@ project:
   # Only .qmd pages are rendered, so the internal .md notes (BuildPlan, PHASE1-*, codex guide)
   # stay out of the public site. Move one to .qmd to publish it.
   render:
-    - "*.qmd"
+    - "**/*.qmd"
 
 website:
   title: "DeskPets"
@@ -21,12 +21,40 @@ website:
     left:
       - text: "Home"
         href: index.qmd
+      # Each entry below opens the sidebar with the matching id (see `sidebar:` further down).
+      - sidebar:guide
+      - sidebar:internals
+      - sidebar:project
     right:
       - text: "suyashnaik.com"
         href: https://suyashnaik.com
       - icon: github
         href: https://github.com/Suyash-Naik/DeskPets
         aria-label: GitHub
+
+  # One sidebar per navbar group. A page appears in a sidebar only once it is listed here, so
+  # add each new page as it is written. Planned pages, by group:
+  #   guide:     stats-card, tray-and-controls, pomodoro, configuration, known-limitations
+  #   internals: contributing
+  #   project:   roadmap, download
+  sidebar:
+    - id: guide
+      title: "Guide"
+      style: docked
+      contents:
+        - guide/getting-started.qmd
+        - guide/pets-and-states.qmd
+    - id: internals
+      title: "Under the hood"
+      style: docked
+      contents:
+        - internals/how-it-works.qmd
+        - internals/art-pipeline.qmd
+    - id: project
+      title: "Project"
+      style: docked
+      contents:
+        - project/about.qmd
 
   page-footer:
     center: "© 2026 Suyash Naik · Built with [Quarto](https://quarto.org)"
