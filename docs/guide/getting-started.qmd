@@ -1,0 +1,32 @@
+---
+title: "Getting started"
+subtitle: "From zero to two cats on your desktop"
+---
+
+DeskPets runs on **Windows**. An installer is coming and isn't released yet, so for now you run it from source with [pixi](https://pixi.sh), which sets up the right Python and libraries for you.
+
+## Run it
+
+```powershell
+git clone https://github.com/Suyash-Naik/DeskPets.git
+cd DeskPets
+pixi run -e pets pets
+```
+
+The first run downloads the dependencies, which takes a minute. Then Layla and Chico appear on your desktop. Hover over them to see the stats card.
+
+## Good to know
+
+- **Move them** by dragging. They remember where you left them.
+- **Control them** from the tray icon: show or hide, always-on-top, click-through, and a Pomodoro timer.
+- **Click-through mode** makes the pets ignore your mouse. If you ever lose them, double-click the tray icon to bring them back and turn it off.
+- **Quit** from the tray menu.
+
+## Two handy flags
+
+```powershell
+pixi run -e pets pets --demo        # cycle through every animation
+pixi run -e pets pets --validate    # check the sprite atlas, no window
+```
+
+Next: see what each animation means on [Pets and states](pets-and-states.qmd).
