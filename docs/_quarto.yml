@@ -12,6 +12,7 @@ website:
   site-url: https://suyashnaik.com/DeskPets
   repo-url: https://github.com/Suyash-Naik/DeskPets
   repo-actions: [issue]
+  favicon: assets/img/favicon.ico
 
   open-graph: true
   twitter-card: true
@@ -62,8 +63,8 @@ website:
 format:
   html:
     theme:
-      light: lux
-      dark: darkly
+      light: [lux, custom.scss]
+      dark: [darkly, custom.scss]
     toc: true
     anchor-sections: true
     smooth-scroll: true
