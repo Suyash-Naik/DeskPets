@@ -36,7 +36,6 @@ website:
   # One sidebar per navbar group. A page appears in a sidebar only once it is listed here, so
   # add each new page as it is written. Planned pages, by group:
   #   guide:     stats-card, tray-and-controls, pomodoro, configuration, known-limitations
-  #   internals: built-with-agents
   #   project:   roadmap, download
   sidebar:
     - id: guide
@@ -50,6 +49,7 @@ website:
       style: docked
       contents:
         - internals/how-it-works.qmd
+        - internals/built-with-agents.qmd
         - internals/art-pipeline.qmd
         - internals/generating-sprites.qmd
         - internals/contributing.qmd
