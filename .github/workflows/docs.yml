@@ -1,0 +1,72 @@
+name: Docs
+
+# Builds the Quarto site in docs/ and publishes it to GitHub Pages.
+#
+# - Every push or PR that touches the docs RENDERS the site, so a broken page is caught early.
+# - Only a push to main DEPLOYS it. Pull requests and feature branches never publish.
+# - "Run workflow" in the Actions tab does a manual run (it deploys only if run on main).
+on:
+  push:
+    paths:
+      - "docs/**"
+      - "assets/**"
+      - "pixi.toml"
+      - "pixi.lock"
+      - ".github/workflows/docs.yml"
+  pull_request:
+    paths:
+      - "docs/**"
+      - "assets/**"
+      - "pixi.toml"
+      - "pixi.lock"
+      - ".github/workflows/docs.yml"
+  workflow_dispatch:
+
+# Least privilege by default. The deploy job asks for more below.
+permissions:
+  contents: read
+
+# One deployment at a time. A newer push cancels a build that is still running, but never
+# interrupts a deployment that is already in progress.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    # Windows, not Linux: pixi.toml targets win-64 only, so pixi.lock has nothing to install
+    # on a Linux runner.
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      # Installs the `docs` pixi environment exactly as pinned in pixi.lock (`locked: true`
+      # fails the job if the lock is out of date), so CI renders with the same Quarto you
+      # run locally.
+      - uses: prefix-dev/setup-pixi@v0.11.3
+        with:
+          environments: docs
+          locked: true
+
+      - name: Render the site
+        run: pixi run -e docs docs-build
+
+      # Packages docs/_site in the format the Pages deploy step expects.
+      - uses: actions/upload-pages-artifact@v5
+        with:
+          path: docs/_site
+
+  deploy:
+    # Only main publishes.
+    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write      # lets this job publish to Pages
+      id-token: write   # lets Pages verify the deploy comes from this workflow
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v5

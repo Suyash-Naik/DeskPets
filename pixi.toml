@@ -68,6 +68,24 @@ pytest = ">=9.1.1,<10"
 test = { cmd = "pytest", description = "Run the test suite (-m \"not slow\" for the fast subset)", env = { PYTHONDONTWRITEBYTECODE = "1" } }
 
 # ---------------------------------------------------------------------------
+# `docs` feature: the documentation website (Quarto, rendered from docs/*.qmd).
+# ---------------------------------------------------------------------------
+# Quarto only
+# add python + jupyter here if a page ever executes code.
+[feature.docs.dependencies]
+quarto = "*"
+
+[feature.docs.tasks.docs-preview]
+cmd = "quarto preview"
+cwd = "docs"
+description = "Live-preview the documentation site"
+
+[feature.docs.tasks.docs-build]
+cmd = "quarto render"
+cwd = "docs"
+description = "Render the documentation site to docs/_site"
+
+# ---------------------------------------------------------------------------
 # Environments.
 # ---------------------------------------------------------------------------
 # `no-default-feature = true` on both is load-bearing, not tidiness. Pixi folds the default
@@ -82,3 +100,4 @@ test = { cmd = "pytest", description = "Run the test suite (-m \"not slow\" for 
 [environments]
 pets = { features = ["pets"], solve-group = "pets", no-default-feature = true }
 dev = { features = ["dev"], solve-group = "pets", no-default-feature = true }
+docs = { features = ["docs"], no-default-feature = true }

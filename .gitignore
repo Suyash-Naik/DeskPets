@@ -12,3 +12,6 @@ assets/gen-image/*/03*
 assets/gen-image/*/04*/Readme.md
 assets/gen-image/*/04*/*json
 assets/gen-image/_*
+docs/_site/
+docs/.quarto/
+*.quarto_ipynb
