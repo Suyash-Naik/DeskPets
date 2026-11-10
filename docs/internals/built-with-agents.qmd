@@ -19,19 +19,6 @@ DeskPets was built as two tracks that ran side by side: **code** and **art**. Th
 - **L + C** is Layla and Chico, the cats the art is based on.
 :::
 
-| Track | Step | Who | What happened |
-| --- | --- | --- | --- |
-| Code | Spec | S | I wrote a build plan. |
-| Code | Agent plan | S + AI | Three planning agents each designed one part, in parallel. |
-| Code | Contract | S | I resolved the places where their plans disagreed. |
-| Code | Implement | AI | Agents built each module from the contract. |
-| Code | Test | S | I tested every feature and bug. |
-| Code | Bugs resolved by testing | S + AI | I found problems by running the app, and directed agents to fixes. |
-| Art | Cat pictures | L + C | Photos and reference images of the real cats. |
-| Art | Image generation | AI | Codex generated each animation sequence from my prompts. |
-| Art | Extraction and registration | AI | Deterministic scripts cut out and align the frames at one shared scale. |
-| Art | QA gate and atlas | S + AI | An automated check plus my review. The ten verified states are packed into one sprite atlas. |
-
 ## The code track
 
 ### 1. Spec: a build plan
