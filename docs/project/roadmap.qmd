@@ -1,0 +1,30 @@
+---
+title: "Roadmap"
+subtitle: "What is next for DeskPets, roughly in order"
+---
+
+DeskPets works today, and this is where I want to take it. There are no dates, because it is a personal project, and the order can change.
+
+## Next: an installer
+
+A one-click Windows installer, so you don't need Python or pixi to try it. This is the current focus. See [Download](download.qmd).
+
+## Then: making it solid
+
+- **Check the things a short test can't show:** long-running sessions, sleep and resume, and multiple monitors.
+- **Tune the thresholds on real workloads.** The defaults are tuned to one machine, and the swap limit is still a guess.
+- **Support more hardware.** A reliable CPU temperature on Windows, and GPUs that aren't NVIDIA.
+- **Fix the known art issues:** restore the jump's lift, and redraw the stroll so it can loop.
+- **Give the sad animation a real trigger.** Today it only plays from the tray menu.
+- **Sharper pixels** on displays scaled to 150%.
+
+Most of these are the entries on [Known limitations](/project/known-limitations.qmd).
+
+## Later 
+
+- **A chat window** where Layla and Chico connect to language models, with carefully scoped tools. It is a direction and not a feature yet. See [Agentic AI](about.qmd#agentic-ai) on the About page.
+- **Linux and macOS,** as time allows as some of my friends with cats use these. Their window handling needs dedicated platform work and is not a simple packaging change. But if interest is high, I can prioritize it.
+
+## Suggest something
+
+If you'd like to see something here, or something on this list moved up, [open an issue](https://github.com/Suyash-Naik/DeskPets/issues).
