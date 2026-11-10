@@ -35,7 +35,7 @@ website:
 
   # One sidebar per navbar group. A page appears in a sidebar only once it is listed here, so
   # add each new page as it is written. Planned pages, by group:
-  #   guide:     stats-card, tray-and-controls, pomodoro, configuration, known-limitations
+  #   guide:     stats-card, tray-and-controls, configuration, known-limitations
   #   project:   roadmap, download
   sidebar:
     - id: guide
@@ -44,6 +44,7 @@ website:
       contents:
         - guide/getting-started.qmd
         - guide/pets-and-states.qmd
+        - guide/pomodoro.qmd
     - id: internals
       title: "Under the hood"
       style: docked

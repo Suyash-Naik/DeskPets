@@ -48,7 +48,7 @@ Getting *worse* is the exception. When the situation escalates, say from moderat
 
 - **Greetings.** Click a pet, or drop it after dragging, and they greet you for a moment.
 - **Idle moments.** About every five minutes, give or take thirty seconds, the pets roll, stroll, or wave. The jump, grumpy, and sleeping animations are never used for this, so those always mean what they say. A roll can still happen on an idle computer, so treat a roll on its own as a hint, not a reading.
-- **Pomodoro finish.** When a [Pomodoro](/index.qmd#features) ends, the pets celebrate with the *pleased* animation for five minutes, even if the system is under stress.
+- **Pomodoro finish.** When a [Pomodoro](pomodoro.qmd) ends, the pets celebrate with the *pleased* animation for five minutes, even if the system is under stress.
 
 ## Development {#dev}
 
