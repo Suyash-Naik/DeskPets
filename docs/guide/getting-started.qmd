@@ -22,11 +22,4 @@ The first run downloads the dependencies, which takes a minute. Then Layla and C
 - **Click-through mode** makes the pets ignore your mouse. If you ever lose them, double-click the tray icon to bring them back and turn it off.
 - **Quit** from the tray menu.
 
-## Two handy flags
-
-```powershell
-pixi run -e pets pets --demo        # cycle through every animation
-pixi run -e pets pets --validate    # check the sprite atlas, no window
-```
-
-Next: see what each animation means on [Pets and states](pets-and-states.qmd).
+Next: see what each animation means on [Pets and states](pets-and-states.qmd). Command-line options such as `--demo` are under [Configuration](configuration.qmd#command-line-flags).
