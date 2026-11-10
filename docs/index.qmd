@@ -15,12 +15,12 @@ DeskPets is a personal project in active development. The Windows app is built a
 
 ## Features {#features}
 
-- **Live system state.** CPU, RAM, swap, GPU, temperature, disk, battery and idle time, shown only for the hardware you actually have.
+- **Live system state.** CPU, RAM, swap, GPU, temperature, disk, battery, and idle time, for the hardware you have.
 - **Hover stats card.** Details on demand.
-- **Stays out of the way.** Always on top, transparent, and lightweight, with an optional click-through mode.
-- **Tray control.** Show or hide the pets, reset their position, and preview any animation.
+- **Stays out of the way.** Always on top, transparent, with optional click-through.
+- **Tray control.** Show, hide, reset, and preview any animation.
 - **Pomodoro timer.** A 45 minute focus timer. When it finishes the pets celebrate and you hear a chime. Take a break, stretch out, and let your ADHD brain get interested again!
-- **Private by design.** Input detection only reads how long you have been idle. There is no keyboard hook, and nothing is logged or sent anywhere.
+- **Private by design.** Only idle time is read: no keyboard hook, and nothing is logged or sent anywhere.
 
 ## Start here
 
