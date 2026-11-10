@@ -56,12 +56,4 @@ Some animations exist and are drawn, but **nothing triggers it automatically yet
 
 ## Seeing every animation
 
-There are two ways to look at all of them without waiting for your computer to do something interesting:
-
-- **Tray menu:** right-click the tray icon and choose *Poke the pets*. There is one entry per animation.
-- **Demo mode:** `pixi run -e pets pets --demo` cycles through every animation, 4 seconds each. Add a number to change the time, for example `--demo 8`.
-
-## What it can't see
-
-- **CPU temperature.** Windows doesn't expose it through the library DeskPets uses, so *grumpy* reacts to **GPU** temperature, and only on NVIDIA GPUs.
-- **Input detection** only reads how long you've been idle. It doesn't see what you type, so *working together* means "you've been active lately", and not "you're typing code".
+You don't have to wait for your computer to do something interesting. Right-click the tray icon and choose *Poke the pets* for one entry per animation, or run demo mode (`--demo`), which cycles through all of them. The flags are listed under [Configuration](configuration.qmd#command-line-flags). What the pets can't see, such as CPU temperature, is on [Known limitations](/project/known-limitations.qmd).
