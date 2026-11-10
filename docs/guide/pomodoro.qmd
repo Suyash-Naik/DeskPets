@@ -21,32 +21,11 @@ There is **no pause**. If you start a work block and need to stop, pressing the 
 
 The celebration outranks everything else the pets might be doing, including the grumpy animation, so you see it even if the system is under stress. A click on a pet during that time plays its short greeting, but it can't cut the five minutes short.
 
-## How the timer works
-
-The timer is one small class, `PomodoroTimer` in `src/core/pomodoro.py`. It does exactly one thing, which is a single countdown, and it knows nothing about the pets or the card. The rest of the app just listens to its signals.
-
-**A fixed deadline, not a tick count.** When you start the timer, it records `now + 45 minutes` on a monotonic clock. The remaining time is always the deadline minus the current time. A once-a-second ticker exists only to refresh the display and to notice that the deadline has passed. If the app stalls for a few seconds, the timer doesn't drift or lose time, because nothing is being counted.
-
-**Three signals** carry everything outward:
-
-| Signal | When it fires |
-| --- | --- |
-| `state_changed(bool)` | The timer started, was cancelled, or finished. The tray and the card use it to flip their buttons. |
-| `ticked(int)` | Every second, with the whole seconds remaining. The card uses it for the countdown. |
-| `finished()` | The deadline passed. It fires **exactly once per run**, and never when you cancel. |
-
-**A few rules that follow from that:**
-
-- `toggle()` starts the timer if idle and cancels it if running, so one button does both.
-- Cancelling doesn't fire `finished()`, which is what keeps a cancelled block from triggering a celebration.
-- Starting while a run is active restarts the countdown from the full length.
-- It lives on the GUI thread only, and the clock can be swapped for a fake one, which is how the tests drive it without waiting 45 minutes.
-
-When `finished()` fires, the app plays the chime and forces the *pleased* state for five minutes. The lengths are in `src/config.py` (`POMODORO_WORK_MS`, `POMODORO_DONE_MS`). If you want a different length, change them there.
-
 ## Why a pet works as a timer
 
-An ordinary timer is a separate thing to start, watch, and be interrupted by. Here it lives in an object that is already part of your desk. Starting it is one click on the card the pets already show. The only thing on the screen during the block is the same cats, and the break signal is a celebration, not an alarm. That gives you a gentler cue to stop, and it reuses an animation that already exists, so the timer cost almost nothing to add. The story of how fast it went in is on [How it works](/internals/how-it-works.qmd).
+An ordinary timer is a separate thing to start, watch, and be interrupted by. Here it lives in an object that is already part of your desk. Starting it is one click on the card the pets already show. The only thing on the screen during the block is the same cats, and the break signal is a celebration, not an alarm. That gives you a gentler cue to stop, and it reuses an animation that already exists, so the timer cost almost nothing to add.
+
+The timer itself is one small class. How it works is on [How it works](/internals/how-it-works.qmd#pomodoro-timer).
 
 ## Limits
 
