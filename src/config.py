@@ -15,6 +15,7 @@ from __future__ import annotations
 import json
 import logging
 import os
+import sys
 from dataclasses import dataclass, replace
 from pathlib import Path
 from typing import Any, Final, Mapping
@@ -26,7 +27,27 @@ log = logging.getLogger(__name__)
 # PATHS & ATLAS
 # =============================================================================
 
-PROJECT_ROOT: Final[Path] = Path(__file__).resolve().parent.parent
+def app_root(*, frozen: bool | None = None, executable: str | os.PathLike[str] | None = None) -> Path:
+    """Directory that holds ``assets/``: the repo root from source, the install dir when frozen.
+
+    Any thread. A frozen build (PyInstaller sets ``sys.frozen``; Nuitka sets the module-level
+    ``__compiled__``) has no source tree and ``__file__`` is not a reliable anchor, so the
+    install directory is taken from the executable instead -- never from the working directory.
+    The keyword arguments exist so tests can exercise both modes without freezing anything.
+    """
+    if frozen is None:
+        frozen = bool(getattr(sys, "frozen", False)) or "__compiled__" in globals()
+    if frozen:
+        return Path(executable if executable is not None else sys.executable).resolve().parent
+    return Path(__file__).resolve().parent.parent
+
+
+def resource_path(*parts: str) -> Path:
+    """Path of a bundled read-only resource, e.g. ``resource_path("assets", "x.png")``."""
+    return app_root().joinpath(*parts)
+
+
+PROJECT_ROOT: Final[Path] = app_root()
 ASSETS_DIR: Final[Path] = PROJECT_ROOT / "assets"
 ATLAS_JSON: Final[Path] = ASSETS_DIR / "layla-and-chico-pet-spritesheet.json"
 
