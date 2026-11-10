@@ -1,0 +1,46 @@
+---
+title: "Configuration"
+subtitle: "What is saved for you, and what you change in the code"
+---
+
+DeskPets has no settings window. Some things are remembered automatically, and everything else is a constant in the source.
+
+## What is remembered
+
+DeskPets saves a small file when you finish a drag and when you quit:
+
+```
+%APPDATA%\LC-pet-stat\settings.json
+```
+
+It holds the pets' position and screen, whether click-through, always-on-top, and the pinned card are on, whether the pets are shown, and the **render scale**. Most of these are set from the tray, so you rarely need to touch the file.
+
+**Scale** is the one setting with no tray item. It makes the pets larger by a whole number from 1 (the default) to 4. Edit `"scale"` in the file **while DeskPets is closed**, because the app writes the file again when it quits.
+
+A broken or unreadable file never stops DeskPets from starting. It falls back to defaults and leaves your file alone.
+
+## What lives in the code
+
+Thresholds, timings, and intervals are constants in `src/config.py`. Change one and restart. These are the ones most people would want:
+
+| Constant | Default | What it controls |
+| --- | --- | --- |
+| `BAND_CPU_MODERATE` | 20 / 14 % | CPU above this starts the rolling animation (on / off). |
+| `BAND_CPU_HIGH` | 80 / 70 % | CPU above this makes the pets jump. |
+| `BAND_RAM_HIGH` | 85 / 80 % | RAM above this makes the pets jump. |
+| `BAND_SWAP_HIGH` | 30 / 22 % | Swap above this makes them grumpy. |
+| `BAND_TEMP_HIGH` | 80 / 75 °C | GPU temperature above this makes them grumpy. |
+| `IDLE_DOZY_S`, `IDLE_DEEP_SLEEP_S` | 60 s, 900 s | How long without input before dozing, then deep sleep. |
+| `MIN_STATE_DWELL_MS` | 4000 ms | The minimum time in a state before it changes. |
+| `POLL_INTERVAL_MS` | 1500 ms | How often system readings are taken. |
+| `POMODORO_WORK_MS` | 45 min | The length of a focus block. |
+
+Each threshold has two numbers, the level that turns it on and a lower one that turns it off. The reason is explained in [No flickering](pets-and-states.qmd#no-flickering). The defaults are tuned to one machine, so expect to adjust them for yours.
+
+## Command-line flags
+
+```powershell
+pixi run -e pets pets --demo        # cycle through every animation
+pixi run -e pets pets --validate    # check the sprite atlas, no window
+pixi run -e pets pets --debug       # verbose logging
+```
