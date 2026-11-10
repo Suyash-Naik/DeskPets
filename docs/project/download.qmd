@@ -1,0 +1,24 @@
+---
+title: "Download"
+subtitle: "Where to get DeskPets"
+---
+
+::: {.callout-note}
+## No installer yet
+A one-click installer for Windows is planned and **has not been released**. There is no download to offer yet, and I'd rather say so than link to something that doesn't exist.
+:::
+
+## Run it today
+
+For now you run DeskPets from source with [pixi](https://pixi.sh), which sets up the right Python and libraries. It takes four lines, and [Getting started](/guide/getting-started.qmd) walks through it.
+
+The plan is on the [Roadmap](roadmap.qmd).
+
+## Requirements
+
+- **Windows.** macOS and Linux aren't supported.
+- **An NVIDIA GPU is optional.** Without one, DeskPets still runs, but the GPU rows and the GPU-temperature trigger for the grumpy animation aren't available. See [Known limitations](/guide/known-limitations.qmd).
+
+## Follow along
+
+Progress is tracked on [GitHub](https://github.com/Suyash-Naik/DeskPets/issues). Watching the repository there is the quickest way to hear when a release appears.
