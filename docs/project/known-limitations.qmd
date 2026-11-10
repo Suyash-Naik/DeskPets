@@ -1,0 +1,31 @@
+---
+title: "Known limitations"
+subtitle: "What DeskPets can't do yet, so you don't have to find out the hard way"
+---
+
+DeskPets is a personal project, and these are the gaps I know about.
+
+## Platform and hardware
+
+- **Windows only.** macOS and Linux are not supported or tested.
+- **No CPU temperature.** Windows doesn't expose it through the library DeskPets uses, so the grumpy animation reacts to **GPU** temperature or swap instead.
+- **NVIDIA GPUs only.** Other GPUs aren't read, so on a machine without an NVIDIA card, grumpy fires from swap alone and rarely.
+- **Input means idle time.** DeskPets only knows how long it has been since you last touched the keyboard or mouse. It can't tell what you're doing, so *working together* means "you've been active lately", not "you're typing code".
+
+## Behavior
+
+- **The sad animation has no trigger.** It exists, but you can only see it from the tray's *Poke the pets* menu.
+- **The thresholds are tuned to one machine.** The swap limit in particular is a guess that I haven't checked under real memory pressure. See [Configuration](/guide/configuration.qmd).
+- **There is no global hotkey.** If you lose the pets in click-through mode, double-click the tray icon.
+
+## Art
+
+- **The jump has no lift.** The arc was lost when the frames were aligned.
+- **The stroll ends with Layla leaving the frame,** so it plays once and holds its last pose.
+- **Pixel art can look stretched** on displays scaled by 150%, because the sprites are drawn at whole-pixel sizes.
+
+Details on the art issues are on [Art pipeline](/internals/art-pipeline.qmd).
+
+## Not tested yet
+
+Things a short test can't show: a long-running session, sleep and resume, multiple monitors, and sustained real-world load. If something misbehaves in one of those, please [open an issue](https://github.com/Suyash-Naik/DeskPets/issues).

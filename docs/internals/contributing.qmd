@@ -1,0 +1,56 @@
+---
+title: "Contributing"
+subtitle: "How to work on the code, and how to add a new animation"
+---
+
+DeskPets is a personal project, but changes are welcome. If you are unsure whether something fits, open an [issue](https://github.com/Suyash-Naik/DeskPets/issues) first.
+
+## Set up
+
+DeskPets runs on Windows, and everything goes through [pixi](https://pixi.sh). Don't use bare `python` or `pip`.
+
+```powershell
+pixi run -e pets pets             # run the app
+pixi run -e dev test              # full test suite (about a minute)
+pixi run -e dev test -m "not slow"  # quick subset while editing
+pixi run check                    # frame QA over every art sequence
+```
+
+There are three pixi environments, split on purpose: `pets` for the runtime, `dev` for the tests, and the default one for the art tools. Dont add unnecessary runtime dependencies.
+
+## Ground rules
+
+- **Thresholds, intervals, and timings live in `src/config.py` or the atlas JSON,** never inline in the UI code.
+- **Telemetry stays on its worker thread.** Don't touch widgets or call `psutil` from anywhere else.
+- **Windows-specific calls stay in `src/core/platform/windows.py`.**
+- **Input detection stays idle-time only.** Don't add a keyboard hook.
+- **Art revisions are additive.** New art goes in a new `revision-NN/` folder, and nothing is overwritten.
+
+## Add an animation {#add-an-animation}
+
+This is the full path for a new sequence, from prompt to a pet that plays it. Steps 2, 3, and 8 use local tools that aren't published yet. See [What is not in the repo](generating-sprites.qmd#not-in-the-repo). Until they are, open an issue and we can work out the packing together.
+
+### The art
+
+1. **Generate the strip.** Follow [Generating sprites with Codex](generating-sprites.qmd): eight equal slots on `#00FF00`, at most five flat colors, Layla left and Chico right.
+2. **Clean it.** Keep the green source. Make a transparent version, remove the green fringe on the edges, and keep both in `01-generated-sequence/`.
+3. **Extract the frames** into `02-extracted-frames/`, one tight crop per frame.
+4. **Register the frames.** Put each on a **320 × 320** canvas, with one shared scale for the whole sequence, the body midpoint at **x = 160** (measured on the largest connected shape, so a detached glyph can't skew it), and a ground baseline at **y = 291**. Airborne and rolling sequences keep their vertical motion.
+5. **Look at it.** Build a preview GIF and watch the loop. For a jump, check by eye that the frames genuinely leave the baseline, so the animation has a sense of lift. The automated check can't judge that.
+6. **Run the gate:** `pixi run check <Sequence>`. Fix anything that blocks (exit code 1), and review warnings by eye.
+7. **Write the spec** in `04-integration-notes/`: `sequence-spec.json` with frame order, timings, loop behavior, and the registration used, plus a short README. Run the gate again once the spec exists.
+8. **Pack it into the atlas.**
+   - Make a named backup of the current atlas PNG and JSON first.
+   - Scale the registered frames with nearest-neighbor sampling to 192 pixels wide, pad them to 192 × 208, and place them in the grid.
+   - Check that every other row is still pixel-identical, unused cells are transparent, and the hashes agree.
+   - Update the PNG and the JSON together.
+9. **Validate the atlas:** `pixi run -e pets pets --validate`.
+
+### The code
+
+10. **Name the state** in `src/core/state_machine.py`, and give it a priority there. If the art may not exist yet, add it to `OPTIONAL_STATES` so the app still starts without the row.
+11. **Add its card text** to `STATE_PRESENTATION` in `src/config.py`: the title, subtitle, accent color, and glyph.
+12. **Decide what triggers it.** Wire the rule into the state machine, or leave it unassigned so it is only reachable from the tray's *Poke the pets* menu, like the sad animation today.
+13. **Try it.** Run `pixi run -e pets pets --demo` to cycle through every available animation, and use *Poke the pets* in the tray.
+14. **Test it.** Run `pixi run -e dev test`. Add or update tests for the new state, and keep the existing ones passing.
+15. **Update the records.** Add the sequence to the registry in `CLAUDE.md` and `AGENTS.md`, and to the table on [Pets and states](../guide/pets-and-states.qmd) if it is visible to users.

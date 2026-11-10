@@ -4,7 +4,7 @@ project:
   # Only .qmd pages are rendered, so the internal .md notes (BuildPlan, PHASE1-*, codex guide)
   # stay out of the public site. Move one to .qmd to publish it.
   render:
-    - "*.qmd"
+    - "**/*.qmd"
 
 website:
   title: "DeskPets"
@@ -12,6 +12,7 @@ website:
   site-url: https://suyashnaik.com/DeskPets
   repo-url: https://github.com/Suyash-Naik/DeskPets
   repo-actions: [issue]
+  favicon: assets/img/favicon.ico
 
   open-graph: true
   twitter-card: true
@@ -21,12 +22,42 @@ website:
     left:
       - text: "Home"
         href: index.qmd
+      - sidebar:guide
+      - sidebar:internals
+      - sidebar:project
     right:
-      - text: "suyashnaik.com"
-        href: https://suyashnaik.com
+      - text: "Case Study"
+        href: https://suyashnaik.com/projects/desk-pets.html
       - icon: github
         href: https://github.com/Suyash-Naik/DeskPets
         aria-label: GitHub
+  sidebar:
+    - id: guide
+      title: "Guide"
+      style: docked
+      contents:
+        - guide/getting-started.qmd
+        - guide/pets-and-states.qmd
+        - guide/pomodoro.qmd
+        - guide/controls.qmd
+        - guide/configuration.qmd
+    - id: internals
+      title: "Under the hood"
+      style: docked
+      contents:
+        - internals/how-it-works.qmd
+        - internals/built-with-agents.qmd
+        - internals/art-pipeline.qmd
+        - internals/generating-sprites.qmd
+        - internals/contributing.qmd
+    - id: project
+      title: "Project"
+      style: docked
+      contents:
+        - project/about.qmd
+        - project/roadmap.qmd
+        - project/known-limitations.qmd
+        - project/download.qmd
 
   page-footer:
     center: "© 2026 Suyash Naik · Built with [Quarto](https://quarto.org)"
@@ -34,8 +65,8 @@ website:
 format:
   html:
     theme:
-      light: lux
-      dark: darkly
+      light: [lux, custom.scss]
+      dark: [darkly, custom.scss]
     toc: true
     anchor-sections: true
     smooth-scroll: true

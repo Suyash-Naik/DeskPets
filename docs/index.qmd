@@ -6,68 +6,26 @@ toc: false
 
 ![Layla and Chico reacting to system activity](pets_showcase.gif){fig-alt="Two cats, Layla and Chico, animating on the desktop" fig-align="center"}
 
-DeskPets puts two small cats, **Layla** and **Chico**, on your Windows desktop. They stay on top of your windows and react to what your computer is doing. They change their animations based on what you are doing and how busy your system is. 
-
-Hover over them and a small card shows the actual numbers depending upon your hardware. The goal is to answer one question at a glance, without opening a monitoring dashboard: *is my computer calm, busy, struggling, or waiting for me?*
+DeskPets puts two small cats, **Layla** and **Chico**, on your Windows desktop. They stay on top of your windows and change what they do based on how busy your system is and what you are doing. Hover over them and a small card shows the actual numbers. The goal is to answer one question at a glance, without opening a monitoring dashboard: *is my computer calm, busy, struggling, or waiting for me?*
 
 ::: {.callout-note}
 ## Status
-DeskPets is a personal project in active development. Phase 1, the Windows app, is built and runs. A one-click installer is in progress and not released yet, so for now you run it from source (see [Get it](#get-it)).
+DeskPets is a personal project in active development. The Windows app is built and runs. A one-click installer is in progress and not released yet, so for now you run it from source.
 :::
 
-## What the pets are telling you
+## Features {#features}
 
-| What you see | What it means |
-| --- | --- |
-| Sitting attentively | The system is calm |
-| Rolling and playing | CPU is moderately busy |
-| Jumping | CPU or RAM is high |
-| Grumpy | GPU temperature or swap usage is high |
-| Dozing, then deep asleep | You have been idle for a minute, then for fifteen |
-| Working together | You are actively typing or using the mouse on a calm system |
-| Pleased | A heavy burst of work just finished |
+- **Live system state.** CPU, RAM, swap, GPU, temperature, disk, battery, and idle time, for the hardware you have.
+- **Hover stats card.** Details on demand.
+- **Stays out of the way.** Always on top, transparent, with optional click-through.
+- **Tray control.** Show, hide, reset, and preview any animation.
+- **Pomodoro timer.** A 45 minute focus timer. When it finishes the pets celebrate and you hear a chime. Take a break, stretch out, and let your ADHD brain get interested again!
+- **Private by design.** Only idle time is read: no keyboard hook, and nothing is logged or sent anywhere.
 
-Thresholds use hysteresis and minimum dwell times, so the animation does not flicker when a reading hovers around a limit. Every value is a tunable default (which may be customized upon request).
+## Start here
 
-## Features
+- [**Getting started**](guide/getting-started.qmd): run it in four lines.
+- [**Pets and states**](guide/pets-and-states.qmd): what each animation means.
+- [**About**](project/about.qmd): why it exists, how it was built, and where it's going.
 
-- **Live system state.** CPU, RAM, swap, GPU load, VRAM, temperature, disk, battery and idle time, shown only for the hardware you actually have.
-- **Hover stats card.** Details on demand, pinned by clicking the pet.
-- **Lightweight.** A background worker samples metrics, so the window stays responsive.
-- **Stays out of the way.** Always on top, frameless and transparent, with an optional click-through mode.
-- **System tray control.** Show or hide the pets and the card, toggle always-on-top and click-through, reset their position, and preview any animation.
-- **Pomodoro timer.** A 45 minute focus timer on the card and in the tray. When it finishes the pets celebrate and you hear a chime. Take a break, stretch out let your ADHD brain get interested again!
-- **Private by design.** Input detection reads only how long you have been idle. There is no keyboard hook and nothing is logged or sent anywhere.
-
-## Get it {#get-it}
-
-**Installer:** coming soon on the [GitHub Releases page](https://github.com/Suyash-Naik/DeskPets/releases).
-
-**From source** (Windows, uses [pixi](https://pixi.sh)):
-
-```powershell
-git clone https://github.com/Suyash-Naik/DeskPets.git
-cd DeskPets
-pixi install
-pixi run -e pets pets
-```
-
-Two flags are useful while you are exploring: `--demo` cycles through every animation, and `--validate` checks the sprite atlas without opening a window.
-
-Dowload link: **coming soon**
-
-## How it works
-
-A frameless PyQt6 window plays sprite animations. A worker thread reads system telemetry and a state machine maps those readings to animations. The sprites come from a staged, AI-assisted art pipeline built from photos of the real Layla and Chico, then packed into an atlas with a JSON manifest that the app reads for frame positions and timings.
-
-## Where it is going
-
-The near-term work is stabilising the Windows version: tuning thresholds on real workloads, improving a few animations, supporting more hardware, including non-NVIDIA GPUs and CPU temperature, and packaging it for easy installation.
-
-The longer-term idea is exploratory and **not built yet**: a small chat window that lets Layla and Chico talk to language models through carefully scoped tools, with every action visible and under your control.
-
-## About
-
-DeskPets began when I was running a Docker-based virtual machine on a modest home PC and kept losing track of how much of the machine I was using. I wanted immediate visual feedback without a dashboard, and I wanted it to feel personal. I adopted Layla and Chico last year, so I based the pets on them.
-
-The source, issues and discussion are on [GitHub](https://github.com/Suyash-Naik/DeskPets).
+The source and issues are on [GitHub](https://github.com/Suyash-Naik/DeskPets).

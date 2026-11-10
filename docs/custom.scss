@@ -1,0 +1,82 @@
+/*-- scss:defaults --*/
+
+// Shared look with suyashnaik.com.
+// Copied from the personal site's assets/css/custom.scss and trimmed to what the docs use.
+// If you change the typography or colors there, mirror the change here.
+
+// Typography
+$font-family-sans-serif: "Inter", system-ui, -apple-system, sans-serif;
+$headings-font-family: "DM Serif Display", Georgia, serif;
+$font-size-base: 1.05rem;
+$line-height-base: 1.7;
+
+// Colours: clean with one accent
+$my-accent: #7a6a95;         // violet
+
+$link-color: #7c3aed;
+$navbar-bg: $my-accent;
+$navbar-fg: #ffffff;
+$footer-bg: #f7f7f5;
+$footer-fg: #666;
+
+/*-- scss:rules --*/
+
+// Load Google Fonts
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=DM+Serif+Display&display=swap');
+
+a {
+  font-weight: 500;
+}
+
+// ─── Buttons ─────────────────────────────────────────────────────────────────
+
+.btn-primary, .btn-outline {
+  display: inline-block;
+  padding: 0.55rem 1.25rem;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: all 0.15s ease;
+}
+
+.btn-primary {
+  background: $my-accent;
+  color: #fff;
+  &:hover { background: darken($my-accent, 8%); color: #fff; }
+}
+
+.btn-outline {
+  border: 1.5px solid $my-accent;
+  color: $my-accent;
+  &:hover { background: $my-accent; color: #fff; }
+}
+
+// ─── Stats strip ─────────────────────────────────────────────────────────────
+
+.stats-strip {
+  display: flex;
+  gap: 2rem;
+  flex-wrap: wrap;
+  margin: 1.5rem 0;
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.stat-value {
+  font-size: 2rem;
+  font-weight: 700;
+  color: $my-accent;
+  line-height: 1.1;
+}
+
+.stat-label {
+  font-size: 0.8rem;
+  color: $text-muted;
+  text-align: center;
+  margin-top: 0.15rem;
+}

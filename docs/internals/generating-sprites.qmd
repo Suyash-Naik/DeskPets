@@ -1,0 +1,73 @@
+---
+title: "Generating sprites with Codex"
+subtitle: "How I prompted Layla and Chico into existence, and how you can make new animations"
+---
+
+Every animation starts as one generated image: a strip of eight poses. This page explains how I got that strip, what the prompts look like, and what to change to make a new one. What happens to the strip afterward is covered in [Art pipeline](art-pipeline.qmd). Adding the result to the app is in [Contributing](contributing.qmd).
+
+## How I drove Codex
+
+I generated the art with **Codex's built-in image generation tool**, with reference images of the cats attached. The prompts were written in enough detail that nothing was left to chance. They fix the identity of each cat, the pixel scale, a short list of flat colors, the position of every slot, and what each of the eight frames should show. I art-directed every pixel, and I regenerated a strip whenever it broke a rule.
+
+Around the generator I used a local adaptation of a Codex pet skill (`hatch-pet-local`) as a working guide, and a set of scripts for everything that happens after generation. Those skills and scripts are not published yet. See [What is not in the repo](#not-in-the-repo).
+
+## The five prompt rules
+
+Every prompt followed these:
+
+1. **At most five visible colors.** Flat colors only, with no antialiasing, gradients, or glow. This keeps the pixel-art look and makes frames easy to clean up.
+2. **Layla on the left, Chico on the right.** In every shared pose the identities never swap. Layla is the near-black, slim cat with pointed upright ears. Chico is the lighter charcoal, stockier cat with folded ears and full cheeks.
+3. **Detached effect glyphs are allowed.** Chico's `?`, the sleep `Z`, and tears are fine as separate marks. The packer and checker treat them as separate from the cats.
+4. **A contact shadow under every pose.** Small dark pixels sit under the cats and touch the silhouette. The packer measures the ground baseline from them.
+5. **No text, labels, or grid.** No frame numbers, captions, borders, panel dividers, scenery, or clothing in the generated image. The only props allowed are the ones a sequence needs: the laptop in *working together* and the yarn ball in *rolling*.
+
+::: {.callout-note}
+## Two rules relaxed during production
+My first direction said "no symbols and no shadows." The finished sequences use effect glyphs and contact shadows, so new work has to follow what shipped, not the earliest prompt wording. Generating a new sequence under the original rule will give art that doesn't sit with the other rows.
+:::
+
+## Anatomy of a prompt
+
+I don't paste a prompt on this page, because the real ones are long and I keep them in the repo. Two are published, and between them they show the whole structure:
+
+- [**Waving**](https://github.com/Suyash-Naik/DeskPets/blob/main/assets/gen-image/Layla-Chico-Wave/generation-prompt.md): the clearest example of the layout and the frame-by-frame beats. It also lists the checks I made on the generated strip before moving on.
+- [**Working together**, revision 3](https://github.com/Suyash-Naik/DeskPets/blob/main/assets/gen-image/Layla-Chico-Working/generation-prompt-codex-revision-03.md): the most developed version, with an exact palette, the pixel-grid instruction, and the registration constraints for a pair of cats sharing a laptop. It has two earlier revisions beside it, so you can see how the prompt tightened.
+
+Both are built from the same parts, in this order:
+
+| Part | What it does |
+| --- | --- |
+| **References** | The images to attach, and what each one is for: identity, pose, or style. |
+| **Identity** | A short, exact description of each cat. The one trait that must never drift is named. For Chico it is the folded ears. |
+| **Style and palette** | Sparse tiny pixel art, crisp square pixels, one pixel scale, and the five flat colors. The later prompts give hex values. |
+| **Strip layout** | One horizontal strip of exactly eight equal slots, with wide empty gaps between them so no pose touches its neighbor. |
+| **Frame beats** | One numbered line per frame: what moves, what stays still, and what the last frame does to close the loop. |
+| **Background** | A single flat `#00FF00` fill for chroma extraction. |
+| **Do not include** | The explicit list of things that go wrong: text, borders, extra props, clipped poses. |
+
+The closing frame is written to match the first, or to lead into it, so the animation loops without a visible jump.
+
+## Green first, then transparent
+
+The strip is always generated on flat green. A transparent version is made afterward, in stage 1 of the [pipeline](art-pipeline.qmd#one-sequence-five-stages), and I keep both: the green source and the transparent cutout. For some sequences I also kept an intermediate cleaned version. Nothing in the source is overwritten.
+
+## Making a new animation
+
+You don't need my reference photos to make a new sequence. The shipped sprites are enough as references.
+
+1. Copy the structure of a published prompt.
+2. Attach the shipped sprite and describe the pose you want changed.
+3. Rewrite the eight frame beats and the closing frame.
+4. Check the strip against the list at the end of the Waving prompt. In particular check the identities (Chico's folded ears), equal slots with clean green gaps, a closing frame that matches the first, and a flat `#00FF00` background.
+5. Continue with the [checklist in Contributing](contributing.qmd#add-an-animation).
+
+## What is not in the repo {#not-in-the-repo}
+
+I keep the repository focused on the app, so some of the production material is deliberately kept out:
+
+- **Reference images,** including photos of the real cats. The About page shows one portrait of each cat, and I haven't published the rest because there are a lot of them and you don't need them to make new animations.
+- **Intermediate outputs.** The generated strips, extracted frames, and registered frames of each sequence stay local. Only the preview GIFs, the final atlas, and the two prompt folders above are committed.
+- **The Codex skill and the processing scripts.** They are working tools that I wrote while the artwork was being made, and they are not tidy enough to publish yet. Some still point to old folder paths, so they are not safe to re-run as they are. Preparing a small, cleaned-up set is planned work.
+- **Prompts for the earlier sequences.** I wrote the prompts and built the tools as I learned the process, and the first sequences came from a long, manual back-and-forth of prompts and corrections, so there is no single prompt to publish. Once the structure settled, I wrote each prompt in the same fixed form, and those are the ones committed.
+
+The part of the pipeline that is published today is the quality gate, `pixi run check`, described in [Art pipeline](art-pipeline.qmd#the-qa-gate).

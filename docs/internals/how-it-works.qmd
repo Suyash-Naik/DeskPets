@@ -1,0 +1,39 @@
+---
+title: "How it works"
+subtitle: "The design decisions behind DeskPets, and what broke along the way"
+---
+
+This page is the engineering view. For what the animations mean, see [Pets and states](/guide/pets-and-states.qmd). For how the artwork was made, see [Art pipeline](art-pipeline.qmd).
+
+## Design decisions
+
+**Telemetry-driven behavior.** The pets read CPU, RAM, swap, GPU, battery, and idle time. A calm machine gets a calm cat. Sustained high CPU gets a jumping cat. A hot GPU gets a grumpy one.
+
+**A state machine, not an if-statement.** Ten animation states are chosen by a priority ladder with hysteresis and minimum dwell times. A CPU reading bouncing between 78% and 82% produces *one* transition, not four, so the cats don't flicker. The ladder and the thresholds are laid out in [Which one wins](/guide/pets-and-states.qmd#which-one-wins) and [No flickering](/guide/pets-and-states.qmd#no-flickering).
+
+**Privacy by design.** The app detects whether I'm at the keyboard with `GetLastInputInfo` only. There is no keyboard hook and no record of what I type.
+
+**Built to run next to heavy workloads.** That was the original point. Telemetry runs on its own worker thread and shuts down cleanly in about 15 ms. Sprites are decoded with Qt alone, and Pillow is deliberately not a runtime dependency.
+
+**Built for changing art.** The sprites change independently of the code, so nothing in the code hard-codes the art. Frame rectangles, counts, durations, and loop flags all come from an atlas JSON file, and the loader never computes positions from a grid. A state whose animation isn't in the atlas yet is simply unreachable, so a new behavior can ship before its art does.
+
+## What broke along the way
+
+My first prototype was a sketch. I kept a [phase log](https://github.com/Suyash-Naik/DeskPets/blob/main/docs/PHASE1-LOG.md) as I went, and it records what didn't survive contact with the real machine:
+
+- **A use-after-free in the sprite loader.** The prototype wrapped a temporary bytes object in a `QImage`. I moved to `QImage(path)` plus `copy(rect)` and dropped Pillow from the runtime.
+- **An unreachable idle state.** The spec said "idle if CPU < 20% *and* RAM < 60%." I measured my own desktop, and it idles at about 70% RAM, so the idle animation could never trigger. I made idle the unconditional default and demoted RAM to a hint on the card.
+- **A hang on quit.** The telemetry thread was a `while True` with no stop flag. I replaced it with a worker driven by a timer.
+- **A click-through that couldn't work.** Qt's mouse-transparency flag doesn't work across processes. Only the Windows `WS_EX_TRANSPARENT` style makes the OS skip the window.
+
+I also recorded what I *didn't* solve, such as pixel art that stretches at 1.5× display scaling. The gaps are documented, not hidden.
+
+## The Pomodoro timer {#pomodoro-timer}
+
+The [Pomodoro timer](/guide/pomodoro.qmd) went from idea to working feature in six commits, tests included. That was possible because the UI, the telemetry, and the config were already separate. The timer is one small class, `PomodoroTimer` in `src/core/pomodoro.py`. It is a single countdown that knows nothing about the pets or the card.
+
+- **A fixed deadline, not a tick count.** Starting it records `now + 45 minutes` on a monotonic clock, and the time remaining is always the deadline minus the current time. A once-a-second ticker only refreshes the display and notices that the deadline has passed, so a stalled app can't make the timer drift.
+- **Three signals carry everything outward:** `state_changed(bool)` when it starts, is cancelled, or finishes; `ticked(int)` every second with the seconds left; and `finished()`, which fires exactly once per run and never on cancel. That is what keeps a cancelled block from triggering a celebration.
+- **Small rules:** `toggle()` starts or cancels, starting during a run restarts it, and it lives on the GUI thread only. The clock can be swapped for a fake one, so tests don't wait 45 minutes.
+
+When `finished()` fires, the app plays the chime and forces the *pleased* state for five minutes. Both lengths are in `src/config.py`.

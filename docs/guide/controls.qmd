@@ -1,0 +1,36 @@
+---
+title: "Stats card and tray"
+subtitle: "Everything you can click, hover, or toggle"
+---
+
+## The stats card
+
+Hover over the pets and a small card fades in beside them, below by default and above when the pets are near the bottom of the screen. It shows what the pets are reacting to:
+
+- **A title and subtitle** for the current state, with a status glyph.
+- **CPU and RAM**, always, as a percentage with a small meter.
+- **GPU, VRAM, temperature, battery, and disk**, only when your hardware reports them. A desktop has no battery row, for example.
+- **The Pomodoro button** in the header. See [Pomodoro timer](pomodoro.qmd).
+
+Move the mouse away and the card fades out after a moment. **Click a pet** to pin the card open. The tray's *Show stats card* does the same.
+
+## The tray icon
+
+Right-click the tray icon for the menu:
+
+| Item | What it does |
+| --- | --- |
+| **Click-through** | The pets ignore your mouse, so clicks go to the window underneath. |
+| **Show pet** | Show or hide the pets. |
+| **Show stats card** | Pin the card open or close it. |
+| **Always on top** | Keep the pets above other windows. On by default. |
+| **Start / Stop Pomodoro** | Start or cancel the focus timer. |
+| **Poke the pets** | Play any animation on demand. See [Pets and states](pets-and-states.qmd). |
+| **Reset position** | Bring the pets back to their default spot. |
+| **Quit** | Close DeskPets. |
+
+**Double-click the tray icon** if you ever lose the pets. It shows them, raises them above other windows, and turns click-through off.
+
+## Moving the pets
+
+Drag a pet to move it. The drag only starts on the cat itself, not on the transparent space around it, so you can still click what is behind it. They remember where you left them, per screen.
