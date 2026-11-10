@@ -51,12 +51,6 @@ The closing frame is written to match the first, or to lead into it, so the anim
 
 The strip is always generated on flat green. A transparent version is made afterward, in stage 1 of the [pipeline](art-pipeline.qmd#one-sequence-five-stages), and I keep both: the green source and the transparent cutout. For some sequences I also kept an intermediate cleaned version. Nothing in the source is overwritten.
 
-## How my method changed
-
-I wrote the prompts and built the tools as I went, and the process was **manual and exploratory** at the start. For the first sequences I iterated in a long run of prompts and corrections as I learned what gave me the output I had in mind. There is no single prompt behind those.
-
-Once the prompt structure settled, I wrote each sequence's prompt in the same fixed form. Those prompts are the ones I committed. The earlier sequences were made with continuing, back-and-forth prompting, so there is no single prompt for them to publish.
-
 ## Making a new animation
 
 You don't need my reference photos to make a new sequence. The shipped sprites are enough as references.
@@ -74,6 +68,6 @@ I keep the repository focused on the app, so some of the production material is 
 - **Reference images,** including photos of the real cats. The About page shows one portrait of each cat, and I haven't published the rest because there are a lot of them and you don't need them to make new animations.
 - **Intermediate outputs.** The generated strips, extracted frames, and registered frames of each sequence stay local. Only the preview GIFs, the final atlas, and the two prompt folders above are committed.
 - **The Codex skill and the processing scripts.** They are working tools that I wrote while the artwork was being made, and they are not tidy enough to publish yet. Some still point to old folder paths, so they are not safe to re-run as they are. Preparing a small, cleaned-up set is planned work.
-- **Prompts for the earlier sequences,** for the reason given above.
+- **Prompts for the earlier sequences.** I wrote the prompts and built the tools as I learned the process, and the first sequences came from a long, manual back-and-forth of prompts and corrections, so there is no single prompt to publish. Once the structure settled, I wrote each prompt in the same fixed form, and those are the ones committed.
 
 The part of the pipeline that is published today is the quality gate, `pixi run check`, described in [Art pipeline](art-pipeline.qmd#the-qa-gate).
