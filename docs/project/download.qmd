@@ -17,7 +17,7 @@ The plan is on the [Roadmap](roadmap.qmd).
 ## Requirements
 
 - **Windows.** macOS and Linux aren't supported.
-- **An NVIDIA GPU is optional.** Without one, DeskPets still runs, but the GPU rows and the GPU-temperature trigger for the grumpy animation aren't available. See [Known limitations](/guide/known-limitations.qmd).
+- **An NVIDIA GPU is optional.** Without one, DeskPets still runs, but the GPU rows and the GPU-temperature trigger for the grumpy animation aren't available. See [Known limitations](/project/known-limitations.qmd).
 
 ## Follow along
 

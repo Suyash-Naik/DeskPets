@@ -11,15 +11,7 @@ DeskPets began when I was running a Docker-based virtual machine on a modest hom
 
 ## What it is, and what it isn't
 
-DeskPets should answer a simple question without interrupting my work: *is my computer calm, busy, struggling, or waiting for me?* It is meant to:
-
-- give immediate visual feedback about system load;
-- make it easier to notice **sustained** CPU, RAM, GPU, temperature or swap pressure, and not just a momentary spike;
-- stay lightweight and unobtrusive during normal work;
-- show detailed telemetry only when I ask for it, by hovering over the pets; and
-- make routine system monitoring feel more personal and enjoyable.
-
-It is a companion, not a diagnostic or benchmarking tool. The animations summarize the current state, and the stats card provides the underlying numbers when I need them.
+DeskPets should answer a simple question without interrupting my work: *is my computer calm, busy, struggling, or waiting for me?* It is a lightweight and unobtrusive companion, not a diagnostic or benchmarking tool. The animations summarize the current state, and the stats card shows the numbers when I ask for them.
 
 ## Meet Layla and Chico
 
