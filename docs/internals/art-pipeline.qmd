@@ -1,0 +1,89 @@
+---
+title: "Art pipeline"
+subtitle: "How Layla and Chico go from a reference photo to a frame the app can play"
+---
+
+Every animation in DeskPets starts as a generated image and ends as a rectangle in a sprite atlas. Between those two points each sequence is cleaned, aligned, reviewed, and checked by an automated gate. This page describes that process and what it currently produces.
+
+::: {.callout-note}
+## Who this is for
+You don't need any of this to run DeskPets. It is here for anyone curious about how the animations were made, and for contributors adding or revising a sequence. To add one, read [Generating sprites with Codex](generating-sprites.qmd) first and then the [checklist in Contributing](contributing.qmd#add-an-animation).
+:::
+
+## The result: one atlas
+
+The app reads exactly two files from `assets/`:
+
+| | |
+| --- | --- |
+| `layla-and-chico-pet-spritesheet.png` | The sprite atlas: **1920 × 2080** pixels, a grid of 10 columns by 10 rows of **192 × 208** cells |
+| `layla-and-chico-pet-spritesheet.json` | The manifest describing it |
+
+The atlas holds **82 frames** in **10 animations**, one animation per row. The manifest records every frame's rectangle, each animation's name and loop setting, and the duration of every frame, plus a SHA-256 of the image. The app takes all of that from the JSON, so it never hard-codes a frame count, frame size, or timing, and it checks the manifest against the image at startup.
+
+You can run that check yourself. It opens no window and exits non-zero on failure:
+
+```powershell
+pixi run -e pets pets --validate
+```
+
+## One sequence, five stages
+
+Each animation lives in its own folder, `assets/gen-image/<Sequence>/`, with one numbered subfolder per stage:
+
+| Stage | Folder | What happens |
+| --- | --- | --- |
+| 0 | `00-inputs/` | The original reference photos and images. Kept byte-for-byte. |
+| 1 | `01-generated-sequence/` | The generated strip, then its cleaned, transparent version. |
+| 2 | `02-extracted-frames/` | One tightly cropped image per frame. |
+| 3 | `03-qa-reference/` | The registered (aligned) frames, review sheets, and previews. |
+| 4 | `04-integration-notes/` | `sequence-spec.json`, a README, and an integration preview. |
+
+### 1. Generate
+
+Each sequence is generated with Codex's image generation tool as a single strip of equal, separated slots on a flat `#00FF00` green background. The prompt fixes the pixel scale, the palette, and every beat of the motion, including how the loop closes, and reference images keep the characters recognizable. The prompt rules, an anatomy of the real prompts, and how to make a new strip are on [Generating sprites with Codex](generating-sprites.qmd).
+
+The strips normally have eight frames. A sequence keeps the frame count it was approved with, so the jump animation has ten.
+
+### 2. Clean and extract
+
+The green source is always preserved. A separate transparent version is made by measuring each pixel's color distance from the key green, and the colored fringe left on edges is removed. Then the strip is cut into frames. Proportional slots are tried first. If a pose crosses its slot, the cut follows the measured empty gaps between poses instead, and the chosen boundaries are recorded.
+
+### 3. Register
+
+Frames are placed on a **320 × 320** canvas with **one shared scale for the whole sequence**. Two anchors keep the animation steady:
+
+- horizontally, the body's midpoint sits at **x = 160**, measured on the largest connected shape in the frame, so a separate prop never pulls the cat sideways;
+- vertically, grounded sequences share a baseline at **y = 291**.
+
+Airborne and rolling sequences keep their vertical motion. Pinning every frame to the ground would flatten the very movement the animation is about.
+
+### 4. Review and spec
+
+Aligned frames, contact sheets, and preview GIFs are built so a person can look at the motion. The GIFs are only for review. They are never used as production frames. Each sequence ends with a `sequence-spec.json` that records frame order, timings, loop behavior, and the registration used.
+
+### 5. Pack
+
+The approved, registered frames are scaled with **nearest-neighbor** sampling, so pixel art stays crisp, down to 192 pixels wide. They are then padded to 192 × 208 and placed in the atlas grid. Packing is done by scripts outside the app, and the manifest is written alongside the image and validated against it.
+
+## The QA gate
+
+A read-only checker runs over every sequence:
+
+```powershell
+pixi run check                    # every sequence
+pixi run check Layla-ball-rolling # one sequence
+pixi run qa                       # review notebook in JupyterLab
+```
+
+It checks registration, frame counts and naming, transparency, content touching the canvas edge, leftover green, near-duplicate frames, and consistency with the spec. Its exit code is **0** for a clean pass or warnings only, **1** if anything blocks, and **2** for bad usage or setup. A "pass with warnings" is not a warning-free pass.
+
+Some heuristics assume grounded frames, so intentional airborne motion can trigger warnings. Those are reviewed by eye. The checker isn't weakened and the art isn't distorted to silence them.
+
+A run on 2026-11-09 found nothing that blocks. Five sequences pass cleanly and five pass with warnings. The warnings are about baseline, scale, anchor, and edge contact, mostly from lying, rolling, or airborne poses. A passing gate doesn't mean the art is finished. It checks structure, not whether the animation looks right.
+
+## Known art issues and ground rules
+
+The open art issues (the jump's missing lift, the stroll that ends out of frame) are listed under [Known limitations](/project/known-limitations.qmd#art). Two more are tracked in the sequence specs: the working animation's timings sum to 1300 ms while its spec says 1800 ms, and one of its frames has a small detached fragment of tail.
+
+The rules for changing art, such as additive revisions and backing up before touching the atlas, are in the [checklist in Contributing](contributing.qmd#add-an-animation). One more: registered frames are identified by size (320 × 320), never by filename suffix.
