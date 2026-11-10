@@ -28,8 +28,12 @@ My first prototype was a sketch. I kept a [phase log](https://github.com/Suyash-
 
 I also recorded what I *didn't* solve, such as pixel art that stretches at 1.5× display scaling. The gaps are documented, not hidden.
 
-## Why a new feature was cheap
+## The Pomodoro timer {#pomodoro-timer}
 
-After using the app for a while, I found that having the cats around kept me engaged while I worked, so I added a Pomodoro timer to organize my work blocks. It went from idea to working feature in **six commits, tests included, in a few minutes**: a `PomodoroTimer` class, timer constants in `config.py`, a play button on the stats card, a notification sound, and a button that turns into a stop square while the timer runs.
+The [Pomodoro timer](/guide/pomodoro.qmd) went from idea to working feature in six commits, tests included. That was possible because the UI, the telemetry, and the config were already separate. The timer is one small class, `PomodoroTimer` in `src/core/pomodoro.py`. It is a single countdown that knows nothing about the pets or the card.
 
-It only took that long because the app was modular from the start. The UI, the telemetry, and the config were separate, so the new feature plugged in without rewriting anything.
+- **A fixed deadline, not a tick count.** Starting it records `now + 45 minutes` on a monotonic clock, and the time remaining is always the deadline minus the current time. A once-a-second ticker only refreshes the display and notices that the deadline has passed, so a stalled app can't make the timer drift.
+- **Three signals carry everything outward:** `state_changed(bool)` when it starts, is cancelled, or finishes; `ticked(int)` every second with the seconds left; and `finished()`, which fires exactly once per run and never on cancel. That is what keeps a cancelled block from triggering a celebration.
+- **Small rules:** `toggle()` starts or cancels, starting during a run restarts it, and it lives on the GUI thread only. The clock can be swapped for a fake one, so tests don't wait 45 minutes.
+
+When `finished()` fires, the app plays the chime and forces the *pleased* state for five minutes. Both lengths are in `src/config.py`.
