@@ -96,7 +96,12 @@ nuitka = "*"
 
 [feature.build.tasks.build-exe]
 cmd = "python packaging/build_exe.py"
-description = "Freeze DeskPets into dist/DeskPets (Nuitka standalone)"
+description = "Freeze DeskPets into dist/deskpets.dist (Nuitka standalone, windowed)"
+
+[feature.build.tasks.build-installer]
+cmd = "python packaging/build_installer.py"
+depends-on = ["build-exe"]
+description = "Build the exe, then the Inno Setup installer and its SHA256SUMS"
 
 # ---------------------------------------------------------------------------
 # Environments.
