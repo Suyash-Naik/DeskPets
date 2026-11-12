@@ -49,15 +49,6 @@ from .. import config
 
 log = logging.getLogger(__name__)
 
-# numpy is present in the `pets` environment and is used for a single vectorised pass over the
-# atlas alpha plane. It is guarded anyway: content bounds are an optimisation for hit-testing
-# and tray-icon trimming, never a correctness requirement -- without numpy every frame simply
-# reports its full rect as its content rect.
-try:  # pragma: no cover - depends on the environment this runs in
-    import numpy as _np
-except ImportError:  # pragma: no cover
-    _np = None  # type: ignore[assignment]
-
 #: Same severity vocabulary as ``tools/frame_qa.py`` so one grep finds every gate in the repo.
 BLOCK: Final[str] = "BLOCK"
 WARN: Final[str] = "WARN"
@@ -98,7 +89,7 @@ class Frame:
     future atlas packed from tight crops renders correctly with no change in ``pet_window``.
 
     ``content_rect`` is the opaque-pixel bounding box in **frame-local** coordinates, or the
-    full frame rect when bounds could not be computed (no numpy, or
+    full frame rect when bounds could not be computed (alpha unreadable, or
     ``config.COMPUTE_CONTENT_BOUNDS`` off). Read-only value type, safe to hold from any thread;
     the ``QPixmap`` inside may only be *painted* on the GUI thread.
     """
@@ -365,43 +356,66 @@ def _sha256(path: Path) -> str | None:
     return digest.hexdigest()
 
 
-def _alpha_plane(image: QImage):
-    """The atlas alpha channel as an ``(H, W)`` uint8 array, or ``None``.
+class _AlphaPlane:
+    """The atlas alpha channel as one ``bytes`` object, ``width`` bytes per row."""
 
-    One vectorised pass over the whole sheet; per-frame bounds are then slices of this array,
-    which beats walking every frame image separately. The array is copied out of Qt's buffer so
-    it never aliases an image that may be released later.
+    __slots__ = ("data", "width")
+
+    def __init__(self, data: bytes, width: int) -> None:
+        self.data = data
+        self.width = width
+
+
+def _alpha_plane(image: QImage) -> _AlphaPlane | None:
+    """The atlas alpha channel, or ``None`` when it cannot be read.
+
+    One pass over the whole sheet; per-frame bounds are then row slices of it. The bytes are
+    copied out of Qt's buffer so they never alias an image that may be released later. Pure
+    Python on purpose: numpy was only ever used here, and dropping it keeps the frozen build
+    ~35 MB smaller.
     """
-    if _np is None or not config.COMPUTE_CONTENT_BOUNDS:
+    if not config.COMPUTE_CONTENT_BOUNDS:
         return None
     bits = image.constBits()
     if bits is None:  # pragma: no cover - only for a null image, already excluded
         return None
     try:
         bits.setsize(image.sizeInBytes())
-        flat = _np.frombuffer(memoryview(bits), dtype=_np.uint8)
-        rows = flat.reshape(image.height(), image.bytesPerLine())
-        # ARGB32 is four bytes per pixel; on a little-endian machine the alpha byte is last.
-        # bytesPerLine() can exceed width*4 because Qt pads scanlines, hence the explicit stop.
+        # The loader converts to a four-byte format, so scanlines are exactly width*4 bytes
+        # (a multiple of four, so Qt adds no padding). Anything else cannot be sliced by stride.
+        if image.bytesPerLine() != image.width() * 4:  # pragma: no cover
+            return None
+        # On a little-endian machine the alpha byte of an ARGB32 pixel is the last of four.
         offset = 3 if sys.byteorder == "little" else 0
-        return _np.array(rows[:, offset:image.width() * 4:4])
+        return _AlphaPlane(bytes(memoryview(bits))[offset::4], image.width())
     except (ValueError, TypeError) as exc:  # pragma: no cover
         log.warning("alpha plane unavailable (%s); falling back to full frame rects", exc)
         return None
 
 
-def _content_rect(alpha, rect: QRect) -> QRect:
+def _content_rect(alpha: _AlphaPlane | None, rect: QRect) -> QRect:
     """Opaque-pixel bbox of ``rect``, in frame-local coordinates. Empty if nothing is opaque."""
     if alpha is None:
         return QRect(0, 0, rect.width(), rect.height())
-    sub = alpha[rect.y():rect.y() + rect.height(), rect.x():rect.x() + rect.width()]
-    mask = sub > 0
-    if not mask.any():
+    data, stride = alpha.data, alpha.width
+    left = rect.width()
+    right = -1
+    top = bottom = -1
+    for row in range(rect.height()):
+        start = (rect.y() + row) * stride + rect.x()
+        line = data[start:start + rect.width()]
+        stripped = line.lstrip(b"\x00")
+        if not stripped:
+            continue
+        first = len(line) - len(stripped)
+        last = len(line.rstrip(b"\x00")) - 1
+        left = min(left, first)
+        right = max(right, last)
+        if top < 0:
+            top = row
+        bottom = row
+    if top < 0:
         return QRect()
-    cols = _np.flatnonzero(mask.any(axis=0))
-    rows = _np.flatnonzero(mask.any(axis=1))
-    left, right = int(cols[0]), int(cols[-1])
-    top, bottom = int(rows[0]), int(rows[-1])
     return QRect(left, top, right - left + 1, bottom - top + 1)
 
 

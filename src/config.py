@@ -69,7 +69,7 @@ STRICT_ATLAS: Final[bool] = False
 #: Retain the source QImage after slicing so alpha hit-testing works. ~14 MB.
 KEEP_ATLAS_IMAGE: Final[bool] = True
 
-#: Compute per-frame opaque-pixel bounds (needs numpy; falls back to the full rect).
+#: Compute per-frame opaque-pixel bounds (falls back to the full rect when the alpha plane is unreadable).
 COMPUTE_CONTENT_BOUNDS: Final[bool] = True
 
 
