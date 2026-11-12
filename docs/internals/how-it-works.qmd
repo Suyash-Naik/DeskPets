@@ -37,3 +37,47 @@ The [Pomodoro timer](/guide/pomodoro.qmd) went from idea to working feature in s
 - **Small rules:** `toggle()` starts or cancels, starting during a run restarts it, and it lives on the GUI thread only. The clock can be swapped for a fake one, so tests don't wait 45 minutes.
 
 When `finished()` fires, the app plays the chime and forces the *pleased* state for five minutes. Both lengths are in `src/config.py`.
+
+## Building the app {#building-the-app}
+
+DeskPets is developed as Python source, but most people shouldn't need Python to run it. The installer freezes the app into a folder of native code and wraps that folder in a Windows installer. This is what I learned doing it, including the parts that went wrong.
+
+### Why Nuitka
+
+I chose [Nuitka](https://nuitka.net) over PyInstaller mainly because I wanted to learn it, and because it compiles Python to C instead of bundling a bytecode interpreter. It supports Python 3.14, which is what DeskPets uses. The cost is a C compiler: Nuitka needs Visual Studio's build tools. Its fallbacks (MinGW, Zig) didn't work for Python 3.14 on my machine, so installing the "Desktop development with C++" workload was the fix.
+
+One warning from the Nuitka PyQt6 plugin worried me: *Qt threading does not work*. DeskPets samples system metrics on a worker `QThread`, so I ran the frozen build with telemetry live before trusting it. It sampled normally, including the NVIDIA reading. That is encouraging but not a long-running soak test.
+
+### Finding the assets when frozen
+
+The sprite atlas used to be found relative to the source file. A frozen app has no source tree, so a build that works on my machine could fail on yours. `config.app_root()` now returns the install folder when the app is frozen and the repository root otherwise, and never uses the working directory. The `--validate` flag doubles as a smoke test: it loads the atlas from the frozen build and fails loudly if it can't.
+
+### Making it smaller
+
+The first working build was **628 MB**, which is absurd for a desktop pet. Most of it was one dependency:
+
+| Step | Folder size |
+| --- | ---: |
+| First build (numpy with Intel MKL) | 628 MB |
+| numpy with OpenBLAS instead | 116 MB |
+| numpy removed | 73 MB |
+| Unused standard-library modules excluded | **72 MB** |
+
+numpy came with conda's MKL math libraries, which are about 400 MB. Swapping to OpenBLAS cut that, but the real question was why the app needed numpy at all. It was used in exactly one place, a scan that finds the opaque bounds of each frame. That is now a short pure-Python loop over row slices of the 82-frame atlas, so numpy is gone from the runtime environment. The test that checks content bounds still passes, so the result is the same.
+
+The build also excludes everything the app never imports (the art-pipeline tools, test packages, and parts of the standard library such as XML and compression). The installer itself, which compresses the folder, is **22.4 MB**.
+
+Two things didn't shrink: OpenSSL (about 8 MB) is still bundled because the standard library's hashing module links to it, and the Qt libraries are most of what remains. Excluding both is possible, but I left them in for now because the saving didn't seem worth the risk of breaking something untested.
+
+### The installer
+
+The folder is wrapped with [Inno Setup](https://jrsoftware.org/isinfo.php) into `DeskPets-Setup-0.1.1.exe`. It installs per user, so it needs no administrator rights, adds a Start Menu shortcut, and has an uninstaller. "Start when I sign in to Windows" is offered as an option that is **off by default**, and it only touches the current user's startup entry. Settings live in `%APPDATA%\LC-pet-stat`, which the uninstaller leaves alone, so they survive both uninstalling and upgrading.
+
+### What isn't proven yet
+
+- The installer is **unsigned**, so Windows SmartScreen will warn when it is downloaded.
+- I have run the frozen app only on my development machine. A clean Windows machine is the real test, and I am doing that in a virtual machine before release.
+- The frozen app has not yet been tried without an NVIDIA GPU.
+
+
+
