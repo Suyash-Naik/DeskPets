@@ -17,7 +17,9 @@ ATLAS = ("layla-and-chico-pet-spritesheet.json", "layla-and-chico-pet-spriteshee
 
 # Heavy or dev-only packages that must never be pulled in, even transitively.
 EXCLUDED = ("napari", "PIL", "pytest", "jupyterlab", "IPython", "ipywidgets", "matplotlib",
-            "scipy", "pandas", "tkinter", "unittest", "pydoc", "setuptools", "pip", "tests", "tools")
+            "scipy", "pandas", "tkinter", "unittest", "pydoc", "setuptools", "pip", "tests", "tools",
+            # Network, XML and compression stacks the app never uses (saves OpenSSL, ~7 MB+).
+            "ssl", "xml", "bz2", "lzma", "http", "email", "urllib3")
 
 
 def version() -> str:
