@@ -37,7 +37,7 @@ Name: "english"; MessagesFile: "compiler:Default.isl"
 
 [Tasks]
 ; Off unless the user ticks it: a program should not start itself without being asked.
-Name: "autostart"; Description: "Start DeskPets when I sign in to Windows"; GroupDescription: "Startup:"; Flags: unchecked
+Name: "autostart"; Description: "Would you like to start DeskPets when signin into Windows automatically?"; GroupDescription: "Startup:"; Flags: unchecked
 
 [Files]
 Source: "..\dist\deskpets.dist\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
@@ -50,7 +50,7 @@ Name: "{autoprograms}\DeskPets"; Filename: "{app}\DeskPets.exe"
 Root: HKCU; Subkey: "Software\Microsoft\Windows\CurrentVersion\Run"; ValueType: string; ValueName: "DeskPets"; ValueData: """{app}\DeskPets.exe"""; Flags: uninsdeletevalue; Tasks: autostart
 
 [Run]
-Filename: "{app}\DeskPets.exe"; Description: "Launch DeskPets"; Flags: nowait postinstall skipifsilent
+Filename: "{app}\DeskPets.exe"; Description: "Launch DeskPets"; Flags: nowait postinstall skipifsilent unchecked
 
 ; Settings live in %APPDATA%\LC-pet-stat and are deliberately NOT listed under [UninstallDelete],
 ; so they survive both uninstall and upgrade.
