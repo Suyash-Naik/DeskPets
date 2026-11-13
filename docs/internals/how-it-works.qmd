@@ -83,13 +83,15 @@ I ran the installer on a fresh Windows 11 virtual machine (Hyper-V), reverted to
 - **Settings survive uninstalling.** They stay in `%APPDATA%\LC-pet-stat`, as designed.
 - **Upgrading in place works.** Installing a newer build over the old one keeps the settings.
 - **Quit leaves nothing behind.** After choosing Quit from the tray, no `DeskPets.exe` process remains.
+- **Start when I sign in.** With the option ticked the app starts at sign-in, and with it unticked nothing is added. Uninstalling removes the entry.
+- **Hover card and Pomodoro.** The stats card appears on hover, and the Pomodoro timer's ping plays when it finishes.
+- **No NVIDIA GPU.** The virtual machine has no GPU at all, and the app runs normally without it.
 
 ### What isn't proven yet
 
 - The installer is **unsigned**, so Windows SmartScreen will warn when it is downloaded.
 - The first start after installing can be slow while Windows scans the files. This is expected to affect any freshly installed program, but I've only seen it in one virtual machine.
 - The app is still in early development and needs to be tried on other people's machines, not just mine and one virtual machine.
-- The frozen app has not yet been tried without an NVIDIA GPU.
 
 
 
