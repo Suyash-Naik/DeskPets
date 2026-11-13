@@ -59,7 +59,7 @@ load-bearing — without it pixi folds napari/Jupyter/Pillow into both):
 
 | Environment | Holds | Purpose |
 | --- | --- | --- |
-| `pets` | python, pyqt6, psutil, numpy, nvidia-ml-py | lean runtime |
+| `pets` | python, pyqt6, psutil, nvidia-ml-py | lean runtime (no numpy: it was only used for content bounds, removed to shrink the installer) |
 | `dev` | the `pets` pins **mirrored** + pytest | test suite; `test_packaging.py` fails if the pins drift |
 | default | napari, jupyterlab, ipywidgets, pillow, numpy, pyqt6 | art pipeline; the app never touches it |
 
@@ -111,7 +111,7 @@ tools/frame_qa.py         art QA gate
 - **Atlas loader.** Reads per-frame `x/y/width/height` and `duration_ms` verbatim from JSON —
   never computes `col * frame_width`. Validates schema version (`{1}`), verifies sha256,
   warns/blocks via an `AtlasReport` (same verdict vocabulary as `frame_qa`), computes opaque
-  content bounds with numpy, exposes `alpha_at()` for hit-testing, and `require()` as the one
+  content bounds in pure Python (no numpy), exposes `alpha_at()` for hit-testing, and `require()` as the one
   place that asserts which rows the app needs. `AssetsMissingError` / `AtlasValidationError`
   give one clear failure at startup.
 - **Animator.** Honours authored per-frame durations (measured worst error 2.0 ms), compensates
