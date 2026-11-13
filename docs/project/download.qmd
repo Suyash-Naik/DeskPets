@@ -3,22 +3,40 @@ title: "Download"
 subtitle: "Where to get DeskPets"
 ---
 
-::: {.callout-note}
-## No installer yet
-A one-click installer for Windows is planned and **has not been released**. There is no download to offer yet, and I'd rather say so than link to something that doesn't exist.
+DeskPets for Windows comes as a normal installer. You don't need Python or anything else installed.
+
+::: {.callout-tip}
+## Get it
+**[Download the latest installer](https://github.com/Suyash-Naik/DeskPets/releases/latest)** from the GitHub releases page. Under *Assets*, pick `DeskPets-Setup-<version>.exe`.
 :::
 
-## Run it today
+## Installing
 
-For now you run DeskPets from source with [pixi](https://pixi.sh), which sets up the right Python and libraries. It takes four lines, and [Getting started](/guide/getting-started.qmd) walks through it.
+1. Run `DeskPets-Setup-<version>.exe` and follow the steps. It installs for your user only, so it doesn't ask for administrator rights.
+2. Two options on the way, both off unless you tick them: starting DeskPets when you sign in to Windows, and launching it when the installer closes.
+3. Otherwise start it from the Start Menu. Right-click the tray icon to quit.
 
-The plan is on the [Roadmap](roadmap.qmd).
+Your settings are kept in `%APPDATA%\LC-pet-stat`, and uninstalling leaves them alone, so reinstalling or upgrading keeps your pets where you left them.
+
+## Things you may notice
+
+- **Windows SmartScreen may warn you.** The installer isn't code-signed yet, so Windows shows "Windows protected your PC" for new, unrecognised downloads. Choose *More info*, then *Run anyway*, if you trust the download. You can check it hasn't been altered by comparing its hash with the one on the release page:
+
+  ```powershell
+  Get-FileHash .\DeskPets-Setup-<version>.exe -Algorithm SHA256
+  ```
+
+- **The first start can be slow.** Right after installing, Windows scans the new files, and the pets can take a little while to appear. Later starts are quick. Starting it twice in the meantime gives you two pets.
 
 ## Requirements
 
 - **Windows.** macOS and Linux aren't supported.
 - **An NVIDIA GPU is optional.** Without one, DeskPets still runs, but the GPU rows and the GPU-temperature trigger for the grumpy animation aren't available. See [Known limitations](/project/known-limitations.qmd).
 
+## Run it from source
+
+If you'd rather run it from the code, use [pixi](https://pixi.sh), which sets up the right Python and libraries. [Getting started](/guide/getting-started.qmd) walks through it. How the installer is built is described in [How it works](/internals/how-it-works.qmd#building-the-app).
+
 ## Follow along
 
-Progress is tracked on [GitHub](https://github.com/Suyash-Naik/DeskPets/issues). Watching the repository there is the quickest way to hear when a release appears.
+Progress is tracked on [GitHub](https://github.com/Suyash-Naik/DeskPets/issues), and the plan is on the [Roadmap](roadmap.qmd). Watching the repository there is the quickest way to hear when a new release appears.
