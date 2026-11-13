@@ -63,7 +63,7 @@ The first working build was **628 MB**, which is absurd for a desktop pet. Most 
 | numpy removed | 73 MB |
 | Unused standard-library modules excluded | **72 MB** |
 
-numpy came with conda's MKL math libraries, which are about 400 MB. Swapping to OpenBLAS cut that, but the real question was why the app needed numpy at all. It was used in exactly one place, a scan that finds the opaque bounds of each frame. That is now a short pure-Python loop over row slices of the 82-frame atlas, so numpy is gone from the runtime environment. The test that checks content bounds still passes, so the result is the same.
+numpy came with conda's MKL math libraries, which are about 400 MB. Swapping to OpenBLAS cut that, but the real question was why the app needed numpy at all. It was used in exactly one place, a scan that finds the opaque bounds of each frame. That is now a short pure-Python loop over row slices of the 82-frame atlas, so numpy is gone from the runtime environment. The test that checks content bounds still passes, so the result is the same. I am curious how much the test slows down without numpy, but it is only run on demand.
 
 The build also excludes everything the app never imports (the art-pipeline tools, test packages, and parts of the standard library such as XML and compression). The installer itself, which compresses the folder, is **22.4 MB**.
 
@@ -73,10 +73,22 @@ Two things didn't shrink: OpenSSL (about 8 MB) is still bundled because the stan
 
 The folder is wrapped with [Inno Setup](https://jrsoftware.org/isinfo.php) into `DeskPets-Setup-0.1.1.exe`. It installs per user, so it needs no administrator rights, adds a Start Menu shortcut, and has an uninstaller. "Start when I sign in to Windows" is offered as an option that is **off by default**, and it only touches the current user's startup entry. Settings live in `%APPDATA%\LC-pet-stat`, which the uninstaller leaves alone, so they survive both uninstalling and upgrading.
 
+The last page of the installer has a "Launch DeskPets" box, **unticked by default**. I made it opt-in after a test on a clean virtual machine: the first start after installing is slow, because Windows Defender scans the new files, and the pet can take a noticeable while to appear. Starting it a second time was almost instant. That fits Defender scanning on first run, which I haven't isolated further. In my test, impatient double launches produced two pets, because the app doesn't stop a second copy from starting.
+
+### What I tested on a clean machine
+
+I ran the installer on a fresh Windows 11 virtual machine (Hyper-V), reverted to a clean checkpoint before each run. These all worked:
+
+- **Install and run.** The app installs without administrator rights and runs.
+- **Settings survive uninstalling.** They stay in `%APPDATA%\LC-pet-stat`, as designed.
+- **Upgrading in place works.** Installing a newer build over the old one keeps the settings.
+- **Quit leaves nothing behind.** After choosing Quit from the tray, no `DeskPets.exe` process remains.
+
 ### What isn't proven yet
 
 - The installer is **unsigned**, so Windows SmartScreen will warn when it is downloaded.
-- I have run the frozen app only on my development machine. A clean Windows machine is the real test, and I am doing that in a virtual machine before release.
+- The first start after installing can be slow while Windows scans the files. This is expected to affect any freshly installed program, but I've only seen it in one virtual machine.
+- The app is still in early development and needs to be tried on other people's machines, not just mine and one virtual machine.
 - The frozen app has not yet been tried without an NVIDIA GPU.
 
 
