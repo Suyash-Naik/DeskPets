@@ -256,7 +256,7 @@ def test_alpha_at_distinguishes_the_pet_from_its_transparent_gutter(sheet) -> No
 def test_content_rect_is_a_real_sub_rect_not_the_whole_cell(sheet, atlas_json) -> None:
     """`COMPUTE_CONTENT_BOUNDS` actually ran -- otherwise every bbox is the full cell.
 
-    If numpy were missing the loader falls back to the full rect, which is correct but would
+    If the alpha plane were unreadable the loader falls back to the full rect, which is correct but would
     make the gutter test above pass vacuously. This is the canary for that fallback.
     """
     cell = (atlas_json["frame_width"], atlas_json["frame_height"])
@@ -264,7 +264,7 @@ def test_content_rect_is_a_real_sub_rect_not_the_whole_cell(sheet, atlas_json) -
                         if (f.content_rect.width(), f.content_rect.height()) == cell]
     assert not full_cell_frames, (
         f"{len(full_cell_frames)} frames report the full cell as their content bounds; "
-        "the numpy alpha-bbox scan did not run")
+        "the alpha-bbox scan did not run")
 
 
 # =============================================================================================

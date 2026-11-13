@@ -3,7 +3,7 @@ authors = ["Suyash-Naik <suyashanaik@gmail.com>"]
 channels = ["conda-forge"]
 name = "LC-pet-stat"
 platforms = ["win-64"]
-version = "0.1.0"
+version = "0.1.1"
 
 # ---------------------------------------------------------------------------
 # Default environment: the art / frame-QA pipeline (napari + JupyterLab).
@@ -24,18 +24,16 @@ check = "python tools/frame_qa.py"
 
 # ---------------------------------------------------------------------------
 # `pets` feature: the runtime environment for the desktop pet itself.
-# Deliberately lean -- no napari, no Jupyter -- so the app starts fast and its
+# Deliberately lean so the app starts fast and its
 # dependency surface stays small and auditable.
 # ---------------------------------------------------------------------------
 # Pillow is deliberately absent: the atlas is decoded with QImage and sliced with
 # QImage.copy(), which makes the BuildPlan prototype's use-after-free unrepresentable rather
 # than merely fixed. Pillow stays a pipeline/QA dependency in the default environment.
-# numpy is used for the one-pass alpha bbox scan behind config.COMPUTE_CONTENT_BOUNDS.
 [feature.pets.dependencies]
 python = ">=3.14.7,<3.15"
 pyqt6 = ">=6.8.1,<7"
 psutil = ">=7.0.0"
-numpy = ">=2.5.3,<3"
 nvidia-ml-py = ">=13.610.43,<14"
 
 [feature.pets.tasks]
@@ -58,7 +56,6 @@ pets = { cmd = "python -m src.main", description = "Run the Layla & Chico deskto
 python = ">=3.14.7,<3.15"
 pyqt6 = ">=6.8.1,<7"
 psutil = ">=7.0.0"
-numpy = ">=2.5.3,<3"
 nvidia-ml-py = ">=13.610.43,<14"
 pytest = ">=9.1.1,<10"
 
@@ -86,6 +83,27 @@ cwd = "docs"
 description = "Render the documentation site to docs/_site"
 
 # ---------------------------------------------------------------------------
+# `build` feature: freezing the app into a Windows executable (Nuitka).
+# ---------------------------------------------------------------------------
+# Runtime pins are mirrored from `pets` (same reason as `dev`); the only addition is the
+# compiler toolchain. Never added to `pets`, so the shipped dependency surface stays unchanged.
+[feature.build.dependencies]
+python = ">=3.14.7,<3.15"
+pyqt6 = ">=6.8.1,<7"
+psutil = ">=7.0.0"
+nvidia-ml-py = ">=13.610.43,<14"
+nuitka = "*"
+
+[feature.build.tasks.build-exe]
+cmd = "python packaging/build_exe.py"
+description = "Freeze DeskPets into dist/deskpets.dist (Nuitka standalone, windowed)"
+
+[feature.build.tasks.build-installer]
+cmd = "python packaging/build_installer.py"
+depends-on = ["build-exe"]
+description = "Build the exe, then the Inno Setup installer and its SHA256SUMS"
+
+# ---------------------------------------------------------------------------
 # Environments.
 # ---------------------------------------------------------------------------
 # `no-default-feature = true` on both is load-bearing, not tidiness. Pixi folds the default
@@ -101,3 +119,4 @@ description = "Render the documentation site to docs/_site"
 pets = { features = ["pets"], solve-group = "pets", no-default-feature = true }
 dev = { features = ["dev"], solve-group = "pets", no-default-feature = true }
 docs = { features = ["docs"], no-default-feature = true }
+build = { features = ["build"], solve-group = "pets", no-default-feature = true }

@@ -10,7 +10,7 @@ DeskPets puts two small cats, **Layla** and **Chico**, on your Windows desktop. 
 
 ::: {.callout-note}
 ## Status
-DeskPets is a personal project in active development. The Windows app is built and runs. A one-click installer is in progress and not released yet, so for now you run it from source.
+DeskPets is a personal project in active development. The Windows app is built and runs, and there is a one-click installer on the [Download](project/download.qmd) page. It is early software, so expect rough edges.
 :::
 
 ## Features {#features}
@@ -24,7 +24,8 @@ DeskPets is a personal project in active development. The Windows app is built a
 
 ## Start here
 
-- [**Getting started**](guide/getting-started.qmd): run it in four lines.
+- [**Download**](project/download.qmd): the Windows installer.
+- [**Getting started**](guide/getting-started.qmd): install it, or run it from source in four lines.
 - [**Pets and states**](guide/pets-and-states.qmd): what each animation means.
 - [**About**](project/about.qmd): why it exists, how it was built, and where it's going.
 

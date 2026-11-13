@@ -23,6 +23,7 @@ test.
 
 from __future__ import annotations
 
+import re
 import tomllib
 from pathlib import Path
 
@@ -118,3 +119,11 @@ def test_platforms_are_still_win_64_only(manifest: dict) -> None:
     revisiting at the same time.
     """
     assert manifest["workspace"]["platforms"] == ["win-64"]
+
+
+def test_version_is_the_same_in_the_manifest_and_the_package(manifest: dict) -> None:
+    """`pixi.toml` and `src/__init__.py` both carry the version; the build reads the latter."""
+    text = (REPO_ROOT / "src" / "__init__.py").read_text(encoding="utf-8")
+    match = re.search(r'^__version__\s*=\s*"([^"]+)"', text, re.MULTILINE)
+    assert match, "src/__init__.py has no __version__"
+    assert manifest["workspace"]["version"] == match.group(1)

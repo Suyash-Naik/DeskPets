@@ -237,3 +237,29 @@ def test_config_module_is_qt_free() -> None:
     text = Path(source).read_text(encoding="utf-8")
     offenders = re.findall(r"^\s*(?:from|import)\s+(PyQt6\S*)", text, re.MULTILINE)
     assert not offenders, f"config.py imports Qt: {offenders}"
+
+
+# --- frozen-safe resource lookup -------------------------------------------------------------
+
+def test_app_root_from_source_is_the_repo_root() -> None:
+    root = config.app_root(frozen=False)
+    assert (root / "src" / "config.py").is_file()
+    assert config.PROJECT_ROOT == root
+
+
+def test_app_root_when_frozen_is_the_executable_directory(tmp_path: Path) -> None:
+    exe = tmp_path / "DeskPets" / "DeskPets.exe"
+    exe.parent.mkdir()
+    exe.touch()
+    assert config.app_root(frozen=True, executable=exe) == exe.parent.resolve()
+
+
+def test_app_root_ignores_the_working_directory(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    expected = config.app_root(frozen=False)
+    monkeypatch.chdir(tmp_path)
+    assert config.app_root(frozen=False) == expected
+
+
+def test_resource_path_joins_under_the_root() -> None:
+    assert config.resource_path("assets", "a.png") == config.app_root() / "assets" / "a.png"
+    assert config.ATLAS_JSON == config.resource_path("assets", "layla-and-chico-pet-spritesheet.json")

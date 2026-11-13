@@ -3,9 +3,9 @@ title: "Getting started"
 subtitle: "From zero to two cats on your desktop"
 ---
 
-DeskPets runs on **Windows**. An installer is coming and isn't released yet, so for now you run it from source with [pixi](https://pixi.sh), which sets up the right Python and libraries for you.
+DeskPets runs on **Windows**. The easiest way is the installer on the [Download](/project/download.qmd) page: run it, then start DeskPets from the Start Menu. If you'd rather run it from source, use [pixi](https://pixi.sh), which sets up the right Python and libraries for you.
 
-## Run it
+## Run it from source
 
 ```powershell
 git clone https://github.com/Suyash-Naik/DeskPets.git

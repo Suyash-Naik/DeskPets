@@ -15,3 +15,8 @@ assets/gen-image/_*
 docs/_site/
 docs/.quarto/
 *.quarto_ipynb
+
+# build output
+dist/
+nuitka-crash-report.xml
+.vs/
